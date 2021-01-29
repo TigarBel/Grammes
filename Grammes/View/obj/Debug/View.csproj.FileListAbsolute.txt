@@ -1,0 +1,15 @@
+C:\Users\belyaevee\Desktop\Intership\Grammes\View\bin\Debug\View.exe.config
+C:\Users\belyaevee\Desktop\Intership\Grammes\View\bin\Debug\View.exe
+C:\Users\belyaevee\Desktop\Intership\Grammes\View\bin\Debug\View.pdb
+C:\Users\belyaevee\Desktop\Intership\Grammes\View\obj\Debug\View.csprojAssemblyReference.cache
+C:\Users\belyaevee\Desktop\Intership\Grammes\View\obj\Debug\MainWindow.g.cs
+C:\Users\belyaevee\Desktop\Intership\Grammes\View\obj\Debug\App.g.cs
+C:\Users\belyaevee\Desktop\Intership\Grammes\View\obj\Debug\View_MarkupCompile.cache
+C:\Users\belyaevee\Desktop\Intership\Grammes\View\obj\Debug\View_MarkupCompile.lref
+C:\Users\belyaevee\Desktop\Intership\Grammes\View\obj\Debug\MainWindow.baml
+C:\Users\belyaevee\Desktop\Intership\Grammes\View\obj\Debug\View.g.resources
+C:\Users\belyaevee\Desktop\Intership\Grammes\View\obj\Debug\View.Properties.Resources.resources
+C:\Users\belyaevee\Desktop\Intership\Grammes\View\obj\Debug\View.csproj.GenerateResource.cache
+C:\Users\belyaevee\Desktop\Intership\Grammes\View\obj\Debug\View.csproj.CoreCompileInputs.cache
+C:\Users\belyaevee\Desktop\Intership\Grammes\View\obj\Debug\View.exe
+C:\Users\belyaevee\Desktop\Intership\Grammes\View\obj\Debug\View.pdb
