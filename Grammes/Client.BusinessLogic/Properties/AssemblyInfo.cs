@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Client.ViewModel")]
+[assembly: AssemblyTitle("Client.BusinessLogic")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Client.ViewModel")]
+[assembly: AssemblyProduct("Client.BusinessLogic")]
 [assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("da9df2d4-2fef-4410-ab0d-0866a06bd2d7")]
+[assembly: Guid("a6d3ae06-67c0-43d0-a854-96e6215407d7")]
 
 // Version information for an assembly consists of the following four values:
 //

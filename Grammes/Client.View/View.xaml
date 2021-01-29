@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="Client.View.View"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Client.View"
+             xmlns:userControls="clr-namespace:Client.View.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Name="UpRow" Height="Auto"/>
+            <RowDefinition Name="CenterRow" Height="3*"/>
+            <RowDefinition Name="DownRow" Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Name="Left" Width="1*"/>
+            <ColumnDefinition Name="Right" Width="4*"/>
+        </Grid.ColumnDefinitions>
+        <userControls:UpMenu Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+            <Button Grid.Row="1" Grid.Column="0" Background="DeepPink"/>
+        <Button Grid.Row="1" Grid.Column="1" Background="Crimson"/>
+        <userControls:BottomEventLog Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0" />
+    </Grid>
+</UserControl>
