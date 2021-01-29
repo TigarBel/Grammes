@@ -67,9 +67,6 @@
     <Compile Include="UserControls\UpMenu.xaml.cs">
       <DependentUpon>UpMenu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View.xaml.cs">
-      <DependentUpon>View.xaml</DependentUpon>
-    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -95,10 +92,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\UpMenu.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
