@@ -1,8 +1,10 @@
-﻿C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\GeneratedInternalTypeHelper.g.cs
+﻿
 
 FC:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\MainWindow.xaml;;
-FC:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\UserControls\BottomEventLog.xaml;;
-FC:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\UserControls\LeftCenterCatalog.xaml;;
-FC:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\UserControls\RightCenterDialog.xaml;;
-FC:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\UserControls\UpMenu.xaml;;
+FC:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\UserControls\EventLogView.xaml;;
+FC:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\UserControls\Common\LeafView.xaml;;
+FC:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\UserControls\ConnectView.xaml;;
+FC:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\UserControls\UsersListView.xaml;;
+FC:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\UserControls\MessagesView.xaml;;
+FC:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\UserControls\MainMenuView.xaml;;
 

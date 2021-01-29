@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Client.View.UserControls
 {
   /// <summary>
-  /// Interaction logic for RightCenterDialog.xaml
+  /// Interaction logic for UpMenu.xaml
   /// </summary>
-  public partial class RightCenterDialog : UserControl
+  public partial class MainMenuView : UserControl
   {
-    public RightCenterDialog()
+    public MainMenuView()
     {
       InitializeComponent();
     }

@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Client.View.UserControls
+namespace Client.View.UserControls.Common
 {
   /// <summary>
-  /// Interaction logic for LeftCenterCatalog.xaml
+  /// Interaction logic for WindowLeaf.xaml
   /// </summary>
-  public partial class LeftCenterCatalog : UserControl
+  public partial class LeafView : UserControl
   {
-    public LeftCenterCatalog()
+    public LeafView()
     {
       InitializeComponent();
     }

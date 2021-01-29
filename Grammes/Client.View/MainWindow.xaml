@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client.View"
+        xmlns:common="clr-namespace:Client.View.UserControls.Common"
         xmlns:userControls="clr-namespace:Client.View.UserControls"
         mc:Ignorable="d"
         Title="Grammes" Height="450" Width="800">
@@ -13,13 +14,20 @@
             <RowDefinition Name="CenterRow" Height="3*"/>
             <RowDefinition Name="DownRow" Height="1*"/>
         </Grid.RowDefinitions>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Name="Left" Width="1*"/>
             <ColumnDefinition Name="Right" Width="4*"/>
         </Grid.ColumnDefinitions>
-        <userControls:UpMenu Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Top" HorizontalAlignment="Right"/>
-        <userControls:LeftCenterCatalog Grid.Row="1" Grid.Column="0"/>
-        <userControls:RightCenterDialog Grid.Row="1" Grid.Column="1"/>
-        <userControls:BottomEventLog Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0"/>
+
+        <userControls:MainMenuView Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+        <userControls:UsersListView Grid.Row="1" Grid.Column="0"/>
+        <userControls:MessagesView Grid.Row="1" Grid.Column="1"/>
+        <userControls:EventLogView Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0"/>
+
+        <userControls:ConnectView Grid.ColumnSpan="2" Grid.RowSpan="3"
+                         Visibility="Visible" Width="400" Height="300"/>
+
+
     </Grid>
 </Window>

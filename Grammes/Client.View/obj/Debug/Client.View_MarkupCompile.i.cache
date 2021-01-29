@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\App.xaml
-5907479659
+71127099249
 
-101482025433
+12-783808414
 13-1505183044
-MainWindow.xaml;UserControls\BottomEventLog.xaml;UserControls\LeftCenterCatalog.xaml;UserControls\RightCenterDialog.xaml;UserControls\UpMenu.xaml;
+MainWindow.xaml;UserControls\EventLogView.xaml;UserControls\Common\LeafView.xaml;UserControls\ConnectView.xaml;UserControls\UsersListView.xaml;UserControls\MessagesView.xaml;UserControls\MainMenuView.xaml;
 
-True
+False
 

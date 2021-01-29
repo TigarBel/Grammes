@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Client.View.UserControls
 {
   /// <summary>
-  /// Interaction logic for UpMenu.xaml
+  /// Interaction logic for BottomEventLog.xaml
   /// </summary>
-  public partial class UpMenu : UserControl
+  public partial class EventLogView : UserControl
   {
-    public UpMenu()
+    public EventLogView()
     {
       InitializeComponent();
     }

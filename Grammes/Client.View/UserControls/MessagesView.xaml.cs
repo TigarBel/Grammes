@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Client.View.UserControls
 {
   /// <summary>
-  /// Interaction logic for BottomEventLog.xaml
+  /// Interaction logic for RightCenterDialog.xaml
   /// </summary>
-  public partial class BottomEventLog : UserControl
+  public partial class MessagesView : UserControl
   {
-    public BottomEventLog()
+    public MessagesView()
     {
       InitializeComponent();
     }

@@ -55,17 +55,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="UserControls\BottomEventLog.xaml.cs">
-      <DependentUpon>BottomEventLog.xaml</DependentUpon>
+    <Compile Include="UserControls\EventLogView.xaml.cs">
+      <DependentUpon>EventLogView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\LeftCenterCatalog.xaml.cs">
-      <DependentUpon>LeftCenterCatalog.xaml</DependentUpon>
+    <Compile Include="UserControls\Common\LeafView.xaml.cs">
+      <DependentUpon>LeafView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\RightCenterDialog.xaml.cs">
-      <DependentUpon>RightCenterDialog.xaml</DependentUpon>
+    <Compile Include="UserControls\ConnectView.xaml.cs">
+      <DependentUpon>ConnectView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\UpMenu.xaml.cs">
-      <DependentUpon>UpMenu.xaml</DependentUpon>
+    <Compile Include="UserControls\UsersListView.xaml.cs">
+      <DependentUpon>UsersListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\MessagesView.xaml.cs">
+      <DependentUpon>MessagesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\MainMenuView.xaml.cs">
+      <DependentUpon>MainMenuView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -79,19 +85,27 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="UserControls\BottomEventLog.xaml">
+    <Page Include="UserControls\EventLogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\LeftCenterCatalog.xaml">
+    <Page Include="UserControls\Common\LeafView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\RightCenterDialog.xaml">
+    <Page Include="UserControls\ConnectView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\UpMenu.xaml">
+    <Page Include="UserControls\UsersListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\MessagesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\MainMenuView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
