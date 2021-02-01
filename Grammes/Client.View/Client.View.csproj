@@ -80,7 +80,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="UserControls\Common\LeafViewModel.cs" />
     <Compile Include="UserControls\EventLogView.xaml.cs">
       <DependentUpon>EventLogView.xaml</DependentUpon>
     </Compile>

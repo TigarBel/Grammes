@@ -14,6 +14,8 @@ namespace Client.View
   using UserControls;
   using UserControls.Common;
 
+  using ViewModel.UserControls.Common;
+
   /// <summary>
   /// Interaction logic for App.xaml
   /// </summary>
