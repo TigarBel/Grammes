@@ -80,6 +80,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="UserControls\Common\LeafViewModel.cs" />
     <Compile Include="UserControls\EventLogView.xaml.cs">
       <DependentUpon>EventLogView.xaml</DependentUpon>
     </Compile>
@@ -163,6 +164,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Client.BusinessLogic\Client.BusinessLogic.csproj">
+      <Project>{a6d3ae06-67c0-43d0-a854-96e6215407d7}</Project>
+      <Name>Client.BusinessLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Client.ViewModel\Client.ViewModel.csproj">
       <Project>{da9df2d4-2fef-4410-ab0d-0866a06bd2d7}</Project>
       <Name>Client.ViewModel</Name>

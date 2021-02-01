@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client.ViewModel.UserControls.Common
+namespace Client.View.UserControls.Common
 {
   using System.Windows.Documents;
 

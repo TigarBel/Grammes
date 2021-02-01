@@ -4,10 +4,13 @@ using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Unity;
 
-using Client.ViewModel.UserControls.Common;
+//using Client.ViewModel.UserControls.Common;
 
 namespace Client.View
 {
+  using BusinessLogic.UserControls.Common;
+  using BusinessLogic.UserControls.Common._Interfaces_;
+
   using UserControls;
   using UserControls.Common;
 
@@ -18,7 +21,7 @@ namespace Client.View
   {
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
-      //containerRegistry.RegisterSingleton<ITextMessagesController, TextMessagesController>();
+      //containerRegistry.RegisterSingleton<IButtonable, LeafLogic>();
       containerRegistry.Register<LeafViewModel>();
     }
 

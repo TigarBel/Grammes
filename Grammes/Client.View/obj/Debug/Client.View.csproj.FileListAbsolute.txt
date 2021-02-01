@@ -49,3 +49,5 @@ C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\bin\Debug\Unity.Contain
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\Client.View.csproj.CopyComplete
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\bin\Debug\Client.ViewModel.dll
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\bin\Debug\Client.ViewModel.pdb
+C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\bin\Debug\Client.BusinessLogic.dll
+C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\bin\Debug\Client.BusinessLogic.pdb
