@@ -25,7 +25,7 @@
         <userControls:MessagesView Grid.Row="1" Grid.Column="1"/>
         <userControls:EventLogView Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0"/>
 
-        <userControls:ConnectView Grid.ColumnSpan="2" Grid.RowSpan="3"
+        <common:LeafView Grid.ColumnSpan="2" Grid.RowSpan="3"
                          Visibility="Visible" Width="400" Height="300"/>
 
 

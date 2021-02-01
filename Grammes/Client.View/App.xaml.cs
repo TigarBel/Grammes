@@ -1,17 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
+
+using Prism.Ioc;
+using Prism.Mvvm;
+using Prism.Unity;
+
+using Client.ViewModel.UserControls.Common;
 
 namespace Client.View
 {
+  using UserControls;
+  using UserControls.Common;
+
   /// <summary>
   /// Interaction logic for App.xaml
   /// </summary>
-  public partial class App : Application
+  public partial class App : PrismApplication
   {
+    protected override void RegisterTypes(IContainerRegistry containerRegistry)
+    {
+      //containerRegistry.RegisterSingleton<ITextMessagesController, TextMessagesController>();
+      containerRegistry.Register<LeafViewModel>();
+    }
+
+    protected override void ConfigureViewModelLocator()
+    {
+      base.ConfigureViewModelLocator();
+
+      BindViewModelToView<LeafViewModel, LeafView>();
+    }
+
+    protected override Window CreateShell()
+    {
+      var mainView = Container.Resolve<MainWindow>();
+      return mainView;
+    }
+
+    private void BindViewModelToView<TViewModel, TView>()
+    {
+      ViewModelLocationProvider.Register(typeof(TView).ToString(), () => Container.Resolve<TViewModel>());
+    }
   }
 }

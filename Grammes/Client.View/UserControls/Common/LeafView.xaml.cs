@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Client.ViewModel.UserControls.Common;
 
 namespace Client.View.UserControls.Common
 {
