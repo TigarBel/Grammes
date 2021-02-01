@@ -24,5 +24,11 @@ namespace Client.View
     {
       InitializeComponent();
     }
+    private void OnChange(object sender, SelectionChangedEventArgs e)
+    {
+      ComboBox cb = sender as ComboBox;
+      if (cb != null && presenter != null)
+        presenter.Content = cb.SelectedIndex;
+    }
   }
 }
