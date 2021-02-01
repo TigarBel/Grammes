@@ -6,7 +6,6 @@
              xmlns:interactivity="http://prismlibrary.com/" 
              interactivity:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
-             x:ClassModifier="public"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>

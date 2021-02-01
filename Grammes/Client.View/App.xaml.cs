@@ -8,13 +8,9 @@ using Prism.Unity;
 
 namespace Client.View
 {
-  using BusinessLogic.UserControls.Common;
-  using BusinessLogic.UserControls.Common._Interfaces_;
-
   using UserControls;
-  using UserControls.Common;
 
-  using ViewModel.UserControls.Common;
+  using ViewModel.UserControls;
 
   /// <summary>
   /// Interaction logic for App.xaml
@@ -24,14 +20,14 @@ namespace Client.View
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
       //containerRegistry.RegisterSingleton<IButtonable, LeafLogic>();
-      containerRegistry.Register<LeafViewModel>();
+      containerRegistry.Register<ConnectViewModel>();
     }
 
     protected override void ConfigureViewModelLocator()
     {
       base.ConfigureViewModelLocator();
 
-      BindViewModelToView<LeafViewModel, LeafView>();
+      BindViewModelToView<ConnectViewModel, ConnectView>();
     }
 
     protected override Window CreateShell()

@@ -47,10 +47,10 @@ namespace Client.ViewModel.UserControls.Common
 
     #region Constructors
 
-    public LeafViewModel()
+    public LeafViewModel(string leftButtonText, string rightButtonText)
     {
-      LeftButtonText = "<-Left";
-      RightButtonText = "Right->";
+      LeftButtonText = leftButtonText;
+      RightButtonText = rightButtonText;
       LeftSendCommand = new DelegateCommand(ExecuteSendCommand);
       RightSendCommand = new DelegateCommand(ExecuteSendCommand);
     }

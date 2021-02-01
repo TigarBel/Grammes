@@ -45,6 +45,8 @@
     <Compile Include="UserControls\Common\LeafLogic.cs" />
     <Compile Include="UserControls\Common\[Interfaces]\IButtonable.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="UserControls\Common\[Enum]\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
