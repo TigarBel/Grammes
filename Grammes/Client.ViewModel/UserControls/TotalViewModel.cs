@@ -24,7 +24,10 @@
     public int ContentPresenter
     {
       get => _contentPresenter;
-      set => SetProperty(ref _contentPresenter, value);
+      set
+      {
+        SetProperty(ref _contentPresenter, value);
+      }
     }
 
     public string[] NameViews

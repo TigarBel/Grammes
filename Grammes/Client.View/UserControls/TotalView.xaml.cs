@@ -27,9 +27,9 @@ namespace Client.View.UserControls
 
     private void OnChange(object sender, SelectionChangedEventArgs e)
     {
-      ComboBox cb = sender as ComboBox;
-      if (cb != null && presenter != null)
-        presenter.Content = cb.SelectedIndex;
+      //ComboBox cb = sender as ComboBox;
+      //if (cb != null && presenter != null)
+      //  presenter.Content = cb.SelectedIndex;
     }
   }
 }
