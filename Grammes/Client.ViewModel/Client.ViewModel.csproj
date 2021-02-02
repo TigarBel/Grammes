@@ -71,11 +71,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\ViewModelBase.cs" />
+    <Compile Include="Common\[Enum]\ViewSelect.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TemplateSelectorViewModel.cs" />
-    <Compile Include="UserControls\Common\LeafViewModel.cs" />
-    <Compile Include="UserControls\ConnectViewModel.cs" />
-    <Compile Include="UserControls\TotalViewModel.cs" />
+    <Compile Include="ViewModels\Common\LeafViewModel.cs" />
+    <Compile Include="ViewModels\ConnectViewModel.cs" />
+    <Compile Include="ViewModels\TotalViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

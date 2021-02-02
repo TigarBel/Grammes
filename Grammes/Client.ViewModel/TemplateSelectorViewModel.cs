@@ -8,33 +8,31 @@
   {
     #region Fields
 
-    public readonly string[] Views = new[]
-    {
-      "ConnectView",
-      "UsersListView",
-      "MessagesView"
-    };
-    
+    public readonly string[] Views = { "ConnectView", "MainView", "MessagesView" };
+
     #endregion
 
+    #region Constructors
+
     public TemplateSelectorViewModel()
-      : base()
     {
       Console.WriteLine();
     }
+
+    #endregion
 
     #region Methods
 
     public override DataTemplate SelectTemplate(object item, DependencyObject container)
     {
-      FrameworkElement element = container as FrameworkElement;
+      var element = container as FrameworkElement;
 
       if (element != null && item != null && item is int)
       {
         int currentItem = 0;
 
         int.TryParse(item.ToString(), out currentItem);
-        
+
         if (currentItem < 0 || currentItem > Views.Length - 1)
         {
           throw new ArgumentException("Select view not found!");
@@ -47,6 +45,5 @@
     }
 
     #endregion
-
   }
 }

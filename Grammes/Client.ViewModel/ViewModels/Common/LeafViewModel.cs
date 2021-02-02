@@ -1,15 +1,13 @@
-﻿namespace Client.ViewModel.UserControls.Common
+﻿namespace Client.ViewModel.ViewModels.Common
 {
+  using System;
+
   using Prism.Commands;
 
   using ViewModel.Common;
 
   public class LeafViewModel : ViewModelBase
   {
-    #region Constants
-
-    #endregion
-
     #region Fields
 
     private string _leftButtonText;
@@ -45,7 +43,7 @@
       get => _leftButtonCommand;
       set => SetProperty(ref _leftButtonCommand, value);
     }
-    
+
     public DelegateCommand RightSendCommand
     {
       get => _rightButtonCommand;
@@ -85,12 +83,15 @@
       RightSendCommand = null;
     }
 
+    #endregion
+
+    #region Methods
+
     public override void Check()
     {
-      throw new System.NotImplementedException();
+      throw new NotImplementedException();
     }
 
     #endregion
-
   }
 }

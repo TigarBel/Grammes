@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace Client.ViewModel.UserControls
+﻿namespace Client.ViewModel.ViewModels
 {
-  using System;
+  using System.Collections.Generic;
   using System.Text.RegularExpressions;
 
   using BusinessLogic.UserControls.Common._Enum_;
@@ -13,7 +11,6 @@ namespace Client.ViewModel.UserControls
 
   public class ConnectViewModel : LeafViewModel
   {
-
     #region Constants
 
     private const string LEFT_BUTTON_TEXT = "Test";
@@ -30,13 +27,17 @@ namespace Client.ViewModel.UserControls
 
     private string _selectTypeInterface;
 
-    private List<string> _typeInterfaceList = new List<string>()
+    private List<string> _typeInterfaceList = new List<string>
     {
       InterfaceType.WebSocet.ToString(),
       InterfaceType.TcpSocet.ToString()
     };
 
     private string _userName;
+
+    private Regex _regexIP = new Regex(@"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
+
+    private Regex _regexLogin = new Regex(@"^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$");
 
     #endregion
 
@@ -53,7 +54,7 @@ namespace Client.ViewModel.UserControls
       get => _ipAddress;
       set => SetProperty(ref _ipAddress, value);
     }
-    
+
     public int Port
     {
       get => _port;
@@ -80,10 +81,10 @@ namespace Client.ViewModel.UserControls
 
     #region Constructors
 
-    public ConnectViewModel() : base(LEFT_BUTTON_TEXT, RIGHT_BUTTON_TEXT)
+    public ConnectViewModel()
+      : base(LEFT_BUTTON_TEXT, RIGHT_BUTTON_TEXT)
     {
       LeftSendCommand = new DelegateCommand(ExecuteSendCommandTest);
-      //RightSendCommand = new DelegateCommand(totalViewModel.OnChange);
       IsAvailableLeftButton = true;
       UserName = "";
       SelectTypeInterface = InterfaceType.TcpSocet.ToString();
@@ -93,24 +94,12 @@ namespace Client.ViewModel.UserControls
 
     #region Methods
 
-    private void ExecuteSendCommandTest()
-    {
-      IpAddress = "192.168.0.1";
-      Port = 3000;
-      SelectTypeInterface = InterfaceType.TcpSocet.ToString();
-      UserName = "User1";
-    }
-
-    private void IsAvailable()
-    {
-      IsAvailableRightButton = true;
-    }
-
     public override void Check()
     {
       _errorsContainer.ClearErrors(() => UserName);
 
-      if (UserName.Length == 0) {
+      if (UserName.Length == 0)
+      {
         _errorsContainer.SetErrors(() => UserName, new[] { "User not entered" });
       }
 
@@ -137,6 +126,19 @@ namespace Client.ViewModel.UserControls
       {
         IsAvailableRightButton = false;
       }
+    }
+
+    private void ExecuteSendCommandTest()
+    {
+      IpAddress = "192.168.0.1";
+      Port = 3000;
+      SelectTypeInterface = InterfaceType.TcpSocet.ToString();
+      UserName = "User1";
+    }
+
+    private void IsAvailable()
+    {
+      IsAvailableRightButton = true;
     }
 
     #endregion

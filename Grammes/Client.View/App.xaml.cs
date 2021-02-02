@@ -1,26 +1,24 @@
-﻿using System.Windows;
-
-using Prism.Ioc;
-using Prism.Mvvm;
-using Prism.Unity;
-
-//using Client.ViewModel.UserControls.Common;
-
-namespace Client.View
+﻿namespace Client.View
 {
-  using UserControls;
-  using UserControls.Common;
+  using System.Windows;
 
-  using ViewModel.UserControls;
+  using Prism.Ioc;
+  using Prism.Mvvm;
+  using Prism.Unity;
+
+  using UserControls;
+
+  using ViewModel.ViewModels;
 
   /// <summary>
   /// Interaction logic for App.xaml
   /// </summary>
   public partial class App : PrismApplication
   {
+    #region Methods
+
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
-      //containerRegistry.RegisterSingleton<ConnectViewModel>();
       containerRegistry.Register<TotalViewModel>();
       containerRegistry.RegisterSingleton<ConnectViewModel>();
     }
@@ -44,5 +42,7 @@ namespace Client.View
     {
       ViewModelLocationProvider.Register(typeof(TView).ToString(), () => Container.Resolve<TViewModel>());
     }
+
+    #endregion
   }
 }

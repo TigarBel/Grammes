@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace Client.ViewModel.Common
+﻿namespace Client.ViewModel.Common
 {
+  using System;
   using System.Collections;
   using System.ComponentModel;
 

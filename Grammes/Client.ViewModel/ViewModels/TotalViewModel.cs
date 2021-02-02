@@ -1,14 +1,12 @@
-﻿namespace Client.ViewModel.UserControls
+﻿namespace Client.ViewModel.ViewModels
 {
-  using System.Runtime.Remoting.Contexts;
-  using System.Windows.Controls;
-
   using Prism.Commands;
   using Prism.Mvvm;
 
+  using ViewModel.Common._Enum_;
+
   public class TotalViewModel : BindableBase
   {
-
     #region Fields
 
     private int _contentPresenter;
@@ -19,20 +17,17 @@
 
     #endregion
 
-    #region Propertyes
+    #region Properties
 
     public int ContentPresenter
     {
       get => _contentPresenter;
-      set
-      {
-        SetProperty(ref _contentPresenter, value);
-      }
+      set => SetProperty(ref _contentPresenter, value);
     }
 
     public string[] NameViews
     {
-      get => _nameViews; 
+      get => _nameViews;
       set => SetProperty(ref _nameViews, value);
     }
 
@@ -51,26 +46,18 @@
       NameViews = new TemplateSelectorViewModel().Views;
       ContentPresenter = 0;
       ConnectViewModel = connectViewModel;
-      ConnectViewModel.RightSendCommand = new DelegateCommand(OnChange);
+      ConnectViewModel.RightSendCommand = new DelegateCommand(ExecuteChangeOnMainView);
     }
 
     #endregion
 
     #region Methods
 
-    public void OnChange()
+    private void ExecuteChangeOnMainView()
     {
-      if (ContentPresenter == NameViews.Length - 1)
-      {
-        ContentPresenter = 0;
-      }
-      else
-      {
-        ContentPresenter++;
-      }
+      ContentPresenter = (int)ViewSelect.MainView;
     }
 
     #endregion
-
   }
 }
