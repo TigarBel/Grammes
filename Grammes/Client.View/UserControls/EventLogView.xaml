@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:Client.View.UserControls"
              xmlns:collections="clr-namespace:System.Collections;assembly=mscorlib"
              xmlns:messageEvent="clr-namespace:Client.BusinessLogic.Model.MessageEvent;assembly=Client.BusinessLogic"
-             mc:Ignorable="d" >
+             mc:Ignorable="d"
+             MaxHeight="110">
     <Grid>
         <Expander Header="EventLog">
             <DataGrid Name="logGrid"  AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray"
@@ -16,6 +17,9 @@
                     <messageEvent:MessageEvent Event="Connect User1" Time="05/29/2015" />
                     <messageEvent:MessageEvent Event="Disconnect User2" Time="05/29/2015" />
                     <messageEvent:MessageEvent Event="Disconnect" Time="05/29/2015" />
+                    <messageEvent:MessageEvent Event="Disconnect User4" Time="05/29/2015" />
+                    <messageEvent:MessageEvent Event="Disconnect" Time="05/29/2015" />
+                    <messageEvent:MessageEvent Event="Connect User3" Time="05/29/2015" />
                 </DataGrid.Items>
 
                 <DataGrid.Columns>
