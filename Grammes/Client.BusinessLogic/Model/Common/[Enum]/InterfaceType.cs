@@ -1,4 +1,4 @@
-﻿namespace Client.BusinessLogic.UserControls.Common._Enum_
+﻿namespace Client.BusinessLogic.Model.Common
 {
   public enum InterfaceType
   {

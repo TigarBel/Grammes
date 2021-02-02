@@ -3,7 +3,7 @@
   using System.Collections.Generic;
   using System.Text.RegularExpressions;
 
-  using BusinessLogic.UserControls.Common._Enum_;
+  using BusinessLogic.Model.Common;
 
   using Common;
 

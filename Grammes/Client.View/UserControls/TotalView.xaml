@@ -22,7 +22,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="3*"/>
-                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -33,7 +33,7 @@
                 <userControls:MainMenuView Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Top" HorizontalAlignment="Right"/>
                 <userControls:UsersListView Grid.Row="1" Grid.Column="0"/>
                 <userControls:MessagesView Grid.Row="1" Grid.Column="1"/>
-                <userControls:EventLogView Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0"/>
+                <userControls:EventLogView Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0" VerticalAlignment="Bottom"/>
             </Grid>
         </DataTemplate>
 

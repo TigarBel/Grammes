@@ -4,22 +4,26 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Client.View.UserControls"
+             xmlns:collections="clr-namespace:System.Collections;assembly=mscorlib"
+             xmlns:messageEvent="clr-namespace:Client.BusinessLogic.Model.MessageEvent;assembly=Client.BusinessLogic"
              mc:Ignorable="d" >
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Label Content="EventLog" Grid.Row="0" Grid.Column="0" FontSize="10" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Button Name="scrollEventLogButton" Grid.Row="0" Grid.Column="1" Content=" - " 
-                BorderThickness="0" Background="White"
-                HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <DataGrid Name="logGrid" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="LightGray">
+        <Expander Header="EventLog">
+            <DataGrid Name="logGrid"  AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray"
+                      RowBackground="LightGray" AlternatingRowBackground="White">
 
-        </DataGrid>
+                <DataGrid.Items>
+                    <messageEvent:MessageEvent Event="Connect User1" Time="05/29/2015" />
+                    <messageEvent:MessageEvent Event="Disconnect User2" Time="05/29/2015" />
+                    <messageEvent:MessageEvent Event="Disconnect" Time="05/29/2015" />
+                </DataGrid.Items>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Event" Width="3*"  Binding="{Binding Path=Event}"/>
+                    <DataGridTextColumn Header="Time" Width="1*"  Binding="{Binding Path=Time}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Expander>
+
     </Grid>
 </UserControl>
