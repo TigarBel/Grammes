@@ -9,6 +9,7 @@ using Prism.Unity;
 namespace Client.View
 {
   using UserControls;
+  using UserControls.Common;
 
   using ViewModel.UserControls;
 
@@ -21,6 +22,8 @@ namespace Client.View
     {
       //containerRegistry.RegisterSingleton<IButtonable, LeafLogic>();
       containerRegistry.Register<ConnectViewModel>();
+
+      containerRegistry.Register<TotalViewModel>();
     }
 
     protected override void ConfigureViewModelLocator()
@@ -28,6 +31,8 @@ namespace Client.View
       base.ConfigureViewModelLocator();
 
       BindViewModelToView<ConnectViewModel, ConnectView>();
+
+      BindViewModelToView<TotalViewModel, TotalView>();
     }
 
     protected override Window CreateShell()

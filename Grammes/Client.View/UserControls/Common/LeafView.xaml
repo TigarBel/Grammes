@@ -25,9 +25,11 @@
                    Width="Auto" Height="Auto" RadiusX="15" RadiusY="15"/>
         <Button Name="LeftButton" Grid.Column="1" Grid.Row="1" 
                 Content="{Binding LeftButtonText}" FontSize="12"
-                Command="{Binding LeftSendCommand}"/>
+                Command="{Binding LeftSendCommand}"
+                IsEnabled="{Binding IsAvailableLeftButton}"/>
         <Button Name="RightButton" Grid.Column="3" Grid.Row="1" 
                 Content="{Binding RightButtonText}" FontSize="12"
-                Command="{Binding RightSendCommand}"/>
+                Command="{Binding RightSendCommand}"
+                IsEnabled="{Binding IsAvailableRightButton}"/>
     </Grid>
 </UserControl>

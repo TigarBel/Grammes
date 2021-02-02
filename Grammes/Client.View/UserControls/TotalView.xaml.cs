@@ -13,16 +13,23 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Client.View
+namespace Client.View.UserControls
 {
   /// <summary>
-  /// Interaction logic for MainWindow.xaml
+  /// Interaction logic for TotalView.xaml
   /// </summary>
-  public partial class MainWindow : Window
+  public partial class TotalView : UserControl
   {
-    public MainWindow()
+    public TotalView()
     {
       InitializeComponent();
+    }
+
+    private void OnChange(object sender, SelectionChangedEventArgs e)
+    {
+      ComboBox cb = sender as ComboBox;
+      if (cb != null && presenter != null)
+        presenter.Content = cb.SelectedIndex;
     }
   }
 }

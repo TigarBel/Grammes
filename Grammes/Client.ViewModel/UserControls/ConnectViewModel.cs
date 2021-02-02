@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Client.ViewModel.UserControls
 {
+  using System;
+  using System.Text.RegularExpressions;
+
+  using BusinessLogic.UserControls.Common._Enum_;
+
   using Common;
+
+  using Prism.Commands;
 
   public class ConnectViewModel : LeafViewModel
   {
@@ -19,12 +22,120 @@ namespace Client.ViewModel.UserControls
 
     #endregion
 
+    #region Fields
+
+    private string _ipAddress;
+
+    private int _port;
+
+    private string _selectTypeInterface;
+
+    private List<string> _typeInterfaceList = new List<string>()
+    {
+      InterfaceType.WebSocet.ToString(),
+      InterfaceType.TcpSocet.ToString()
+    };
+
+    private string _userName;
+
+    #endregion
+
+    #region Properties
+
+    public List<string> TypeInterfaceList
+    {
+      get => _typeInterfaceList;
+      set => SetProperty(ref _typeInterfaceList, value);
+    }
+
+    public string IpAddress
+    {
+      get => _ipAddress;
+      set => SetProperty(ref _ipAddress, value);
+    }
+    
+    public int Port
+    {
+      get => _port;
+      set => SetProperty(ref _port, value);
+    }
+
+    public string SelectTypeInterface
+    {
+      get => _selectTypeInterface;
+      set => SetProperty(ref _selectTypeInterface, value);
+    }
+
+    public string UserName
+    {
+      get => _userName;
+      set
+      {
+        SetProperty(ref _userName, value);
+        Check();
+      }
+    }
+
+    #endregion
+
     #region Constructors
 
     public ConnectViewModel() : base(LEFT_BUTTON_TEXT, RIGHT_BUTTON_TEXT)
     {
-      Console.WriteLine();
-      Console.WriteLine();
+      LeftSendCommand = new DelegateCommand(ExecuteSendCommandTest);
+      IsAvailableLeftButton = true;
+      UserName = "";
+      SelectTypeInterface = InterfaceType.TcpSocet.ToString();
+    }
+
+    #endregion
+
+    #region Methods
+
+    private void ExecuteSendCommandTest()
+    {
+      IpAddress = "192.168.0.1";
+      Port = 3000;
+      SelectTypeInterface = InterfaceType.TcpSocet.ToString();
+      UserName = "User1";
+    }
+
+    private void IsAvailable()
+    {
+      IsAvailableRightButton = true;
+    }
+
+    public override void Check()
+    {
+      _errorsContainer.ClearErrors(() => UserName);
+
+      if (UserName.Length == 0) {
+        _errorsContainer.SetErrors(() => UserName, new[] { "User not entered" });
+      }
+
+      if (UserName.Length > 16)
+      {
+        _errorsContainer.SetErrors(() => UserName, new[] { "Username up to 16 characters" });
+      }
+
+      //if (!IsNameUnique()) {
+      //  _errorsContainer.SetErrors(() => UserName, new[] { Resources.NameMustBeUnique });
+      //}
+
+      //if (!new Regex(UserSettings.USERNAME_MASK, RegexOptions.IgnoreCase).IsMatch(UserName)) {
+      //  _errorsContainer.SetErrors(
+      //    () => UserName,
+      //    new[] { string.Format(Resources.UserNameUnacceptableSymbols, UserSettings.USERNAME_UNACCEPTABLE_SYMBOLS) });
+      //}
+
+      if (_errorsContainer.GetErrors().Count == 0)
+      {
+        IsAvailableRightButton = true;
+      }
+      else
+      {
+        IsAvailableRightButton = false;
+      }
     }
 
     #endregion

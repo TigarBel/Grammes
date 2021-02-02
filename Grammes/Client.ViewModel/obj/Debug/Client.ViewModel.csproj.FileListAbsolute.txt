@@ -25,3 +25,5 @@ C:\Users\belyaevee\Desktop\Intership\Grammes\Client.ViewModel\obj\Debug\Client.V
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.ViewModel\obj\Debug\Client.ViewModel.csproj.CopyComplete
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.ViewModel\obj\Debug\Client.ViewModel.dll
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.ViewModel\obj\Debug\Client.ViewModel.pdb
+C:\Users\belyaevee\Desktop\Intership\Grammes\Client.ViewModel\bin\Debug\Client.BusinessLogic.dll
+C:\Users\belyaevee\Desktop\Intership\Grammes\Client.ViewModel\bin\Debug\Client.BusinessLogic.pdb

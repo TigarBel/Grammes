@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Client.ViewModel.UserControls.Common
+﻿namespace Client.ViewModel.UserControls.Common
 {
-  using System.Windows.Documents;
-
   using Prism.Commands;
-  using Prism.Mvvm;
 
-  public class LeafViewModel : BindableBase
+  using ViewModel.Common;
+
+  public class LeafViewModel : ViewModelBase
   {
     #region Constants
 
@@ -22,6 +15,14 @@ namespace Client.ViewModel.UserControls.Common
     private string _leftButtonText;
 
     private string _rightButtonText;
+
+    private DelegateCommand _leftButtonCommand;
+
+    private DelegateCommand _rightButtonCommand;
+
+    private bool _isAvailableLeftButton;
+
+    private bool _isAvailableRightButton;
 
     #endregion
 
@@ -39,29 +40,54 @@ namespace Client.ViewModel.UserControls.Common
       set => SetProperty(ref _rightButtonText, value);
     }
 
-    public DelegateCommand LeftSendCommand { get; }
+    public DelegateCommand LeftSendCommand
+    {
+      get => _leftButtonCommand;
+      set => SetProperty(ref _leftButtonCommand, value);
+    }
+    
+    public DelegateCommand RightSendCommand
+    {
+      get => _rightButtonCommand;
+      set => SetProperty(ref _rightButtonCommand, value);
+    }
 
-    public DelegateCommand RightSendCommand { get; }
+    public bool IsAvailableLeftButton
+    {
+      get => _isAvailableLeftButton;
+      set => SetProperty(ref _isAvailableLeftButton, value);
+    }
+
+    public bool IsAvailableRightButton
+    {
+      get => _isAvailableRightButton;
+      set => SetProperty(ref _isAvailableRightButton, value);
+    }
 
     #endregion
 
     #region Constructors
 
+    public LeafViewModel(string buttonText)
+    {
+      LeftButtonText = null;
+      LeftSendCommand = null;
+
+      RightButtonText = buttonText;
+      RightSendCommand = null;
+    }
+
     public LeafViewModel(string leftButtonText, string rightButtonText)
     {
       LeftButtonText = leftButtonText;
       RightButtonText = rightButtonText;
-      LeftSendCommand = new DelegateCommand(ExecuteSendCommand);
-      RightSendCommand = new DelegateCommand(ExecuteSendCommand);
+      LeftSendCommand = null;
+      RightSendCommand = null;
     }
 
-    #endregion
-
-    #region Methods
-
-    private void ExecuteSendCommand()
+    public override void Check()
     {
-      throw new ArgumentNullException("Thats all bad.");
+      throw new System.NotImplementedException();
     }
 
     #endregion

@@ -89,6 +89,9 @@
     <Compile Include="UserControls\ConnectView.xaml.cs">
       <DependentUpon>ConnectView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\TotalView.xaml.cs">
+      <DependentUpon>TotalView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UsersListView.xaml.cs">
       <DependentUpon>UsersListView.xaml</DependentUpon>
     </Compile>
@@ -119,6 +122,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\ConnectView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\TotalView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -172,5 +179,6 @@
       <Name>Client.ViewModel</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
