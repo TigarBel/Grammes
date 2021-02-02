@@ -1,5 +1,6 @@
 ﻿namespace Client.ViewModel.UserControls
 {
+  using System.Runtime.Remoting.Contexts;
   using System.Windows.Controls;
 
   using Prism.Commands;
@@ -13,8 +14,8 @@
     private int _contentPresenter;
 
     private string[] _nameViews;
-    
-    private DelegateCommand _checkBoxCommand;
+
+    private ConnectViewModel _connectViewModel;
 
     #endregion
 
@@ -31,29 +32,30 @@
       get => _nameViews; 
       set => SetProperty(ref _nameViews, value);
     }
-    
-    public DelegateCommand CheckBoxCommand
+
+    public ConnectViewModel ConnectViewModel
     {
-      get => _checkBoxCommand;
-      set => SetProperty(ref _checkBoxCommand, value);
+      get => _connectViewModel;
+      set => SetProperty(ref _connectViewModel, value);
     }
 
     #endregion
 
     #region Constructors
 
-    public TotalViewModel()
+    public TotalViewModel(ConnectViewModel connectViewModel)
     {
       NameViews = new TemplateSelectorViewModel().Views;
       ContentPresenter = 0;
-      CheckBoxCommand = new DelegateCommand(OnChange);
+      ConnectViewModel = connectViewModel;
+      ConnectViewModel.RightSendCommand = new DelegateCommand(OnChange);
     }
 
     #endregion
 
     #region Methods
 
-    private void OnChange()
+    public void OnChange()
     {
       if (ContentPresenter == NameViews.Length - 1)
       {

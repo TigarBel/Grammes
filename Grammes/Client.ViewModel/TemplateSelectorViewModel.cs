@@ -6,12 +6,22 @@
 
   public class TemplateSelectorViewModel : DataTemplateSelector
   {
+    #region Fields
+
     public readonly string[] Views = new[]
     {
       "ConnectView",
       "UsersListView",
       "MessagesView"
     };
+    
+    #endregion
+
+    public TemplateSelectorViewModel()
+      : base()
+    {
+      Console.WriteLine();
+    }
 
     #region Methods
 
@@ -19,7 +29,8 @@
     {
       FrameworkElement element = container as FrameworkElement;
 
-      if (element != null && item != null && item is int) {
+      if (element != null && item != null && item is int)
+      {
         int currentItem = 0;
 
         int.TryParse(item.ToString(), out currentItem);
@@ -31,6 +42,7 @@
 
         return element.FindResource(Views[currentItem]) as DataTemplate;
       }
+
       return null;
     }
 

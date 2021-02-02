@@ -83,6 +83,7 @@ namespace Client.ViewModel.UserControls
     public ConnectViewModel() : base(LEFT_BUTTON_TEXT, RIGHT_BUTTON_TEXT)
     {
       LeftSendCommand = new DelegateCommand(ExecuteSendCommandTest);
+      //RightSendCommand = new DelegateCommand(totalViewModel.OnChange);
       IsAvailableLeftButton = true;
       UserName = "";
       SelectTypeInterface = InterfaceType.TcpSocet.ToString();

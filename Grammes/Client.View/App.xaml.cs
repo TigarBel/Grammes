@@ -20,10 +20,9 @@ namespace Client.View
   {
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
-      //containerRegistry.RegisterSingleton<IButtonable, LeafLogic>();
-      containerRegistry.Register<ConnectViewModel>();
-
+      //containerRegistry.RegisterSingleton<ConnectViewModel>();
       containerRegistry.Register<TotalViewModel>();
+      containerRegistry.RegisterSingleton<ConnectViewModel>();
     }
 
     protected override void ConfigureViewModelLocator()
