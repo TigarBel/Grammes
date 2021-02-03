@@ -1,6 +1,6 @@
 ﻿namespace Client.BusinessLogic.Model.UsersListModel
 {
-  public enum ChatGroup
+  public enum UserStatus
   {
     General = 0,
     Online,

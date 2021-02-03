@@ -26,14 +26,12 @@
 
             <TreeView.Items>
 
-                <TreeViewItem Header="General"/>
+                <TreeViewItem Header="Online" ItemsSource="{Binding UsersList.OnlineList, Mode=OneWay}"/>
 
-                <TreeViewItem Header="Online" ItemsSource="{Binding TreeUsersOnline, Mode=OneWay}"/>
-
-                <TreeViewItem Header="Offline" ItemsSource="{Binding TreeUsersOffline}" 
+                <TreeViewItem Header="Offline" ItemsSource="{Binding UsersList.OfflineList}" 
                               ItemContainerStyle="{StaticResource OfflineTreeViewStyle}"/>
 
-                <TreeViewItem Header="Groups" ItemsSource="{Binding TreeGroup}"/>
+                <TreeViewItem Header="Groups" ItemsSource="{Binding UsersList.GroupList}"/>
 
             </TreeView.Items>
         </extendedTreeView:ExtendedTreeView>

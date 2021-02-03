@@ -2,6 +2,7 @@
 {
   using System.Collections.Generic;
   using System.Windows.Controls;
+  using System.Windows.Documents;
 
   using BusinessLogic.Model.UsersListModel;
 
@@ -15,7 +16,9 @@
 
     private UsersListModel _usersList;
 
-    private TreeViewItem _selectChat;
+    private TreeView _treeViewUsers;
+
+    private BaseUser _selectChat;
 
     #endregion
 
@@ -33,18 +36,18 @@
       set => SetProperty(ref _usersList, value);
     }
 
-    public TreeViewItem SelectChat
+    public TreeView TreeViewUsers
+    {
+      get => _treeViewUsers;
+      set => SetProperty(ref _treeViewUsers, value);
+    }
+
+    public BaseUser SelectChat
     {
       get => _selectChat;
       set => SetProperty(ref _selectChat, value);
     }
-
-    public List<TreeViewItem> TreeUsersOnline => GetTreeUsers(UsersList.OnlineList);
-
-    public List<TreeViewItem> TreeUsersOffline => GetTreeUsers(UsersList.OfflineList);
-
-    public List<TreeViewItem> TreeGroup => GetTreeUsers(UsersList.GroupList);
-
+    
     #endregion
 
     #region Constructors
@@ -52,21 +55,21 @@
     public UsersListViewModel()
     {
       UsersName = "User5";
-      UsersList = new UsersListModel();
       /*<Hard-Code>*/
-      UsersList.OnlineList = new List<string>
+      List<OnlineUser> onlineUsers = new List<OnlineUser>()
       {
-        "User1",
-        "User3",
-        "User13"
+        new OnlineUser("User1"),
+        new OnlineUser("User3"),
+        new OnlineUser("User13")
       };
 
-      UsersList.OfflineList = new List<string>
+      List<OfflineUser> offlineUsers = new List<OfflineUser>()
       {
-        "User2",
-        "User4",
-        "User24"
+        new OfflineUser("User2"),
+        new OfflineUser("User4"),
+        new OfflineUser("User24")
       }; /*</Hard-Code>*/
+      UsersList = new UsersListModel(onlineUsers, offlineUsers, new List<GroupUser>());
     }
 
     #endregion
