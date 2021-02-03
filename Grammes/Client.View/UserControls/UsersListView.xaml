@@ -3,49 +3,40 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Client.View.UserControls"
+             xmlns:mvvm="http://prismlibrary.com/"
+             xmlns:extendedTreeView="clr-namespace:Client.View.UserControls.UsersList"
+             mvvm:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="OfflineTreeViewStyle" TargetType="TreeViewItem">
+            <Setter Property="IsEnabled" Value="False"/>
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Label Background="Green" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0"
-               Content="Your name: User5"/>
+        <Label Background="MediumSeaGreen" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0"
+               Content="{Binding UsersName}"/>
 
-        <TreeView Grid.Row="1">
+        <extendedTreeView:ExtendedTreeView Grid.Row="1" SelectedItemEx="{Binding SelectChat}">
+
             <TreeView.Items>
 
                 <TreeViewItem Header="General"/>
 
-                <TreeViewItem Header="Online">
-                    <TreeViewItem Header="User1"/>
-                    <TreeViewItem Header="User3"/>
-                </TreeViewItem>
+                <TreeViewItem Header="Online" ItemsSource="{Binding TreeUsersOnline, Mode=OneWay}"/>
 
-                <TreeViewItem Header="Offline">
-                    <TreeViewItem Header="User2" IsEnabled="False"/>
-                    <TreeViewItem Header="User4" IsEnabled="False"/>
-                </TreeViewItem>
+                <TreeViewItem Header="Offline" ItemsSource="{Binding TreeUsersOffline}" 
+                              ItemContainerStyle="{StaticResource OfflineTreeViewStyle}"/>
 
-                <TreeViewItem Header="Groups">
-                    <TreeViewItem Header="Group1"/>
-                    <TreeViewItem Header="Group2"/>
-                    <TreeViewItem Header="Group3"/>
-                    <TreeViewItem Header="Group1"/>
-                    <TreeViewItem Header="Group2"/>
-                    <TreeViewItem Header="Group3"/>
-                    <TreeViewItem Header="Group1"/>
-                    <TreeViewItem Header="Group2"/>
-                    <TreeViewItem Header="Group3"/>
-                    <TreeViewItem Header="Group1"/>
-                    <TreeViewItem Header="Group2"/>
-                    <TreeViewItem Header="Group3"/>
-                </TreeViewItem>
+                <TreeViewItem Header="Groups" ItemsSource="{Binding TreeGroup}"/>
 
             </TreeView.Items>
-        </TreeView>
+        </extendedTreeView:ExtendedTreeView>
 
     </Grid>
 </UserControl>

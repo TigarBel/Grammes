@@ -1,4 +1,4 @@
-﻿namespace Client.BusinessLogic.Model.MessageEvent
+﻿namespace Client.BusinessLogic.Model.EventLogModel
 {
   using System;
 

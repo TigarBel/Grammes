@@ -11,14 +11,6 @@
 
   public class ConnectViewModel : LeafViewModel
   {
-    #region Constants
-
-    private const string LEFT_BUTTON_TEXT = "Test";
-
-    private const string RIGHT_BUTTON_TEXT = "Connect";
-
-    #endregion
-
     #region Fields
 
     private string _ipAddress;
@@ -35,9 +27,9 @@
 
     private string _userName;
 
-    private Regex _regexIP = new Regex(@"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
+    private readonly Regex _regexIP = new Regex(@"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
 
-    private Regex _regexLogin = new Regex(@"^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$");
+    private readonly Regex _regexLogin = new Regex(@"^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$");
 
     #endregion
 
@@ -82,7 +74,7 @@
     #region Constructors
 
     public ConnectViewModel()
-      : base(LEFT_BUTTON_TEXT, RIGHT_BUTTON_TEXT)
+      : base("Test", "Connect")
     {
       LeftSendCommand = new DelegateCommand(ExecuteSendCommandTest);
       IsAvailableLeftButton = true;

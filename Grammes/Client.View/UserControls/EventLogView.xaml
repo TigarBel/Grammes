@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Client.View.UserControls"
              xmlns:collections="clr-namespace:System.Collections;assembly=mscorlib"
-             xmlns:messageEvent="clr-namespace:Client.BusinessLogic.Model.MessageEvent;assembly=Client.BusinessLogic"
+             xmlns:eventLogModel="clr-namespace:Client.BusinessLogic.Model.EventLogModel;assembly=Client.BusinessLogic"
              mc:Ignorable="d"
              MaxHeight="110">
     <Grid>
@@ -14,17 +14,17 @@
                       RowBackground="LightGray" AlternatingRowBackground="White">
 
                 <DataGrid.Items>
-                    <messageEvent:MessageEvent Event="Connect User1" Time="05/29/2015" />
-                    <messageEvent:MessageEvent Event="Disconnect User2" Time="05/29/2015" />
-                    <messageEvent:MessageEvent Event="Disconnect" Time="05/29/2015" />
-                    <messageEvent:MessageEvent Event="Disconnect User4" Time="05/29/2015" />
-                    <messageEvent:MessageEvent Event="Disconnect" Time="05/29/2015" />
-                    <messageEvent:MessageEvent Event="Connect User3" Time="05/29/2015" />
+                    <eventLogModel:MessageEvent Event="Connect User1" Time="05/29/2015" />
+                    <eventLogModel:MessageEvent Event="Disconnect User2" Time="05/29/2015" />
+                    <eventLogModel:MessageEvent Event="Disconnect" Time="05/29/2015" />
+                    <eventLogModel:MessageEvent Event="Disconnect User4" Time="05/29/2015" />
+                    <eventLogModel:MessageEvent Event="Disconnect" Time="05/29/2015" />
+                    <eventLogModel:MessageEvent Event="Connect User3" Time="05/29/2015" />
                 </DataGrid.Items>
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Event" Width="3*"  Binding="{Binding Path=Event}"/>
-                    <DataGridTextColumn Header="Time" Width="1*"  Binding="{Binding Path=Time}"/>
+                    <DataGridTextColumn Width="3*"  Binding="{Binding Path=Event}"/>
+                    <DataGridTextColumn Width="1*"  Binding="{Binding Path=Time}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Expander>

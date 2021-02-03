@@ -20,6 +20,7 @@
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
       containerRegistry.Register<TotalViewModel>();
+      containerRegistry.Register<UsersListViewModel>();
       containerRegistry.RegisterSingleton<ConnectViewModel>();
     }
 
@@ -28,6 +29,7 @@
       base.ConfigureViewModelLocator();
 
       BindViewModelToView<ConnectViewModel, ConnectView>();
+      BindViewModelToView<UsersListViewModel, UsersListView>();
 
       BindViewModelToView<TotalViewModel, TotalView>();
     }
