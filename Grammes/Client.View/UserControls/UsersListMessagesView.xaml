@@ -11,7 +11,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" MinWidth="100"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="4*" MinWidth="100"/>
+            <ColumnDefinition Width="4*" MinWidth="200"/>
         </Grid.ColumnDefinitions>
 
         <local:UsersListView Grid.Column="0"/>

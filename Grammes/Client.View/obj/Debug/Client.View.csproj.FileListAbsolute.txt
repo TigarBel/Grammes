@@ -55,3 +55,5 @@ C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\Client.View.c
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\Client.View.csproj.CopyComplete
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\Client.View.exe
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\Client.View.pdb
+C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\MessagesViews\MessageView.g.cs
+C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\MessagesViews\MessageView.baml
