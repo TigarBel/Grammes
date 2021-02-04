@@ -5,6 +5,7 @@
     General = 0,
     Online,
     Offline,
-    Group
+    Group,
+    Header
   }
 }

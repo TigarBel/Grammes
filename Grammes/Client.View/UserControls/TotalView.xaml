@@ -19,26 +19,27 @@
 
         <DataTemplate x:Key="MainView">
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="3*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="4*"/>
                 </Grid.ColumnDefinitions>
 
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="3*" MinHeight="100"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*" MinHeight="30"/>
+                </Grid.RowDefinitions>
+
                 <userControls:MainMenuView Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Top" HorizontalAlignment="Right"/>
                 <userControls:UsersListView Grid.Row="1" Grid.Column="0"/>
                 <userControls:MessagesView Grid.Row="1" Grid.Column="1"/>
-                <userControls:EventLogView Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0" VerticalAlignment="Bottom"/>
+                <GridSplitter Grid.Row="2" Height="7" Grid.Column="0" Grid.ColumnSpan="2"
+                              HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                <userControls:EventLogView Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0" VerticalAlignment="Top"/>
             </Grid>
         </DataTemplate>
 
-        <DataTemplate x:Key="MessagesView" >
-        </DataTemplate>
     </UserControl.Resources>
 
     <Grid>

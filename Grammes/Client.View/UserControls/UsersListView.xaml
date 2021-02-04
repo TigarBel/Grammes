@@ -20,20 +20,10 @@
         </Grid.RowDefinitions>
 
         <Label Background="MediumSeaGreen" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0"
-               Content="{Binding UsersName}"/>
+               Content="{Binding SelectChat}"/>
 
-        <extendedTreeView:ExtendedTreeView Grid.Row="1" SelectedItemEx="{Binding SelectChat}">
-
-            <TreeView.Items>
-
-                <TreeViewItem Header="Online" ItemsSource="{Binding UsersList.OnlineList, Mode=OneWay}"/>
-
-                <TreeViewItem Header="Offline" ItemsSource="{Binding UsersList.OfflineList}" 
-                              ItemContainerStyle="{StaticResource OfflineTreeViewStyle}"/>
-
-                <TreeViewItem Header="Groups" ItemsSource="{Binding UsersList.GroupList}"/>
-
-            </TreeView.Items>
+        <extendedTreeView:ExtendedTreeView Grid.Row="1" SelectedItemEx="{Binding SelectChat}" 
+                                           ItemsSource="{Binding TreeItemList}">
         </extendedTreeView:ExtendedTreeView>
 
     </Grid>

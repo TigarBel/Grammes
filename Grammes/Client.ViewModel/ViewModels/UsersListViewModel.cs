@@ -1,12 +1,14 @@
 ﻿namespace Client.ViewModel.ViewModels
 {
   using System.Collections.Generic;
+  using System.Windows;
   using System.Windows.Controls;
   using System.Windows.Documents;
 
   using BusinessLogic.Model.UsersListModel;
 
   using Prism.Mvvm;
+  
 
   public class UsersListViewModel : BindableBase
   {
@@ -16,9 +18,9 @@
 
     private UsersListModel _usersList;
 
-    private TreeView _treeViewUsers;
-
     private BaseUser _selectChat;
+
+    private List<object> _treeItemList;
 
     #endregion
 
@@ -36,10 +38,10 @@
       set => SetProperty(ref _usersList, value);
     }
 
-    public TreeView TreeViewUsers
+    public List<object> TreeItemList
     {
-      get => _treeViewUsers;
-      set => SetProperty(ref _treeViewUsers, value);
+      get => _treeItemList;
+      set => SetProperty(ref _treeItemList, value);
     }
 
     public BaseUser SelectChat
@@ -68,8 +70,41 @@
         new OfflineUser("User2"),
         new OfflineUser("User4"),
         new OfflineUser("User24")
-      }; /*</Hard-Code>*/
-      UsersList = new UsersListModel(onlineUsers, offlineUsers, new List<GroupUser>());
+      };
+      List<GroupUser> group = new List<GroupUser>()
+      {
+        new GroupUser("User2"),
+        new GroupUser("User4"),
+        new GroupUser("User24"),
+        new GroupUser("User224"),
+        new GroupUser("User424"),
+        new GroupUser("User2424"),
+        new GroupUser("User242"),
+        new GroupUser("User442"),
+        new GroupUser("User2442")
+      };
+
+      UsersList = new UsersListModel(onlineUsers, offlineUsers, group); /*</Hard-Code>*/
+
+      TreeItemList = new List<object>()
+      {
+          UsersList.General,
+          new TreeViewItem()
+          {
+            Header = "Online",
+            ItemsSource = UsersList.OnlineList
+          },
+          new TreeViewItem()
+          {
+            Header = "Offline",
+            ItemsSource = UsersList.OfflineList
+          },
+          new TreeViewItem()
+          {
+            Header = "Group",
+            ItemsSource = UsersList.GroupList
+          }
+      };
     }
 
     #endregion

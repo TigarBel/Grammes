@@ -6,8 +6,7 @@
              xmlns:local="clr-namespace:Client.View.UserControls"
              xmlns:collections="clr-namespace:System.Collections;assembly=mscorlib"
              xmlns:eventLogModel="clr-namespace:Client.BusinessLogic.Model.EventLogModel;assembly=Client.BusinessLogic"
-             mc:Ignorable="d"
-             MaxHeight="110">
+             mc:Ignorable="d">
     <Grid>
         <Expander Header="EventLog">
             <DataGrid Name="logGrid"  AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray"

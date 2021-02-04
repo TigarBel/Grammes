@@ -9,7 +9,7 @@
     public GeneralUser General { get; }
 
     public List<OnlineUser> OnlineList { get; set; }
-
+    
     public List<OfflineUser> OfflineList { get; set; }
 
     public List<GroupUser> GroupList { get; set; }

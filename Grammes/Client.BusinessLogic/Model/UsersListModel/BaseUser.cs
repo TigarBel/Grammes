@@ -1,6 +1,7 @@
 ﻿namespace Client.BusinessLogic.Model.UsersListModel
 {
   using System;
+  using System.Collections.ObjectModel;
 
   public abstract class BaseUser
   {
