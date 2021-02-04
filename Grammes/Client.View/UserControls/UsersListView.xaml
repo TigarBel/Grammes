@@ -7,12 +7,6 @@
              xmlns:extendedTreeView="clr-namespace:Client.View.UserControls.UsersList"
              mvvm:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
-    <UserControl.Resources>
-        <Style x:Key="OfflineTreeViewStyle" TargetType="TreeViewItem">
-            <Setter Property="IsEnabled" Value="False"/>
-        </Style>
-    </UserControl.Resources>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

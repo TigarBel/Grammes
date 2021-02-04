@@ -3,12 +3,10 @@
   using System.Collections.Generic;
   using System.Windows;
   using System.Windows.Controls;
-  using System.Windows.Documents;
 
   using BusinessLogic.Model.UsersListModel;
 
   using Prism.Mvvm;
-  
 
   public class UsersListViewModel : BindableBase
   {
@@ -49,7 +47,7 @@
       get => _selectChat;
       set => SetProperty(ref _selectChat, value);
     }
-    
+
     #endregion
 
     #region Constructors
@@ -58,20 +56,20 @@
     {
       UsersName = "User5";
       /*<Hard-Code>*/
-      List<OnlineUser> onlineUsers = new List<OnlineUser>()
+      var onlineUsers = new List<OnlineUser>
       {
         new OnlineUser("User1"),
         new OnlineUser("User3"),
         new OnlineUser("User13")
       };
 
-      List<OfflineUser> offlineUsers = new List<OfflineUser>()
+      var offlineUsers = new List<OfflineUser>
       {
         new OfflineUser("User2"),
         new OfflineUser("User4"),
         new OfflineUser("User24")
       };
-      List<GroupUser> group = new List<GroupUser>()
+      var group = new List<GroupUser>
       {
         new GroupUser("User2"),
         new GroupUser("User4"),
@@ -86,24 +84,41 @@
 
       UsersList = new UsersListModel(onlineUsers, offlineUsers, group); /*</Hard-Code>*/
 
-      TreeItemList = new List<object>()
+      /*
+    <UserControl.Resources>
+        <Style x:Key="OfflineTreeViewStyle" TargetType="TreeViewItem">
+            <Setter Property="IsEnabled" Value="False"/>
+        </Style>
+    </UserControl.Resources>
+      */
+      var style = new Style
       {
-          UsersList.General,
-          new TreeViewItem()
-          {
-            Header = "Online",
-            ItemsSource = UsersList.OnlineList
-          },
-          new TreeViewItem()
-          {
-            Header = "Offline",
-            ItemsSource = UsersList.OfflineList
-          },
-          new TreeViewItem()
-          {
-            Header = "Group",
-            ItemsSource = UsersList.GroupList
-          }
+        TargetType = typeof(TreeViewItem),
+        Setters =
+        {
+          new Setter(UIElement.IsEnabledProperty, false)
+        }
+      };
+
+      TreeItemList = new List<object>
+      {
+        UsersList.General,
+        new TreeViewItem
+        {
+          Header = "Online",
+          ItemsSource = UsersList.OnlineList
+        },
+        new TreeViewItem
+        {
+          Header = "Offline",
+          ItemsSource = UsersList.OfflineList,
+          ItemContainerStyle = style
+        },
+        new TreeViewItem
+        {
+          Header = "Group",
+          ItemsSource = UsersList.GroupList
+        }
       };
     }
 
