@@ -1,7 +1,6 @@
 ﻿namespace Client.BusinessLogic.Model.UsersListModel
 {
   using System;
-  using System.Collections.ObjectModel;
 
   public abstract class BaseUser
   {
@@ -10,7 +9,6 @@
     public string Name { get; }
 
     public UserStatus Status { get; }
-
 
     #endregion
 
@@ -24,9 +22,23 @@
 
     #endregion
 
+    #region Methods
+
     public override string ToString()
     {
       return Name;
     }
+
+    public override bool Equals(object obj)
+    {
+      return Equals(obj as BaseUser);
+    }
+
+    public bool Equals(BaseUser user)
+    {
+      return user != null && Name == user.Name && Status == user.Status;
+    }
+
+    #endregion
   }
 }

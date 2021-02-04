@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Client.View.UserControls.MessagesViews"
+             xmlns:mvvm="http://prismlibrary.com/"
+             mvvm:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
     <UserControl.Resources>
         <Style x:Key="StyleTextBox" TargetType="TextBox">
@@ -18,10 +19,11 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <TextBox Grid.Row="0" Text="Ваши заявки - Наша реклама" 
+        <Rectangle Grid.Row="0" Grid.RowSpan="2" Fill="{Binding BrushMessage}"/>
+        <TextBox Grid.Row="0" Text="{Binding Message.Message}" 
                  TextWrapping="Wrap" AcceptsReturn="True" HorizontalAlignment="Left" VerticalAlignment="Top" 
                  Style="{StaticResource StyleTextBox}"/>
-        <TextBox Grid.Row="1" Text="10:01 26.01.2020" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+        <TextBox Grid.Row="1" Text="{Binding Message.Time}" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                  Style="{StaticResource StyleTextBox}"/>
     </Grid>
 </UserControl>

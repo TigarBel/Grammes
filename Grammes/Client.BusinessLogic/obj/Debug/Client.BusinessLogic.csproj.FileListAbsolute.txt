@@ -3,3 +3,4 @@ C:\Users\belyaevee\Desktop\Intership\Grammes\Client.BusinessLogic\bin\Debug\Clie
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.BusinessLogic\obj\Debug\Client.BusinessLogic.csproj.CoreCompileInputs.cache
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.BusinessLogic\obj\Debug\Client.BusinessLogic.dll
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.BusinessLogic\obj\Debug\Client.BusinessLogic.pdb
+C:\Users\belyaevee\Desktop\Intership\Grammes\Client.BusinessLogic\obj\Debug\Client.BusinessLogic.csprojAssemblyReference.cache

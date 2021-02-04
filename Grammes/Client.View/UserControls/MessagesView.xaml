@@ -47,8 +47,8 @@
         <ListBox Grid.Row="1" HorizontalContentAlignment="Stretch">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
             </Grid>
             <messagesViews:MessageView Grid.Column="1" HorizontalAlignment="Right"/>

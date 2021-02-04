@@ -9,6 +9,7 @@
   using UserControls;
 
   using ViewModel.ViewModels;
+  using ViewModel.ViewModels.MessagesViewModel;
 
   /// <summary>
   /// Interaction logic for App.xaml
@@ -22,6 +23,7 @@
       containerRegistry.Register<TotalViewModel>();
       containerRegistry.Register<UsersListViewModel>();
       containerRegistry.RegisterSingleton<ConnectViewModel>();
+      containerRegistry.RegisterManySingleton<MessageViewModel>();
     }
 
     protected override void ConfigureViewModelLocator()
@@ -32,6 +34,8 @@
       BindViewModelToView<UsersListViewModel, UsersListView>();
 
       BindViewModelToView<TotalViewModel, TotalView>();
+
+      BindViewModelToView<MessageViewModel, MessagesView>();
     }
 
     protected override Window CreateShell()
