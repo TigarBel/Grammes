@@ -1,5 +1,6 @@
 ﻿namespace Client.View.UserControls.UsersList
 {
+  using System;
   using System.Windows;
   using System.Windows.Controls;
 

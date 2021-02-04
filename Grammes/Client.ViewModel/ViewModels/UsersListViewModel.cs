@@ -16,9 +16,9 @@
 
     private UsersListModel _usersList;
 
-    private BaseUser _selectChat;
-
     private List<object> _treeItemList;
+
+    private BaseUser _selectChat;
 
     #endregion
 
@@ -84,13 +84,6 @@
 
       UsersList = new UsersListModel(onlineUsers, offlineUsers, group); /*</Hard-Code>*/
 
-      /*
-    <UserControl.Resources>
-        <Style x:Key="OfflineTreeViewStyle" TargetType="TreeViewItem">
-            <Setter Property="IsEnabled" Value="False"/>
-        </Style>
-    </UserControl.Resources>
-      */
       var style = new Style
       {
         TargetType = typeof(TreeViewItem),
