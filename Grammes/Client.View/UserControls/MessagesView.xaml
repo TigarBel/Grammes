@@ -6,7 +6,24 @@
              xmlns:local="clr-namespace:Client.View.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Red">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="3*" MinHeight="100"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" MinHeight="30"/>
+        </Grid.RowDefinitions>
 
+        <Label Content="Chat name: ???" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+        <ListBox Grid.Row="1"/>
+
+        <GridSplitter Grid.Row="2" HorizontalAlignment="Stretch" Height="5"/>
+
+        <TextBox Grid.Row="3" Text="..." TextWrapping="Wrap" AcceptsReturn="True" FontSize="13"/>
+
+        <Button Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Send"
+                Background="Transparent" Margin="3" BorderThickness="0" FontSize="15"
+                IsEnabled="True" />
     </Grid>
 </UserControl>

@@ -54,8 +54,8 @@
 
     public UsersListViewModel()
     {
-      UsersName = "User5";
       /*<Hard-Code>*/
+      UsersName = "User5";
       var onlineUsers = new List<OnlineUser>
       {
         new OnlineUser("User1"),

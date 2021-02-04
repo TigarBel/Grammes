@@ -92,6 +92,9 @@
     <Compile Include="UserControls\TotalView.xaml.cs">
       <DependentUpon>TotalView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UsersListMessagesView.xaml.cs">
+      <DependentUpon>UsersListMessagesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UsersListView.xaml.cs">
       <DependentUpon>UsersListView.xaml</DependentUpon>
     </Compile>
@@ -127,6 +130,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\TotalView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UsersListMessagesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

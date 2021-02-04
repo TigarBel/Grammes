@@ -4,14 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:userControls="clr-namespace:Client.View.UserControls"
-             xmlns:viewModel="clr-namespace:Client.ViewModel;assembly=Client.ViewModel"
              xmlns:mvvm="http://prismlibrary.com/"
+             xmlns:viewModel="clr-namespace:Client.ViewModel;assembly=Client.ViewModel"
              mvvm:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
-        <viewModel:TemplateSelectorViewModel x:Key="templateSelector"/>
+        <viewModel:TemplateSelectorViewModel x:Key="templateSelector"/> <!--TODO--> 
 
         <DataTemplate x:Key="ConnectView">
             <userControls:ConnectView Width="400" Height="300"/>
@@ -19,24 +19,18 @@
 
         <DataTemplate x:Key="MainView">
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="4*"/>
-                </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="3*" MinHeight="100"/>
+                    <RowDefinition Height="6*" MinHeight="200"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*" MinHeight="30"/>
                 </Grid.RowDefinitions>
 
-                <userControls:MainMenuView Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Top" HorizontalAlignment="Right"/>
-                <userControls:UsersListView Grid.Row="1" Grid.Column="0"/>
-                <userControls:MessagesView Grid.Row="1" Grid.Column="1"/>
-                <GridSplitter Grid.Row="2" Height="7" Grid.Column="0" Grid.ColumnSpan="2"
-                              HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                <userControls:EventLogView Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0" VerticalAlignment="Top"/>
+                <userControls:MainMenuView Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
+                <userControls:UsersListMessagesView Grid.Row="1"/>
+                <GridSplitter Grid.Row="2" Height="7" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                <userControls:EventLogView Grid.Row="3" VerticalAlignment="Top"/>
             </Grid>
         </DataTemplate>
 
@@ -52,9 +46,10 @@
 
         <ComboBox Grid.Row="0" Margin="5"
                   ItemsSource="{Binding NameViews}"
-                  SelectedIndex="{Binding ContentPresenter}"/>
+                  SelectedIndex="{Binding ContentPresenter}"
+                  Visibility="Hidden"/>
 
-        <ContentPresenter x:Name="presenter" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="5"
+        <ContentPresenter Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="5"
                           ContentTemplateSelector="{StaticResource templateSelector}"
                           Content="{Binding ContentPresenter}"/>
     </Grid>

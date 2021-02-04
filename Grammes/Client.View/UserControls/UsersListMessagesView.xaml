@@ -1,18 +1,21 @@
-﻿<UserControl x:Class="Client.View.UserControls.MainMenuView"
+﻿<UserControl x:Class="Client.View.UserControls.UsersListMessagesView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Client.View.UserControls"
-             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:mvvm="http://prismlibrary.com/"
+             mvvm:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
-    <Grid Background="GhostWhite">
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="1*" MinWidth="100"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="4*" MinWidth="100"/>
         </Grid.ColumnDefinitions>
-        <Label Grid.Column="0" Content="To disconnect" FontSize="12" HorizontalAlignment="Right"></Label>
-        <Button Grid.Column="1" Width="50" Background="Red" HorizontalAlignment="Right"/>
+
+        <local:UsersListView Grid.Column="0"/>
+        <GridSplitter Grid.Column="1" Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+        <local:MessagesView Grid.Column="2"/>
     </Grid>
 </UserControl>
