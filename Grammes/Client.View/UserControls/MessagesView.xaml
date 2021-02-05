@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:messagesViews="clr-namespace:Client.View.UserControls.MessagesViews"
+             xmlns:mvvm="http://prismlibrary.com/"
+             mvvm:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
     <UserControl.Resources>
         <Style x:Key="MyWaterMarkStyle" TargetType="{x:Type TextBox}">
@@ -45,23 +47,7 @@
         <Label Content="Chat name: ???" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
         <ListBox Grid.Row="1" HorizontalContentAlignment="Stretch">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-            </Grid>
-            <messagesViews:MessageView Grid.Column="1" HorizontalAlignment="Right"/>
-            <messagesViews:MessageView Grid.Column="0" HorizontalAlignment="Left"/>
-            <messagesViews:MessageView Grid.Column="1" HorizontalAlignment="Right"/>
-            <messagesViews:MessageView Grid.Column="1" HorizontalAlignment="Right"/>
-            <messagesViews:MessageView Grid.Column="0" HorizontalAlignment="Left"/>
-            <messagesViews:MessageView Grid.Column="1" HorizontalAlignment="Right"/>
-            <messagesViews:MessageView Grid.Column="1" HorizontalAlignment="Right"/>
-            <messagesViews:MessageView Grid.Column="0" HorizontalAlignment="Left"/>
-            <messagesViews:MessageView Grid.Column="1" HorizontalAlignment="Right"/>
-            <messagesViews:MessageView Grid.Column="1" HorizontalAlignment="Right"/>
-            <messagesViews:MessageView Grid.Column="0" HorizontalAlignment="Left"/>
+
         </ListBox>
 
         <GridSplitter Grid.Row="2" HorizontalAlignment="Stretch" Height="5"/>

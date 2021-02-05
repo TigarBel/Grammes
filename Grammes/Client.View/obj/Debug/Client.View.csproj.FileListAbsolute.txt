@@ -27,10 +27,13 @@ C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\bin\Debug\Unity.Abstrac
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\bin\Debug\Unity.Container.pdb
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\Client.View.csprojAssemblyReference.cache
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\Common\LeafView.baml
+C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\MessagesViews\MessageUserView.baml
+C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\MessagesView.baml
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\MainWindow.g.cs
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\EventLogView.g.cs
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\Common\LeafView.g.cs
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\ConnectView.g.cs
+C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\MessagesViews\MessageUserView.g.cs
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\TotalView.g.cs
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\UsersListMessagesView.g.cs
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\UsersListView.g.cs
@@ -46,7 +49,6 @@ C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\TotalView.baml
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\UsersListMessagesView.baml
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\UsersListView.baml
-C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\MessagesView.baml
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\MainMenuView.baml
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\Client.View.g.resources
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\Client.View.Properties.Resources.resources
@@ -55,5 +57,3 @@ C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\Client.View.c
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\Client.View.csproj.CopyComplete
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\Client.View.exe
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\Client.View.pdb
-C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\MessagesViews\MessageView.g.cs
-C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\MessagesViews\MessageView.baml

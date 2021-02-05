@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Client.View.UserControls.MessagesViews.MessageView"
+﻿<UserControl x:Class="Client.View.UserControls.MessagesViews.MessageUserView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -14,16 +14,25 @@
         </Style>
     </UserControl.Resources>
     <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Rectangle Grid.Row="0" Grid.RowSpan="2" Fill="{Binding BrushMessage}"/>
-        <TextBox Grid.Row="0" Text="{Binding Message.Message}" 
+        <Rectangle Grid.Row="0" Grid.RowSpan="2" Fill="{Binding BrushMessage}"
+                   Grid.Column="{Binding GridColumn}"/>
+        <TextBox Grid.Row="0" Text="{Binding MessageUser.Message}" 
                  TextWrapping="Wrap" AcceptsReturn="True" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                 Style="{StaticResource StyleTextBox}"/>
-        <TextBox Grid.Row="1" Text="{Binding Message.Time}" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                 Style="{StaticResource StyleTextBox}"/>
+                 Style="{StaticResource StyleTextBox}"
+                 Grid.Column="{Binding GridColumn}"/>
+        <TextBox Grid.Row="1" Text="{Binding MessageUser.Time}" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                 Style="{StaticResource StyleTextBox}"
+                 Grid.Column="{Binding GridColumn}"/>
     </Grid>
 </UserControl>
