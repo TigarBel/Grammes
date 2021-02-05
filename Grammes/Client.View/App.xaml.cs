@@ -2,6 +2,8 @@
 {
   using System.Windows;
 
+  using BusinessLogic.Model.MessagesModel;
+
   using Prism.Ioc;
   using Prism.Mvvm;
   using Prism.Unity;
@@ -22,21 +24,26 @@
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
       containerRegistry.Register<TotalViewModel>();
+
       containerRegistry.Register<UsersListViewModel>();
       containerRegistry.RegisterSingleton<ConnectViewModel>();
-      containerRegistry.Register<MessageUserViewModel>();
+
+      containerRegistry.Register<MessagesViewModel>();
+      //containerRegistry.RegisterSingleton<MessageUserModel>();
+      //containerRegistry.Register<MessageUserViewModel>();
+
     }
 
     protected override void ConfigureViewModelLocator()
     {
       base.ConfigureViewModelLocator();
+      BindViewModelToView<TotalViewModel, TotalView>();
 
       BindViewModelToView<ConnectViewModel, ConnectView>();
       BindViewModelToView<UsersListViewModel, UsersListView>();
 
-      BindViewModelToView<TotalViewModel, TotalView>();
-
-      BindViewModelToView<MessageUserViewModel, MessageUserView>();
+      BindViewModelToView<MessagesViewModel, MessagesView>();
+      //BindViewModelToView<MessageUserViewModel, MessageUserView>();
     }
 
     protected override Window CreateShell()

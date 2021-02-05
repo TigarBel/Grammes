@@ -3,8 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:mvvm="http://prismlibrary.com/"
-             mvvm:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
     <UserControl.Resources>
         <Style x:Key="StyleTextBox" TargetType="TextBox">
@@ -27,11 +25,11 @@
 
         <Rectangle Grid.Row="0" Grid.RowSpan="2" Fill="{Binding BrushMessage}"
                    Grid.Column="{Binding GridColumn}"/>
-        <TextBox Grid.Row="0" Text="{Binding MessageUser.Message}" 
+        <TextBox Grid.Row="0" Text="{Binding Message}" 
                  TextWrapping="Wrap" AcceptsReturn="True" HorizontalAlignment="Left" VerticalAlignment="Top" 
                  Style="{StaticResource StyleTextBox}"
                  Grid.Column="{Binding GridColumn}"/>
-        <TextBox Grid.Row="1" Text="{Binding MessageUser.Time}" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+        <TextBox Grid.Row="1" Text="{Binding Time}" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                  Style="{StaticResource StyleTextBox}"
                  Grid.Column="{Binding GridColumn}"/>
     </Grid>

@@ -34,6 +34,12 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <DataTemplate x:Key="MessageUser">
+            <Grid>
+                <messagesViews:MessageUserView/>
+            </Grid>
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid>
@@ -46,9 +52,9 @@
 
         <Label Content="Chat name: ???" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-        <ListBox Grid.Row="1" HorizontalContentAlignment="Stretch">
-
-        </ListBox>
+        <ListBox Grid.Row="1" HorizontalContentAlignment="Stretch"
+            ItemTemplate="{StaticResource MessageUser}"
+            ItemsSource="{Binding MessagesUserList}"/>
 
         <GridSplitter Grid.Row="2" HorizontalAlignment="Stretch" Height="5"/>
 

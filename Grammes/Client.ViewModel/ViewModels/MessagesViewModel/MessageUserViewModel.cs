@@ -40,6 +40,11 @@
 
     public MessageUserViewModel(MessageUserModel message)
     {
+      ///**/
+      //var user1 = new OnlineUser("user1");
+      //MessageUser = new MessageUserModel(user1, user1, "Hi1", new DateTime(2001, 10, 10, 10, 10, 10), true);
+      ///**/
+      MessageUser = message;
       BrushMessage = MessageUser.IsRead ? Brushes.Transparent : Brushes.LightGray;
     }
 
