@@ -18,9 +18,9 @@ namespace Client.View.UserControls.MessagesViews
   /// <summary>
   /// Interaction logic for MessageView.xaml
   /// </summary>
-  public partial class MessageView : UserControl
+  public partial class MessageUserView : UserControl
   {
-    public MessageView()
+    public MessageUserView()
     {
       InitializeComponent();
     }

@@ -7,6 +7,7 @@
   using Prism.Unity;
 
   using UserControls;
+  using UserControls.MessagesViews;
 
   using ViewModel.ViewModels;
   using ViewModel.ViewModels.MessagesViewModel;
@@ -23,7 +24,7 @@
       containerRegistry.Register<TotalViewModel>();
       containerRegistry.Register<UsersListViewModel>();
       containerRegistry.RegisterSingleton<ConnectViewModel>();
-      containerRegistry.RegisterManySingleton<MessageViewModel>();
+      containerRegistry.Register<MessageUserViewModel>();
     }
 
     protected override void ConfigureViewModelLocator()
@@ -35,7 +36,7 @@
 
       BindViewModelToView<TotalViewModel, TotalView>();
 
-      BindViewModelToView<MessageViewModel, MessagesView>();
+      BindViewModelToView<MessageUserViewModel, MessageUserView>();
     }
 
     protected override Window CreateShell()
