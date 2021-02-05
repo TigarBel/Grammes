@@ -1,60 +1,93 @@
 ﻿namespace Client.ViewModel.ViewModels.MessagesViewModel
 {
   using System;
-  using System.Collections.Generic;
+  using System.Collections.ObjectModel;
 
-  using BusinessLogic.Model.MessagesModel;
   using BusinessLogic.Model.UsersListModel;
 
+  using Prism.Commands;
   using Prism.Mvvm;
 
   public class MessagesViewModel : BindableBase
   {
     #region Fields
 
-    private List<MessageUserModel> _messagesUserList;
+    private string _chatName;
+
+    private ObservableCollection<MessageViewModel> _messagesUserList;
+
+    private DelegateCommand _command;
+
+    private string _textMessage;
 
     #endregion
 
     #region Properties
 
-    public List<MessageUserModel> MessagesUserList
+    public string ChatName
+    {
+      get => "Chat name: " + _chatName;
+      set => SetProperty(ref _chatName, value);
+    }
+
+    public ObservableCollection<MessageViewModel> MessagesUserList
     {
       get => _messagesUserList;
       set => SetProperty(ref _messagesUserList, value);
+    }
+
+    public DelegateCommand Command
+    {
+      get => _command;
+      set => SetProperty(ref _command, value);
+    }
+
+    public string TextMessage
+    {
+      get => _textMessage;
+      set => SetProperty(ref _textMessage, value);
     }
 
     #endregion
 
     #region Constructors
 
-    public MessagesViewModel(/*List<MessageUserModel> messageUserList*/)
+    public MessagesViewModel()
     {
-      /*Hard-Code*/
-      MessagesUserList = new List<MessageUserModel>();
-      OnlineUser user = new OnlineUser("User1");
-      OnlineUser user2 = new OnlineUser("User2");
-      MessageUserModel message = new MessageUserModel(user,user,"Oh hi!",
-        new DateTime(2001,10,10,10,10,10),true);
-      MessagesUserList.Add(message);
-      message = new MessageUserModel(user, user2, "Oh hi!",
-        new DateTime(2001, 10, 10, 10, 11, 10), true);
-      MessagesUserList.Add(message);
-      message = new MessageUserModel(user, user, "By-by!",
-        new DateTime(2001, 10, 10, 10, 12, 10), true);
-      MessagesUserList.Add(message);
-      message = new MessageUserModel(user, user2, "By-by!",
-        new DateTime(2001, 10, 10, 10, 13, 10), true);
-      MessagesUserList.Add(message);
-      message = new MessageUserModel(user, user2, "By!",
-        new DateTime(2001, 10, 10, 10, 13, 10), false);
-      MessagesUserList.Add(message);
-      /*Hard-Code*/
+      MessagesUserList = new ObservableCollection<MessageViewModel>();
+      Command = new DelegateCommand(ExecuteSendMessage);
+    }
 
-      /*foreach (MessageUserModel messageUser in messageUserList)
+    #endregion
+
+    #region Methods
+
+    private void ExecuteSendMessage()
+    {
+      if (IsEmpty(TextMessage))
       {
-        MessagesUserList.Add(new MessageUserViewModel(messageUser));
-      }*/
+        return;
+      }
+
+      MessagesUserList.Add(new MessageViewModel(TextMessage, new DateTime(2001, 10, 10, 10, 10, 10), false, true));
+    }
+
+    private bool IsEmpty(string text)
+    {
+      if (string.IsNullOrEmpty(text))
+      {
+        return true;
+      }
+
+      foreach (char symbol in text)
+      {
+        if (symbol != ' ')
+        {
+          return false;
+        }
+      }
+
+      return true;
     }
 
     #endregion

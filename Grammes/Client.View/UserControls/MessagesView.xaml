@@ -35,11 +35,47 @@
             </Setter>
         </Style>
 
-        <DataTemplate x:Key="MessageUser">
+        <DataTemplate x:Key="IncomingMessage">
             <Grid>
-                <messagesViews:MessageUserView/>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <messagesViews:MessageUserView  Grid.ColumnSpan="2" Grid.Column="0"/>
+
             </Grid>
         </DataTemplate>
+
+        <DataTemplate x:Key="OutgoingMessage">
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <messagesViews:MessageUserView Grid.ColumnSpan="2" Grid.Column="1"/>
+
+            </Grid>
+        </DataTemplate>
+
+        <Style TargetType="{x:Type ListBoxItem}" x:Key="ContainerStyle">
+
+            <Style.Triggers>
+                <DataTrigger  Binding="{Binding Path=IsOutgoingMessage}"
+                              Value="False">
+                    <Setter Property="ContentTemplate" Value="{StaticResource IncomingMessage}" />
+                </DataTrigger>
+
+                <DataTrigger  Binding="{Binding Path=IsOutgoingMessage}"
+                              Value="True">
+                    <Setter Property="ContentTemplate" Value="{StaticResource OutgoingMessage}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
     </UserControl.Resources>
 
     <Grid>
@@ -50,19 +86,20 @@
             <RowDefinition Height="*" MinHeight="30"/>
         </Grid.RowDefinitions>
 
-        <Label Content="Chat name: ???" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label Content="{Binding ChatName}" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
         <ListBox Grid.Row="1" HorizontalContentAlignment="Stretch"
-            ItemTemplate="{StaticResource MessageUser}"
+            ItemContainerStyle="{StaticResource ContainerStyle}"
             ItemsSource="{Binding MessagesUserList}"/>
 
         <GridSplitter Grid.Row="2" HorizontalAlignment="Stretch" Height="5"/>
 
         <TextBox Grid.Row="3" TextWrapping="Wrap" AcceptsReturn="True" FontSize="13"
-                 Style="{StaticResource MyWaterMarkStyle}" Tag="Enter message..."/>
+                 Style="{StaticResource MyWaterMarkStyle}" Tag="Enter message..."
+                 Text="{Binding TextMessage}"/>
 
         <Button Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Send"
                 Background="Transparent" Margin="3" BorderThickness="0" FontSize="15"
-                IsEnabled="True" />
+                IsEnabled="True" Command="{Binding Command}"/>
     </Grid>
 </UserControl>

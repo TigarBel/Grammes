@@ -43,7 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\EventLogModel\MessageEvent.cs" />
-    <Compile Include="Model\MessagesModel\MessageUserModel.cs" />
     <Compile Include="Model\UsersListModel\GeneralUser.cs" />
     <Compile Include="Model\UsersListModel\GroupUser.cs" />
     <Compile Include="Model\UsersListModel\OfflineUser.cs" />

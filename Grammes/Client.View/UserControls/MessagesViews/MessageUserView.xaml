@@ -10,27 +10,35 @@
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
         </Style>
+
+        <Style TargetType="{x:Type Rectangle}" x:Key="RectangleStyle">
+
+            <Style.Triggers>
+                <DataTrigger  Binding="{Binding Path=IsReadingMessage}"
+                              Value="True">
+                    <Setter Property="Fill" Value="Transparent" />
+                </DataTrigger>
+
+                <DataTrigger  Binding="{Binding Path=IsReadingMessage}"
+                              Value="False">
+                    <Setter Property="Fill" Value="LightGray"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
     </UserControl.Resources>
     <Grid>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-        </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Rectangle Grid.Row="0" Grid.RowSpan="2" Fill="{Binding BrushMessage}"
-                   Grid.Column="{Binding GridColumn}"/>
+        <Rectangle Grid.Row="0" Grid.RowSpan="2" Stroke="LightGray" Style="{StaticResource RectangleStyle}" RadiusX="3" RadiusY="3"/>
         <TextBox Grid.Row="0" Text="{Binding Message}" 
                  TextWrapping="Wrap" AcceptsReturn="True" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                 Style="{StaticResource StyleTextBox}"
-                 Grid.Column="{Binding GridColumn}"/>
+                 Style="{StaticResource StyleTextBox}"/>
         <TextBox Grid.Row="1" Text="{Binding Time}" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                 Style="{StaticResource StyleTextBox}"
-                 Grid.Column="{Binding GridColumn}"/>
+                 Style="{StaticResource StyleTextBox}"/>
     </Grid>
 </UserControl>

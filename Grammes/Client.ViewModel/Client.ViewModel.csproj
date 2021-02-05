@@ -77,8 +77,9 @@
     <Compile Include="ViewModels\Common\LeafViewModel.cs" />
     <Compile Include="ViewModels\ConnectViewModel.cs" />
     <Compile Include="ViewModels\MessagesViewModel\MessagesViewModel.cs" />
-    <Compile Include="ViewModels\MessagesViewModel\MessageUserViewModel.cs" />
+    <Compile Include="ViewModels\MessagesViewModel\MessageViewModel.cs" />
     <Compile Include="ViewModels\TotalViewModel.cs" />
+    <Compile Include="ViewModels\UsersListMessagesViewModel.cs" />
     <Compile Include="ViewModels\UsersListViewModel.cs" />
     <Compile Include="ViewModels\UsersList\TreeViewHelper.cs" />
   </ItemGroup>

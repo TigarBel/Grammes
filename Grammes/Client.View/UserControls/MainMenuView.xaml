@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Client.View.UserControls"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d">
-    <Grid Background="GhostWhite">
+    <Grid Background="LightGray">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="Auto"/>

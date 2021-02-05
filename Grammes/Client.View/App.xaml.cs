@@ -2,14 +2,11 @@
 {
   using System.Windows;
 
-  using BusinessLogic.Model.MessagesModel;
-
   using Prism.Ioc;
   using Prism.Mvvm;
   using Prism.Unity;
 
   using UserControls;
-  using UserControls.MessagesViews;
 
   using ViewModel.ViewModels;
   using ViewModel.ViewModels.MessagesViewModel;
@@ -25,25 +22,24 @@
     {
       containerRegistry.Register<TotalViewModel>();
 
-      containerRegistry.Register<UsersListViewModel>();
       containerRegistry.RegisterSingleton<ConnectViewModel>();
 
-      containerRegistry.Register<MessagesViewModel>();
-      //containerRegistry.RegisterSingleton<MessageUserModel>();
-      //containerRegistry.Register<MessageUserViewModel>();
 
+      containerRegistry.Register<UsersListMessagesViewModel>();
+
+      containerRegistry.RegisterSingleton<MessagesViewModel>();
+      containerRegistry.RegisterSingleton<UsersListViewModel>();
     }
 
     protected override void ConfigureViewModelLocator()
     {
       base.ConfigureViewModelLocator();
       BindViewModelToView<TotalViewModel, TotalView>();
-
       BindViewModelToView<ConnectViewModel, ConnectView>();
-      BindViewModelToView<UsersListViewModel, UsersListView>();
 
+      BindViewModelToView<UsersListMessagesViewModel, UsersListMessagesView>();
+      BindViewModelToView<UsersListViewModel, UsersListView>();
       BindViewModelToView<MessagesViewModel, MessagesView>();
-      //BindViewModelToView<MessageUserViewModel, MessageUserView>();
     }
 
     protected override Window CreateShell()
