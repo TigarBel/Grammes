@@ -27,8 +27,10 @@
 
       containerRegistry.Register<UsersListMessagesViewModel>();
 
+      containerRegistry.RegisterSingleton<MainMenuViewModel>();
       containerRegistry.RegisterSingleton<MessagesViewModel>();
       containerRegistry.RegisterSingleton<UsersListViewModel>();
+      containerRegistry.Register<EventLogViewModel>();
     }
 
     protected override void ConfigureViewModelLocator()
@@ -37,9 +39,11 @@
       BindViewModelToView<TotalViewModel, TotalView>();
       BindViewModelToView<ConnectViewModel, ConnectView>();
 
+      BindViewModelToView<MainMenuViewModel, MainMenuView>();
       BindViewModelToView<UsersListMessagesViewModel, UsersListMessagesView>();
       BindViewModelToView<UsersListViewModel, UsersListView>();
       BindViewModelToView<MessagesViewModel, MessagesView>();
+      BindViewModelToView<EventLogViewModel, EventLogView>();
     }
 
     protected override Window CreateShell()

@@ -2,25 +2,31 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Client.View.UserControls"
-             xmlns:collections="clr-namespace:System.Collections;assembly=mscorlib"
-             xmlns:eventLogModel="clr-namespace:Client.BusinessLogic.Model.EventLogModel;assembly=Client.BusinessLogic"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mvvm="http://prismlibrary.com/"
+             mvvm:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type DataGridRow}" x:Key="ContainerStyle">
+
+            <Style.Triggers>
+                <DataTrigger  Binding="{Binding Path=IsSuccessfully}"
+                              Value="True">
+                    <Setter Property="Foreground" Value="DarkGreen"/>
+                </DataTrigger>
+
+                <DataTrigger  Binding="{Binding Path=IsSuccessfully}"
+                              Value="False">
+                    <Setter Property="Foreground" Value="DarkRed"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Expander Header="EventLog">
             <DataGrid Name="logGrid"  AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray"
-                      RowBackground="LightGray" AlternatingRowBackground="White">
-
-                <DataGrid.Items>
-                    <eventLogModel:MessageEvent Event="Connect User1" Time="05/29/2015" />
-                    <eventLogModel:MessageEvent Event="Disconnect User2" Time="05/29/2015" />
-                    <eventLogModel:MessageEvent Event="Disconnect" Time="05/29/2015" />
-                    <eventLogModel:MessageEvent Event="Disconnect User4" Time="05/29/2015" />
-                    <eventLogModel:MessageEvent Event="Disconnect" Time="05/29/2015" />
-                    <eventLogModel:MessageEvent Event="Connect User3" Time="05/29/2015" />
-                </DataGrid.Items>
-
+                      RowBackground="LightGray" AlternatingRowBackground="White" 
+                      ItemsSource="{Binding Events}" ItemContainerStyle="{StaticResource ContainerStyle}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="3*"  Binding="{Binding Path=Event}"/>
                     <DataGridTextColumn Width="1*"  Binding="{Binding Path=Time}"/>

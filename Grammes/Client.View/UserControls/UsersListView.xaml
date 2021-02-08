@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mvvm="http://prismlibrary.com/"
              xmlns:extendedTreeView="clr-namespace:Client.View.UserControls.UsersList"
+             xmlns:view="clr-namespace:Client.View"
              mvvm:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
     <UserControl.Resources>
@@ -24,7 +25,7 @@
 
         <extendedTreeView:ExtendedTreeView Grid.Row="1" SelectedItemEx="{Binding SelectChat}">
             <extendedTreeView:ExtendedTreeView.Items>
-                
+                <TreeViewItem Header="{Binding General}"/>
                 <TreeViewItem Header="Online" ItemsSource="{Binding OnlineUsers}"/>
                 <TreeViewItem Header="Offline" ItemsSource="{Binding OfflineUsers}"
                               ItemContainerStyle="{StaticResource OfflineStyle}"/>

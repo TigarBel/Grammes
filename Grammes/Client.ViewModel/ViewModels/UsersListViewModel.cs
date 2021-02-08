@@ -2,6 +2,7 @@
 {
   using System.Collections.Generic;
   using System.Collections.ObjectModel;
+  using System.Windows.Controls;
 
   using BusinessLogic.Model.UsersListModel;
 
@@ -26,7 +27,7 @@
 
     private object _selectChat;
 
-    private readonly IEventAggregator _chatNameEA;
+    private readonly IEventAggregator _chatNameEa;
 
     #endregion
 
@@ -68,9 +69,20 @@
       set
       {
         SetProperty(ref _selectChat, value);
-        if (value is BaseUser)
+
+        switch (value)
         {
-          _chatNameEA.GetEvent<ChatNameEvent>().Publish(SelectChat.ToString());
+          case BaseUser user:
+          {
+            _chatNameEa.GetEvent<ChatNameEvent>().Publish(user.ToString());
+            break;
+          }
+          case TreeViewItem item:
+          {
+            if (item.Header is BaseUser)
+              _chatNameEa.GetEvent<ChatNameEvent>().Publish(item.Header.ToString());
+            break;
+          }
         }
       }
     }
@@ -81,7 +93,7 @@
 
     public UsersListViewModel(IEventAggregator eventAggregator)
     {
-      _chatNameEA = eventAggregator;
+      _chatNameEa = eventAggregator;
 
       /*<Hard-Code>*/
       UsersName = "User5";

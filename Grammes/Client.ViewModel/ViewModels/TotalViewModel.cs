@@ -15,6 +15,8 @@
 
     private ConnectViewModel _connectViewModel;
 
+    private MainMenuViewModel _mainMenuViewModel;
+
     #endregion
 
     #region Properties
@@ -37,16 +39,24 @@
       set => SetProperty(ref _connectViewModel, value);
     }
 
+    public MainMenuViewModel MainMenuViewModel
+    {
+      get => _mainMenuViewModel;
+      set => SetProperty(ref _mainMenuViewModel, value);
+    }
+
     #endregion
 
     #region Constructors
 
-    public TotalViewModel(ConnectViewModel connectViewModel)
+    public TotalViewModel(ConnectViewModel connectViewModel, MainMenuViewModel mainMenuViewModel)
     {
       NameViews = new TemplateSelectorViewModel().Views;
       ContentPresenter = 0;
       ConnectViewModel = connectViewModel;
       ConnectViewModel.RightSendCommand = new DelegateCommand(ExecuteChangeOnMainView);
+      MainMenuViewModel = mainMenuViewModel;
+      MainMenuViewModel.Command = new DelegateCommand(ExecuteChangeOnConnectView);
     }
 
     #endregion
@@ -56,6 +66,11 @@
     private void ExecuteChangeOnMainView()
     {
       ContentPresenter = (int)ViewSelect.MainView;
+    }
+
+    private void ExecuteChangeOnConnectView()
+    {
+      ContentPresenter = (int)ViewSelect.ConnectView;
     }
 
     #endregion

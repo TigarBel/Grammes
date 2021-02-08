@@ -78,6 +78,8 @@
     {
       LeftSendCommand = new DelegateCommand(ExecuteSendCommandTest);
       IsAvailableLeftButton = true;
+      IpAddress = "192.168.37.228";
+      Port = 80;
       UserName = "";
       SelectTypeInterface = InterfaceType.TcpSocet.ToString();
     }
@@ -110,20 +112,13 @@
       //    new[] { string.Format(Resources.UserNameUnacceptableSymbols, UserSettings.USERNAME_UNACCEPTABLE_SYMBOLS) });
       //}
 
-      if (_errorsContainer.GetErrors().Count == 0)
-      {
-        IsAvailableRightButton = true;
-      }
-      else
-      {
-        IsAvailableRightButton = false;
-      }
+      IsAvailableRightButton = _errorsContainer.GetErrors().Count == 0;
     }
 
     private void ExecuteSendCommandTest()
     {
-      IpAddress = "192.168.0.1";
-      Port = 3000;
+      IpAddress = "192.168.37.228";
+      Port = 80;
       SelectTypeInterface = InterfaceType.TcpSocet.ToString();
       UserName = "User1";
     }

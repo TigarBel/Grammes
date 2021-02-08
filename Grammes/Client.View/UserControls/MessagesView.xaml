@@ -83,7 +83,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="3*" MinHeight="100"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*" MinHeight="30"/>
+            <RowDefinition Height="*" MinHeight="36"/>
         </Grid.RowDefinitions>
 
         <Label Content="{Binding ChatName}" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -98,8 +98,12 @@
                  Style="{StaticResource WaterMarkStyle}" Tag="Enter message..."
                  Text="{Binding TextMessage, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <Button Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Send"
-                Background="Transparent" Margin="3" BorderThickness="0" FontSize="15"
-                IsEnabled="{Binding IsAvailable}" Command="{Binding CommandSendMessage}"/>
+        <Button Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                Width="30" Height="30"
+                Background="Transparent" Margin="3" BorderThickness="0"
+                IsEnabled="{Binding IsAvailable}" Command="{Binding CommandSendMessage}">
+            <Image Source="Resource/SendMessageButton.png"/>
+        </Button>
     </Grid>
 </UserControl>
+<!--Content="Send"-->

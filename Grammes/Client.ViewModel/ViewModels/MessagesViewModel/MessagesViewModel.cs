@@ -79,6 +79,7 @@
     {
       MessagesUserList.Add(new MessageViewModel(TextMessage,
         new DateTime(2001, 10, 10, 10, 10, 10), false, true));
+      TextMessage = "";
     }
 
     private void Validate()

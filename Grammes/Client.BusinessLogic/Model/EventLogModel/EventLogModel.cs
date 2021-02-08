@@ -2,11 +2,13 @@
 {
   using System;
 
-  public class MessageEvent
+  public class EventLogModel
   {
     #region Properties
 
     public string Event { get; set; }
+
+    public bool IsSuccessfully { get; set; }
 
     public DateTime Time { get; set; }
 

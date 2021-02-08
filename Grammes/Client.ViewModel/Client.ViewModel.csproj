@@ -77,6 +77,8 @@
     <Compile Include="ViewModels\Common\LeafViewModel.cs" />
     <Compile Include="ViewModels\ConnectViewModel.cs" />
     <Compile Include="ViewModels\EventAggregator\ChatNameEvent.cs" />
+    <Compile Include="ViewModels\EventLogViewModel.cs" />
+    <Compile Include="ViewModels\MainMenuViewModel.cs" />
     <Compile Include="ViewModels\MessagesViewModel\MessagesViewModel.cs" />
     <Compile Include="ViewModels\MessagesViewModel\MessageViewModel.cs" />
     <Compile Include="ViewModels\TotalViewModel.cs" />

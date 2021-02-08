@@ -194,6 +194,11 @@
       <Name>Client.ViewModel</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="UserControls\Resource\SendMessageButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UserControls\Resource\DisconnectButton.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

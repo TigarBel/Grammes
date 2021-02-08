@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Client.View.UserControls"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:mvvm="http://prismlibrary.com/"
+             mvvm:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
     <Grid Background="LightGray">
         <Grid.ColumnDefinitions>
@@ -13,6 +15,9 @@
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
         <Label Grid.Column="0" Content="To disconnect" FontSize="12" HorizontalAlignment="Right"></Label>
-        <Button Grid.Column="1" Width="50" Background="Red" HorizontalAlignment="Right"/>
+        <Button Grid.Column="1" Width="50" Background="Transparent" HorizontalAlignment="Right"
+                Command="{Binding Command}">
+            <Image Source="Resource/DisconnectButton.png"/>
+        </Button>
     </Grid>
 </UserControl>

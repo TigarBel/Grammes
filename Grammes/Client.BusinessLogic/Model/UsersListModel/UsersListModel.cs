@@ -1,6 +1,7 @@
 ﻿namespace Client.BusinessLogic.Model.UsersListModel
 {
   using System.Collections.Generic;
+  using System.Collections.ObjectModel;
 
   public class UsersListModel
   {
@@ -8,22 +9,24 @@
 
     public GeneralUser General { get; }
 
-    public List<OnlineUser> OnlineList { get; set; }
+    public ObservableCollection<OnlineUser> OnlineUsers { get; set; }
     
-    public List<OfflineUser> OfflineList { get; set; }
+    public ObservableCollection<OfflineUser> OfflineUsers { get; set; }
 
-    public List<GroupUser> GroupList { get; set; }
+    public ObservableCollection<GroupUser> Groups { get; set; }
 
     #endregion
 
     #region Constructors
 
-    public UsersListModel(List<OnlineUser> onlineList, List<OfflineUser> offlineList, List<GroupUser> groupList)
+    public UsersListModel(ObservableCollection<OnlineUser> onlineUsers, 
+                          ObservableCollection<OfflineUser> offlineUsers, 
+                          ObservableCollection<GroupUser> groups)
     {
       General = new GeneralUser();
-      OnlineList = onlineList;
-      OfflineList = offlineList;
-      GroupList = groupList;
+      OnlineUsers = onlineUsers;
+      OfflineUsers = offlineUsers;
+      Groups = groups;
     }
 
     #endregion
