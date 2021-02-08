@@ -6,6 +6,10 @@
 
   using BusinessLogic.Model.UsersListModel;
 
+  using EventAggregator;
+
+  using Prism.Commands;
+  using Prism.Events;
   using Prism.Mvvm;
 
   public class UsersListViewModel : BindableBase
@@ -18,7 +22,9 @@
 
     private List<object> _treeItemList;
 
-    private BaseUser _selectChat;
+    private object _selectChat;
+
+    private IEventAggregator _chatNameEA;
 
     #endregion
 
@@ -42,18 +48,27 @@
       set => SetProperty(ref _treeItemList, value);
     }
 
-    public BaseUser SelectChat
+    public object SelectChat
     {
       get => _selectChat;
-      set => SetProperty(ref _selectChat, value);
+      set
+      {
+        SetProperty(ref _selectChat, value);
+        if (value is BaseUser)
+        {
+          _chatNameEA.GetEvent<ChatNameEvent>().Publish(SelectChat.ToString());
+        }
+      }
     }
 
     #endregion
 
     #region Constructors
 
-    public UsersListViewModel()
+    public UsersListViewModel(IEventAggregator eventAggregator)
     {
+      _chatNameEA = eventAggregator;
+
       /*<Hard-Code>*/
       UsersName = "User5";
       var onlineUsers = new List<OnlineUser>
@@ -82,7 +97,8 @@
         new GroupUser("User2442")
       };
 
-      UsersList = new UsersListModel(onlineUsers, offlineUsers, group); /*</Hard-Code>*/
+      UsersList = new UsersListModel(onlineUsers, offlineUsers, group); 
+      /*</Hard-Code>*/
 
       var style = new Style
       {
@@ -113,6 +129,7 @@
           ItemsSource = UsersList.GroupList
         }
       };
+      SelectChat = (BaseUser)TreeItemList[0];
     }
 
     #endregion

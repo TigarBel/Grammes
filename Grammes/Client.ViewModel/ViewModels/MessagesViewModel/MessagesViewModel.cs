@@ -2,10 +2,14 @@
 {
   using System;
   using System.Collections.ObjectModel;
+  using System.Linq;
 
   using BusinessLogic.Model.UsersListModel;
 
+  using EventAggregator;
+
   using Prism.Commands;
+  using Prism.Events;
   using Prism.Mvvm;
 
   public class MessagesViewModel : BindableBase
@@ -16,9 +20,11 @@
 
     private ObservableCollection<MessageViewModel> _messagesUserList;
 
-    private DelegateCommand _command;
+    private DelegateCommand _commandSendMessage;
 
     private string _textMessage;
+
+    private bool _isAvailable;
 
     #endregion
 
@@ -36,26 +42,33 @@
       set => SetProperty(ref _messagesUserList, value);
     }
 
-    public DelegateCommand Command
+    public DelegateCommand CommandSendMessage
     {
-      get => _command;
-      set => SetProperty(ref _command, value);
+      get => _commandSendMessage;
+      set => SetProperty(ref _commandSendMessage, value);
     }
 
     public string TextMessage
     {
       get => _textMessage;
-      set => SetProperty(ref _textMessage, value);
+      set => SetProperty(ref _textMessage, value, Validate);
+    }
+
+    public bool IsAvailable
+    {
+      get => _isAvailable;
+      set => SetProperty(ref _isAvailable, value);
     }
 
     #endregion
 
     #region Constructors
 
-    public MessagesViewModel()
+    public MessagesViewModel(IEventAggregator eventAggregator)
     {
       MessagesUserList = new ObservableCollection<MessageViewModel>();
-      Command = new DelegateCommand(ExecuteSendMessage);
+      CommandSendMessage = new DelegateCommand(ExecuteSendMessage);
+      eventAggregator.GetEvent<ChatNameEvent>().Subscribe(SetChatName);
     }
 
     #endregion
@@ -64,30 +77,28 @@
 
     private void ExecuteSendMessage()
     {
-      if (IsEmpty(TextMessage))
+      MessagesUserList.Add(new MessageViewModel(TextMessage,
+        new DateTime(2001, 10, 10, 10, 10, 10), false, true));
+    }
+
+    private void Validate()
+    {
+      if (string.IsNullOrEmpty(TextMessage)) {
+        IsAvailable = false;
+      }
+
+      if (TextMessage.Any(symbol => symbol != ' '))
       {
+        IsAvailable = true;
         return;
       }
 
-      MessagesUserList.Add(new MessageViewModel(TextMessage, new DateTime(2001, 10, 10, 10, 10, 10), false, true));
+      IsAvailable = false;
     }
 
-    private bool IsEmpty(string text)
+    private void SetChatName(string chatName)
     {
-      if (string.IsNullOrEmpty(text))
-      {
-        return true;
-      }
-
-      foreach (char symbol in text)
-      {
-        if (symbol != ' ')
-        {
-          return false;
-        }
-      }
-
-      return true;
+      ChatName = chatName;
     }
 
     #endregion

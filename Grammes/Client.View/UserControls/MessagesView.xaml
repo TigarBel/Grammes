@@ -8,7 +8,7 @@
              mvvm:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
     <UserControl.Resources>
-        <Style x:Key="MyWaterMarkStyle" TargetType="{x:Type TextBox}">
+        <Style x:Key="WaterMarkStyle" TargetType="{x:Type TextBox}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type TextBox}">
@@ -95,11 +95,11 @@
         <GridSplitter Grid.Row="2" HorizontalAlignment="Stretch" Height="5"/>
 
         <TextBox Grid.Row="3" TextWrapping="Wrap" AcceptsReturn="True" FontSize="13"
-                 Style="{StaticResource MyWaterMarkStyle}" Tag="Enter message..."
-                 Text="{Binding TextMessage}"/>
+                 Style="{StaticResource WaterMarkStyle}" Tag="Enter message..."
+                 Text="{Binding TextMessage, UpdateSourceTrigger=PropertyChanged}"/>
 
         <Button Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Send"
                 Background="Transparent" Margin="3" BorderThickness="0" FontSize="15"
-                IsEnabled="True" Command="{Binding Command}"/>
+                IsEnabled="{Binding IsAvailable}" Command="{Binding CommandSendMessage}"/>
     </Grid>
 </UserControl>
