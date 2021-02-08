@@ -99,37 +99,7 @@
 
       UsersList = new UsersListModel(onlineUsers, offlineUsers, group); 
       /*</Hard-Code>*/
-
-      var style = new Style
-      {
-        TargetType = typeof(TreeViewItem),
-        Setters =
-        {
-          new Setter(UIElement.IsEnabledProperty, false)
-        }
-      };
-
-      TreeItemList = new List<object>
-      {
-        UsersList.General,
-        new TreeViewItem
-        {
-          Header = "Online",
-          ItemsSource = UsersList.OnlineList
-        },
-        new TreeViewItem
-        {
-          Header = "Offline",
-          ItemsSource = UsersList.OfflineList,
-          ItemContainerStyle = style
-        },
-        new TreeViewItem
-        {
-          Header = "Group",
-          ItemsSource = UsersList.GroupList
-        }
-      };
-      SelectChat = (BaseUser)TreeItemList[0];
+      
     }
 
     #endregion

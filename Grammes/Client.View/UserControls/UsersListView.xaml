@@ -24,11 +24,13 @@
                Content="{Binding UsersName}"/>
 
         <extendedTreeView:ExtendedTreeView Grid.Row="1" SelectedItemEx="{Binding SelectChat}">
-            <usersListModel:GeneralUser/>
-            <TreeViewItem Header="Online" ItemsSource="{Binding UsersList.OnlineList}"/>
-            <TreeViewItem Header="Offline" ItemsSource="{Binding UsersList.OfflineList}"
-                          ItemContainerStyle="{StaticResource OfflineStyle}"/>
-            <TreeViewItem Header="Group" ItemsSource="{Binding UsersList.GroupList}"/>
+            <extendedTreeView:ExtendedTreeView.Items>
+                <usersListModel:GeneralUser/>
+                <TreeViewItem Header="Online" ItemsSource="{Binding UsersList.OnlineList}"/>
+                <TreeViewItem Header="Offline" ItemsSource="{Binding UsersList.OfflineList}"
+                              ItemContainerStyle="{StaticResource OfflineStyle}"/>
+                <TreeViewItem Header="Group" ItemsSource="{Binding UsersList.GroupList}"/>
+            </extendedTreeView:ExtendedTreeView.Items>
         </extendedTreeView:ExtendedTreeView>
 
     </Grid>
