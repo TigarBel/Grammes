@@ -5,8 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mvvm="http://prismlibrary.com/"
              xmlns:extendedTreeView="clr-namespace:Client.View.UserControls.UsersList"
+             xmlns:usersListModel="clr-namespace:Client.BusinessLogic.Model.UsersListModel;assembly=Client.BusinessLogic"
              mvvm:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="OfflineStyle" TargetType="TreeViewItem">
+            <Setter Property="IsEnabled" Value="False"/>
+        </Style>
+    </UserControl.Resources>
     <Grid>
 
         <Grid.RowDefinitions>
@@ -17,8 +23,12 @@
         <Label Background="MediumSeaGreen" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0"
                Content="{Binding UsersName}"/>
 
-        <extendedTreeView:ExtendedTreeView Grid.Row="1" SelectedItemEx="{Binding SelectChat}" 
-                                           ItemsSource="{Binding TreeItemList}">
+        <extendedTreeView:ExtendedTreeView Grid.Row="1" SelectedItemEx="{Binding SelectChat}">
+            <usersListModel:GeneralUser/>
+            <TreeViewItem Header="Online" ItemsSource="{Binding UsersList.OnlineList}"/>
+            <TreeViewItem Header="Offline" ItemsSource="{Binding UsersList.OfflineList}"
+                          ItemContainerStyle="{StaticResource OfflineStyle}"/>
+            <TreeViewItem Header="Group" ItemsSource="{Binding UsersList.GroupList}"/>
         </extendedTreeView:ExtendedTreeView>
 
     </Grid>
