@@ -1,14 +1,12 @@
 ﻿namespace Client.ViewModel.ViewModels
 {
   using System.Collections.Generic;
-  using System.Windows;
-  using System.Windows.Controls;
+  using System.Collections.ObjectModel;
 
   using BusinessLogic.Model.UsersListModel;
 
   using EventAggregator;
 
-  using Prism.Commands;
   using Prism.Events;
   using Prism.Mvvm;
 
@@ -18,13 +16,15 @@
 
     private string _userName;
 
-    private UsersListModel _usersList;
+    private ObservableCollection<OnlineUser> _onlineUsers;
 
-    private List<object> _treeItemList;
+    private ObservableCollection<OfflineUser> _offlineUsers;
+
+    private ObservableCollection<GroupUser> _groups;
 
     private object _selectChat;
 
-    private IEventAggregator _chatNameEA;
+    private readonly IEventAggregator _chatNameEA;
 
     #endregion
 
@@ -36,16 +36,22 @@
       set => SetProperty(ref _userName, "Your name: " + value);
     }
 
-    public UsersListModel UsersList
+    public ObservableCollection<OnlineUser> OnlineUsers
     {
-      get => _usersList;
-      set => SetProperty(ref _usersList, value);
+      get => _onlineUsers;
+      set => SetProperty(ref _onlineUsers, value);
     }
 
-    public List<object> TreeItemList
+    public ObservableCollection<OfflineUser> OfflineUsers
     {
-      get => _treeItemList;
-      set => SetProperty(ref _treeItemList, value);
+      get => _offlineUsers;
+      set => SetProperty(ref _offlineUsers, value);
+    }
+
+    public ObservableCollection<GroupUser> Groups
+    {
+      get => _groups;
+      set => SetProperty(ref _groups, value);
     }
 
     public object SelectChat
@@ -71,20 +77,19 @@
 
       /*<Hard-Code>*/
       UsersName = "User5";
-      var onlineUsers = new List<OnlineUser>
+      OnlineUsers = new ObservableCollection<OnlineUser>
       {
         new OnlineUser("User1"),
         new OnlineUser("User3"),
         new OnlineUser("User13")
       };
-
-      var offlineUsers = new List<OfflineUser>
+      OfflineUsers = new ObservableCollection<OfflineUser>
       {
         new OfflineUser("User2"),
         new OfflineUser("User4"),
         new OfflineUser("User24")
       };
-      var group = new List<GroupUser>
+      Groups = new ObservableCollection<GroupUser>
       {
         new GroupUser("User2"),
         new GroupUser("User4"),
@@ -96,29 +101,9 @@
         new GroupUser("User442"),
         new GroupUser("User2442")
       };
-
-      UsersList = new UsersListModel(onlineUsers, offlineUsers, group); 
       /*</Hard-Code>*/
-      
-    }
 
-    #endregion
-
-    #region Methods
-
-    private List<TreeViewItem> GetTreeUsers(List<string> nameUsers)
-    {
-      var treeUsers = new List<TreeViewItem>();
-      foreach (string item in nameUsers)
-      {
-        treeUsers.Add(
-          new TreeViewItem
-          {
-            Header = item
-          });
-      }
-
-      return treeUsers;
+      //SelectChat = (BaseUser)TreeItemList[0];
     }
 
     #endregion
