@@ -16,6 +16,8 @@
 
     private string _userName;
 
+    private GeneralUser _general;
+
     private ObservableCollection<OnlineUser> _onlineUsers;
 
     private ObservableCollection<OfflineUser> _offlineUsers;
@@ -34,6 +36,12 @@
     {
       get => _userName;
       set => SetProperty(ref _userName, "Your name: " + value);
+    }
+
+    public GeneralUser General
+    {
+      get => _general;
+      set => SetProperty(ref _general, value);
     }
 
     public ObservableCollection<OnlineUser> OnlineUsers
@@ -77,6 +85,7 @@
 
       /*<Hard-Code>*/
       UsersName = "User5";
+      General = new GeneralUser();
       OnlineUsers = new ObservableCollection<OnlineUser>
       {
         new OnlineUser("User1"),
@@ -105,6 +114,7 @@
 
       //SelectChat = (BaseUser)TreeItemList[0];
     }
+
 
     #endregion
   }

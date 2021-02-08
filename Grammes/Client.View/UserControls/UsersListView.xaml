@@ -24,7 +24,7 @@
 
         <extendedTreeView:ExtendedTreeView Grid.Row="1" SelectedItemEx="{Binding SelectChat}">
             <extendedTreeView:ExtendedTreeView.Items>
-
+                
                 <TreeViewItem Header="Online" ItemsSource="{Binding OnlineUsers}"/>
                 <TreeViewItem Header="Offline" ItemsSource="{Binding OfflineUsers}"
                               ItemContainerStyle="{StaticResource OfflineStyle}"/>
