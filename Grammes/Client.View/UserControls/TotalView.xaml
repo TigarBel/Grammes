@@ -18,20 +18,7 @@
         </DataTemplate>
 
         <DataTemplate x:Key="MainView">
-            <Grid>
-
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="6*" MinHeight="200"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*" MinHeight="30"/>
-                </Grid.RowDefinitions>
-
-                <userControls:MainMenuView Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
-                <userControls:UsersListMessagesView Grid.Row="1"/>
-                <GridSplitter Grid.Row="2" Height="7" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                <userControls:EventLogView Grid.Row="3" VerticalAlignment="Top"/>
-            </Grid>
+            <userControls:MainView/>
         </DataTemplate>
 
     </UserControl.Resources>

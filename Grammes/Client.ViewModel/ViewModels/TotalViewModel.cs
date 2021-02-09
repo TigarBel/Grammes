@@ -1,6 +1,9 @@
 ﻿namespace Client.ViewModel.ViewModels
 {
+  using EventAggregator;
+
   using Prism.Commands;
+  using Prism.Events;
   using Prism.Mvvm;
 
   using ViewModel.Common._Enum_;
@@ -17,6 +20,8 @@
 
     private MainMenuViewModel _mainMenuViewModel;
 
+    private UsersListViewModel _usersListViewModel;
+
     #endregion
 
     #region Properties
@@ -32,31 +37,21 @@
       get => _nameViews;
       set => SetProperty(ref _nameViews, value);
     }
-
-    public ConnectViewModel ConnectViewModel
-    {
-      get => _connectViewModel;
-      set => SetProperty(ref _connectViewModel, value);
-    }
-
-    public MainMenuViewModel MainMenuViewModel
-    {
-      get => _mainMenuViewModel;
-      set => SetProperty(ref _mainMenuViewModel, value);
-    }
-
+    
     #endregion
 
     #region Constructors
 
-    public TotalViewModel(ConnectViewModel connectViewModel, MainMenuViewModel mainMenuViewModel)
+    public TotalViewModel(ConnectViewModel connectViewModel, MainMenuViewModel mainMenuViewModel,
+                          UsersListViewModel usersListViewModel)
     {
       NameViews = new TemplateSelectorViewModel().Views;
       ContentPresenter = 0;
-      ConnectViewModel = connectViewModel;
-      ConnectViewModel.RightSendCommand = new DelegateCommand(ExecuteChangeOnMainView);
-      MainMenuViewModel = mainMenuViewModel;
-      MainMenuViewModel.Command = new DelegateCommand(ExecuteChangeOnConnectView);
+      _connectViewModel = connectViewModel;
+      _connectViewModel.RightSendCommand = new DelegateCommand(ExecuteChangeOnMainView);
+      _mainMenuViewModel = mainMenuViewModel;
+      _mainMenuViewModel.Command = new DelegateCommand(ExecuteChangeOnConnectView);
+      _usersListViewModel = usersListViewModel;
     }
 
     #endregion

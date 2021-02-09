@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mvvm="http://prismlibrary.com/"
+             xmlns:eventLog="clr-namespace:Client.View.UserControls.EventLog"
              mvvm:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
     <UserControl.Resources>
@@ -23,7 +24,23 @@
         </Style>
     </UserControl.Resources>
     <Grid>
-        <Expander Header="EventLog">
+        <Grid.RowDefinitions>
+            <RowDefinition>
+                <RowDefinition.Style>
+                    <Style TargetType="{x:Type RowDefinition}">
+                        <Setter Property="MinHeight" Value="100" />
+                        <Style.Triggers>
+                            <DataTrigger
+                                Binding="{Binding ElementName=ExpanderEventLog, Path=IsExpanded}"
+                                Value="False">
+                                <Setter Property="MinHeight" Value="30" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
+        </Grid.RowDefinitions>
+        <Expander x:Name="ExpanderEventLog" Header="EventLog">
             <DataGrid Name="logGrid"  AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray"
                       RowBackground="LightGray" AlternatingRowBackground="White" 
                       ItemsSource="{Binding Events}" ItemContainerStyle="{StaticResource ContainerStyle}">
@@ -33,6 +50,7 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Expander>
+        <Border BorderBrush="SlateGray" BorderThickness="1"/>
 
     </Grid>
 </UserControl>

@@ -77,6 +77,7 @@
     <Compile Include="ViewModels\Common\LeafViewModel.cs" />
     <Compile Include="ViewModels\ConnectViewModel.cs" />
     <Compile Include="ViewModels\EventAggregator\ChatNameEvent.cs" />
+    <Compile Include="ViewModels\EventAggregator\UserNameEvent.cs" />
     <Compile Include="ViewModels\EventLogViewModel.cs" />
     <Compile Include="ViewModels\MainMenuViewModel.cs" />
     <Compile Include="ViewModels\MessagesViewModel\MessagesViewModel.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="ViewModels\UsersListMessagesViewModel.cs" />
     <Compile Include="ViewModels\UsersListViewModel.cs" />
     <Compile Include="ViewModels\UsersList\TreeViewHelper.cs" />
+    <Compile Include="ViewModels\WarningViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -14,8 +14,9 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
+        <Border Grid.ColumnSpan="3" BorderBrush="Black" BorderThickness="1"/>
         <Label Grid.Column="0" Content="To disconnect" FontSize="12" HorizontalAlignment="Right"></Label>
-        <Button Grid.Column="1" Width="50" Background="Transparent" HorizontalAlignment="Right"
+        <Button Grid.Column="1" Width="50" Background="Transparent" HorizontalAlignment="Right" BorderBrush="Black"
                 Command="{Binding Command}">
             <Image Source="Resource/DisconnectButton.png"/>
         </Button>

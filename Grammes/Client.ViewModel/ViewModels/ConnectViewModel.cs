@@ -4,10 +4,14 @@
   using System.Text.RegularExpressions;
 
   using BusinessLogic.Model.Common;
+  using BusinessLogic.Model.WebSocket;
 
   using Common;
 
+  using EventAggregator;
+
   using Prism.Commands;
+  using Prism.Events;
 
   public class ConnectViewModel : LeafViewModel
   {
@@ -30,6 +34,10 @@
     private readonly Regex _regexIP = new Regex(@"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
 
     private readonly Regex _regexLogin = new Regex(@"^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$");
+
+    private readonly IEventAggregator _userNameEa;
+
+    private ClientWebSocketModel _clientWebSocket;
 
     #endregion
 
@@ -66,16 +74,24 @@
       {
         SetProperty(ref _userName, value);
         Check();
+        _userNameEa.GetEvent<UserNameEvent>().Publish(_userName);
       }
+    }
+
+    public ClientWebSocketModel ClientWebSocket
+    {
+      get => _clientWebSocket;
+      set => SetProperty(ref _clientWebSocket, value);
     }
 
     #endregion
 
     #region Constructors
 
-    public ConnectViewModel()
+    public ConnectViewModel(IEventAggregator eventAggregator)
       : base("Test", "Connect")
     {
+      _userNameEa = eventAggregator;
       LeftSendCommand = new DelegateCommand(ExecuteSendCommandTest);
       IsAvailableLeftButton = true;
       IpAddress = "192.168.37.228";
@@ -121,6 +137,9 @@
       Port = 80;
       SelectTypeInterface = InterfaceType.TcpSocet.ToString();
       UserName = "User1";
+
+      ClientWebSocket = new ClientWebSocketModel(UserName);
+      ClientWebSocket.SendMessage("Can you hear me?");
     }
 
     private void IsAvailable()

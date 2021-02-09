@@ -1,6 +1,5 @@
 ﻿namespace Client.ViewModel.ViewModels
 {
-  using System.Collections.Generic;
   using System.Collections.ObjectModel;
   using System.Windows.Controls;
 
@@ -80,7 +79,10 @@
           case TreeViewItem item:
           {
             if (item.Header is BaseUser)
+            {
               _chatNameEa.GetEvent<ChatNameEvent>().Publish(item.Header.ToString());
+            }
+
             break;
           }
         }
@@ -94,9 +96,9 @@
     public UsersListViewModel(IEventAggregator eventAggregator)
     {
       _chatNameEa = eventAggregator;
+      eventAggregator.GetEvent<UserNameEvent>().Subscribe(SetUserName);
 
       /*<Hard-Code>*/
-      UsersName = "User5";
       General = new GeneralUser();
       OnlineUsers = new ObservableCollection<OnlineUser>
       {
@@ -127,6 +129,14 @@
       //SelectChat = (BaseUser)TreeItemList[0];
     }
 
+    #endregion
+
+    #region Methods
+
+    private void SetUserName(string userName)
+    {
+      UsersName = userName;
+    }
 
     #endregion
   }

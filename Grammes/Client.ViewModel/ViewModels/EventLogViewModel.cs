@@ -30,6 +30,7 @@
     public EventLogViewModel()
     {
       Events = new ObservableCollection<EventLogModel>
+      /*Hard-Code*/
       {
         new EventLogModel
         {
@@ -48,8 +49,117 @@
           Event = "Hi3",
           IsSuccessfully = true,
           Time = new DateTime(2001, 10, 10, 10, 10, 12)
+        },
+        new EventLogModel
+        {
+          Event = "Hi2",
+          IsSuccessfully = false,
+          Time = new DateTime(2001, 10, 10, 10, 10, 11)
+        },
+        new EventLogModel
+        {
+          Event = "Hi2",
+          IsSuccessfully = false,
+          Time = new DateTime(2001, 10, 10, 10, 10, 11)
+        },
+        new EventLogModel
+        {
+          Event = "Hi2",
+          IsSuccessfully = false,
+          Time = new DateTime(2001, 10, 10, 10, 10, 11)
+        },
+        new EventLogModel
+        {
+          Event = "Hi2",
+          IsSuccessfully = false,
+          Time = new DateTime(2001, 10, 10, 10, 10, 11)
+        },
+        new EventLogModel
+        {
+          Event = "Hi2",
+          IsSuccessfully = false,
+          Time = new DateTime(2001, 10, 10, 10, 10, 11)
+        },
+        new EventLogModel
+        {
+          Event = "Hi2",
+          IsSuccessfully = false,
+          Time = new DateTime(2001, 10, 10, 10, 10, 11)
+        },
+        new EventLogModel
+        {
+          Event = "Hi2",
+          IsSuccessfully = false,
+          Time = new DateTime(2001, 10, 10, 10, 10, 11)
+        },
+        new EventLogModel
+        {
+          Event = "Hi2",
+          IsSuccessfully = false,
+          Time = new DateTime(2001, 10, 10, 10, 10, 11)
+        },
+        new EventLogModel
+        {
+          Event = "Hi2",
+          IsSuccessfully = false,
+          Time = new DateTime(2001, 10, 10, 10, 10, 11)
+        },
+        new EventLogModel
+        {
+          Event = "Hi2",
+          IsSuccessfully = false,
+          Time = new DateTime(2001, 10, 10, 10, 10, 11)
+        },
+        new EventLogModel
+        {
+          Event = "Hi2",
+          IsSuccessfully = false,
+          Time = new DateTime(2001, 10, 10, 10, 10, 11)
+        },
+        new EventLogModel
+        {
+          Event = "Hi2",
+          IsSuccessfully = false,
+          Time = new DateTime(2001, 10, 10, 10, 10, 11)
+        },
+        new EventLogModel
+        {
+          Event = "Hi2",
+          IsSuccessfully = false,
+          Time = new DateTime(2001, 10, 10, 10, 10, 11)
+        },
+        new EventLogModel
+        {
+          Event = "Hi2",
+          IsSuccessfully = false,
+          Time = new DateTime(2001, 10, 10, 10, 10, 11)
+        },
+        new EventLogModel
+        {
+          Event = "Hi2",
+          IsSuccessfully = false,
+          Time = new DateTime(2001, 10, 10, 10, 10, 11)
+        },
+        new EventLogModel
+        {
+          Event = "Hi2",
+          IsSuccessfully = false,
+          Time = new DateTime(2001, 10, 10, 10, 10, 11)
+        },
+        new EventLogModel
+        {
+          Event = "Hi2",
+          IsSuccessfully = false,
+          Time = new DateTime(2001, 10, 10, 10, 10, 11)
+        },
+        new EventLogModel
+        {
+          Event = "Hi2",
+          IsSuccessfully = false,
+          Time = new DateTime(2001, 10, 10, 10, 10, 11)
         }
       };
+      /*Hard-Code*/
     }
 
     #endregion
