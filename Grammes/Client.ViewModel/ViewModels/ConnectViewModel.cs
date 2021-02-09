@@ -137,9 +137,6 @@
       Port = 80;
       SelectTypeInterface = InterfaceType.TcpSocet.ToString();
       UserName = "User1";
-
-      ClientWebSocket = new ClientWebSocketModel(UserName);
-      ClientWebSocket.SendMessage("Can you hear me?");
     }
 
     private void IsAvailable()

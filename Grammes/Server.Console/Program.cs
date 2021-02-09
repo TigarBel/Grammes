@@ -2,6 +2,8 @@
 {
   using System;
 
+  using BusinessLogic;
+
   internal class Program
   {
     #region Methods

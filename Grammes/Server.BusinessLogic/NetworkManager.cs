@@ -1,20 +1,13 @@
-﻿using Common.Network;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Server.Console
+﻿namespace Server.BusinessLogic
 {
-  using Console = System.Console;
+  using System;
+  using System.Net;
+
+  using Common.Network;
 
   public class NetworkManager
   {
     #region Constants
-
-    private readonly IPAddress _address = IPAddress.Parse("192.168.37.228");
 
     private const int WS_PORT = 65000;
 
@@ -23,6 +16,8 @@ namespace Server.Console
     #endregion
 
     #region Fields
+
+    private readonly IPAddress _address = IPAddress.Parse("192.168.37.228");
 
     private readonly TcpServer _tcpServer;
 
@@ -65,7 +60,7 @@ namespace Server.Console
     private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs e)
     {
       string clientState = e.Connected ? "подключен" : "отключен";
-      var message = $"Клиент '{e.ClientName}' {clientState}.";
+      string message = $"Клиент '{e.ClientName}' {clientState}.";
 
       Console.WriteLine(message);
 
@@ -75,7 +70,7 @@ namespace Server.Console
 
     private void HandleMessageReceived(object sender, MessageReceivedEventArgs e)
     {
-      var message = $"Клиент '{e.ClientName}' отправил сообщение '{e.Message}'.";
+      string message = $"Клиент '{e.ClientName}' отправил сообщение '{e.Message}'.";
 
       Console.WriteLine(message);
 

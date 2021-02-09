@@ -46,7 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NetworkManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -58,6 +57,10 @@
     <ProjectReference Include="..\..\..\Documents\Sockets\Common\Common.csproj">
       <Project>{c99eff23-0cb2-4d0d-97d3-637e30d4fd2f}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Server.BusinessLogic\Server.BusinessLogic.csproj">
+      <Project>{A55021E6-D041-4AA9-8579-4B7271374EB1}</Project>
+      <Name>Server.BusinessLogic</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
