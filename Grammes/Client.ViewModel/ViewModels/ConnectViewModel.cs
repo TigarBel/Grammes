@@ -4,7 +4,6 @@
   using System.Text.RegularExpressions;
 
   using BusinessLogic.Model.Common;
-  using BusinessLogic.Model.WebSocket;
 
   using Common;
 
@@ -19,7 +18,7 @@
 
     private string _ipAddress;
 
-    private int _port;
+    private string _port;
 
     private string _selectTypeInterface;
 
@@ -37,8 +36,6 @@
 
     private readonly IEventAggregator _userNameEa;
 
-    private ClientWebSocketModel _clientWebSocket;
-
     #endregion
 
     #region Properties
@@ -55,7 +52,7 @@
       set => SetProperty(ref _ipAddress, value);
     }
 
-    public int Port
+    public string Port
     {
       get => _port;
       set => SetProperty(ref _port, value);
@@ -78,12 +75,6 @@
       }
     }
 
-    public ClientWebSocketModel ClientWebSocket
-    {
-      get => _clientWebSocket;
-      set => SetProperty(ref _clientWebSocket, value);
-    }
-
     #endregion
 
     #region Constructors
@@ -95,7 +86,7 @@
       LeftSendCommand = new DelegateCommand(ExecuteSendCommandTest);
       IsAvailableLeftButton = true;
       IpAddress = "192.168.37.228";
-      Port = 80;
+      Port = "65000";
       UserName = "";
       SelectTypeInterface = InterfaceType.TcpSocet.ToString();
     }
@@ -134,7 +125,7 @@
     private void ExecuteSendCommandTest()
     {
       IpAddress = "192.168.37.228";
-      Port = 80;
+      Port = "65000";
       SelectTypeInterface = InterfaceType.TcpSocet.ToString();
       UserName = "User1";
     }

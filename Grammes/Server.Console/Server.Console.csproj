@@ -44,6 +44,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="websocket-sharp, Version=1.0.2.59611, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebSocketSharp.1.0.3-rc11\lib\websocket-sharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -54,10 +57,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Documents\Sockets\Common\Common.csproj">
-      <Project>{c99eff23-0cb2-4d0d-97d3-637e30d4fd2f}</Project>
-      <Name>Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Server.BusinessLogic\Server.BusinessLogic.csproj">
       <Project>{A55021E6-D041-4AA9-8579-4B7271374EB1}</Project>
       <Name>Server.BusinessLogic</Name>

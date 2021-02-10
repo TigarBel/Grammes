@@ -1,12 +1,13 @@
 ﻿namespace Client.ViewModel.ViewModels
 {
-  using EventAggregator;
+  using System;
 
   using Prism.Commands;
-  using Prism.Events;
   using Prism.Mvvm;
 
   using ViewModel.Common._Enum_;
+
+  using WebSocketSharp;
 
   public class TotalViewModel : BindableBase
   {
@@ -16,9 +17,9 @@
 
     private string[] _nameViews;
 
-    private ConnectViewModel _connectViewModel;
+    private readonly ConnectViewModel _connectViewModel;
 
-    private MainMenuViewModel _mainMenuViewModel;
+    private readonly MainMenuViewModel _mainMenuViewModel;
 
     private UsersListViewModel _usersListViewModel;
 
@@ -37,13 +38,12 @@
       get => _nameViews;
       set => SetProperty(ref _nameViews, value);
     }
-    
+
     #endregion
 
     #region Constructors
 
-    public TotalViewModel(ConnectViewModel connectViewModel, MainMenuViewModel mainMenuViewModel,
-                          UsersListViewModel usersListViewModel)
+    public TotalViewModel(ConnectViewModel connectViewModel, MainMenuViewModel mainMenuViewModel, UsersListViewModel usersListViewModel)
     {
       NameViews = new TemplateSelectorViewModel().Views;
       ContentPresenter = 0;
@@ -61,6 +61,24 @@
     private void ExecuteChangeOnMainView()
     {
       ContentPresenter = (int)ViewSelect.MainView;
+      CreateClient();
+    }
+
+    private void CreateClient()
+    {
+      var client = new WebSocket("ws://192.168.37.228:65000/User1");
+      client.OnMessage += Client_OnMessage;
+      client.Connect();
+
+      Console.WriteLine("Enter message:");
+
+      client.Send("Hi!");
+    }
+
+    private static void Client_OnMessage(object sender, MessageEventArgs e)
+    {
+      Console.WriteLine(e.Data);
+      Console.WriteLine("Enter message:");
     }
 
     private void ExecuteChangeOnConnectView()
