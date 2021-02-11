@@ -1,13 +1,11 @@
 ﻿namespace Common.Network.Messages
 {
-  using _Enum_;
-
-  public class ConnectionRequest : BaseContainer<string>
+  public class ConnectionRequestContainer : BaseContainer<string>
   {
     #region Constructors
 
-    public ConnectionRequest(string login)
-      : base(login, EnumRequest.ConnectionRequest)
+    public ConnectionRequestContainer(string login)
+      : base(login, DispatchType.ConnectionRequest)
     {
     }
 

@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Common.Network.Messages
+﻿namespace Common.Network.Messages
 {
-  using _Enum_;
-
-  public class ConnectionResponse : BaseContainer<Response>
+  public class ConnectionResponseContainer : BaseContainer<Response>
   {
-    public ConnectionResponse(Response response)
-      : base(response, EnumRequest.ConnectionResponse)
-    {
+    #region Constructors
 
+    public ConnectionResponseContainer()
+      : base(new Response(ResponseStatus.Failure, ""), DispatchType.ConnectionResponse)
+    {
     }
+
+    #endregion
   }
 }

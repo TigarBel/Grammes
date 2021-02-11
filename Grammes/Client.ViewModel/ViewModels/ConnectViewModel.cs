@@ -86,7 +86,7 @@
       LeftSendCommand = new DelegateCommand(ExecuteSendCommandTest);
       IsAvailableLeftButton = true;
       IpAddress = "192.168.37.228";
-      Port = "65000";
+      Port = "3000";
       UserName = "";
       SelectTypeInterface = InterfaceType.TcpSocet.ToString();
     }
@@ -125,7 +125,7 @@
     private void ExecuteSendCommandTest()
     {
       IpAddress = "192.168.37.228";
-      Port = "65000";
+      Port = "3000";
       SelectTypeInterface = InterfaceType.TcpSocet.ToString();
       UserName = "User1";
     }

@@ -1,9 +1,12 @@
 ﻿namespace Client.ViewModel.ViewModels
 {
   using System;
+  using System.Net;
 
   using Prism.Commands;
   using Prism.Mvvm;
+
+  using Server.BusinessLogic;
 
   using ViewModel.Common._Enum_;
 
@@ -19,9 +22,7 @@
 
     private readonly ConnectViewModel _connectViewModel;
 
-    private readonly MainMenuViewModel _mainMenuViewModel;
-
-    private UsersListViewModel _usersListViewModel;
+    private readonly MainViewModel _mainViewModel;
 
     #endregion
 
@@ -39,19 +40,21 @@
       set => SetProperty(ref _nameViews, value);
     }
 
+    public WsClient Client { get; set; }
+
     #endregion
 
     #region Constructors
 
-    public TotalViewModel(ConnectViewModel connectViewModel, MainMenuViewModel mainMenuViewModel, UsersListViewModel usersListViewModel)
+    public TotalViewModel(ConnectViewModel connectViewModel, MainViewModel mainViewModel)
     {
       NameViews = new TemplateSelectorViewModel().Views;
       ContentPresenter = 0;
       _connectViewModel = connectViewModel;
       _connectViewModel.RightSendCommand = new DelegateCommand(ExecuteChangeOnMainView);
-      _mainMenuViewModel = mainMenuViewModel;
-      _mainMenuViewModel.Command = new DelegateCommand(ExecuteChangeOnConnectView);
-      _usersListViewModel = usersListViewModel;
+      _mainViewModel = mainViewModel;
+      _mainViewModel.MainMenuViewModel.Command = new DelegateCommand(ExecuteChangeOnConnectView);
+      _mainViewModel.MessagesViewModel.CommandSendMessage = new DelegateCommand(ExecuteSendMessage);
     }
 
     #endregion
@@ -66,24 +69,20 @@
 
     private void CreateClient()
     {
-      var client = new WebSocket("ws://192.168.37.228:65000/User1");
-      client.OnMessage += Client_OnMessage;
-      client.Connect();
-
-      Console.WriteLine("Enter message:");
-
-      client.Send("Hi!");
+      Client = new WsClient(_connectViewModel.UserName);
+      Client.Connect(_connectViewModel.IpAddress, _connectViewModel.Port);
     }
 
-    private static void Client_OnMessage(object sender, MessageEventArgs e)
+    private void ExecuteSendMessage()
     {
-      Console.WriteLine(e.Data);
-      Console.WriteLine("Enter message:");
+      Client.Send(_mainViewModel.MessagesViewModel.TextMessage);
+      _mainViewModel.MessagesViewModel.TextMessage = "";
     }
 
     private void ExecuteChangeOnConnectView()
     {
       ContentPresenter = (int)ViewSelect.ConnectView;
+      Client.Disconnect();
     }
 
     #endregion

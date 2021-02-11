@@ -1,12 +1,10 @@
 ﻿namespace Common.Network.Messages
 {
-  using _Enum_;
-
-  public class MessageContainer
+  public class Container
   {
     #region Properties
 
-    public EnumRequest Identifier { get; set; }
+    public DispatchType Identifier { get; set; }
 
     public object Payload { get; set; }
 

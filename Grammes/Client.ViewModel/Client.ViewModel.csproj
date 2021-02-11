@@ -67,8 +67,8 @@
     <Reference Include="Unity.Container, Version=5.11.8.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.Container.5.11.8\lib\net47\Unity.Container.dll</HintPath>
     </Reference>
-    <Reference Include="websocket-sharp, Version=1.0.2.59611, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
-      <HintPath>..\packages\WebSocketSharp.1.0.3-rc11\lib\websocket-sharp.dll</HintPath>
+    <Reference Include="websocket-sharp, Version=1.0.1.0, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebSocketSharp-netstandard.1.0.1\lib\net45\websocket-sharp.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -83,10 +83,10 @@
     <Compile Include="ViewModels\EventAggregator\UserNameEvent.cs" />
     <Compile Include="ViewModels\EventLogViewModel.cs" />
     <Compile Include="ViewModels\MainMenuViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MessagesViewModel\MessagesViewModel.cs" />
     <Compile Include="ViewModels\MessagesViewModel\MessageViewModel.cs" />
     <Compile Include="ViewModels\TotalViewModel.cs" />
-    <Compile Include="ViewModels\UsersListMessagesViewModel.cs" />
     <Compile Include="ViewModels\UsersListViewModel.cs" />
     <Compile Include="ViewModels\UsersList\TreeViewHelper.cs" />
     <Compile Include="ViewModels\WarningViewModel.cs" />
@@ -98,6 +98,10 @@
     <ProjectReference Include="..\Client.BusinessLogic\Client.BusinessLogic.csproj">
       <Project>{a6d3ae06-67c0-43d0-a854-96e6215407d7}</Project>
       <Name>Client.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Server.BusinessLogic\Server.BusinessLogic.csproj">
+      <Project>{A55021E6-D041-4AA9-8579-4B7271374EB1}</Project>
+      <Name>Server.BusinessLogic</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
