@@ -1,16 +1,20 @@
 ﻿namespace Client.ViewModel.ViewModels
 {
   using System;
-  using System.Net;
+  using System.Windows.Threading;
+
+  using global::Common.Network.Messages;
+
+  using MessagesViewModel;
 
   using Prism.Commands;
   using Prism.Mvvm;
 
   using Server.BusinessLogic;
 
-  using ViewModel.Common._Enum_;
+  using Unity;
 
-  using WebSocketSharp;
+  using ViewModel.Common._Enum_;
 
   public class TotalViewModel : BindableBase
   {
@@ -64,12 +68,10 @@
     private void ExecuteChangeOnMainView()
     {
       ContentPresenter = (int)ViewSelect.MainView;
-      CreateClient();
-    }
 
-    private void CreateClient()
-    {
       Client = new WsClient(_connectViewModel.UserName);
+      Client.ConnectionStateChanged += HandleConnectionStateChanged;
+      Client.MessageReceived += HandleMessageReceived;
       Client.Connect(_connectViewModel.IpAddress, _connectViewModel.Port);
     }
 
@@ -79,10 +81,24 @@
       _mainViewModel.MessagesViewModel.TextMessage = "";
     }
 
+    private void HandleMessageReceived(object sender, MessageReceivedEventArgs e)
+    {
+      _mainViewModel.MessagesViewModel.MessagesUserList.Add(new MessageViewModel(e.Message, DateTime.Now,
+        false, true));
+    }
+
+    private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs e)
+    {
+    }
+
     private void ExecuteChangeOnConnectView()
     {
-      ContentPresenter = (int)ViewSelect.ConnectView;
+      _mainViewModel.MessagesViewModel.MessagesUserList.Clear();
+      Client.ConnectionStateChanged -= HandleConnectionStateChanged;
+      Client.MessageReceived -= HandleMessageReceived;
       Client.Disconnect();
+
+      ContentPresenter = (int)ViewSelect.ConnectView;
     }
 
     #endregion

@@ -98,8 +98,9 @@
       _chatNameEa = eventAggregator;
       eventAggregator.GetEvent<UserNameEvent>().Subscribe(SetUserName);
 
-      /*<Hard-Code>*/
       General = new GeneralUser();
+      SelectChat = General;
+      /*<Hard-Code>*/
       OnlineUsers = new ObservableCollection<OnlineUser>
       {
         new OnlineUser("User1"),

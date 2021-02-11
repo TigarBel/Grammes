@@ -40,8 +40,8 @@
       BindViewModelToView<ConnectViewModel, ConnectView>();
 
       BindViewModelToView<MainMenuViewModel, MainMenuView>();
-      BindViewModelToView<UsersListViewModel, UsersListView>();
       BindViewModelToView<MessagesViewModel, MessagesView>();
+      BindViewModelToView<UsersListViewModel, UsersListView>();
       BindViewModelToView<EventLogViewModel, EventLogView>();
     }
 

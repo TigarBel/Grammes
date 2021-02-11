@@ -73,6 +73,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\AsyncObservableCollection.cs" />
     <Compile Include="Common\ViewModelBase.cs" />
     <Compile Include="Common\[Enum]\ViewSelect.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -98,6 +99,10 @@
     <ProjectReference Include="..\Client.BusinessLogic\Client.BusinessLogic.csproj">
       <Project>{a6d3ae06-67c0-43d0-a854-96e6215407d7}</Project>
       <Name>Client.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common.Network\Common.Network.csproj">
+      <Project>{42847006-d2dd-4a7d-864c-947c41cfe41d}</Project>
+      <Name>Common.Network</Name>
     </ProjectReference>
     <ProjectReference Include="..\Server.BusinessLogic\Server.BusinessLogic.csproj">
       <Project>{A55021E6-D041-4AA9-8579-4B7271374EB1}</Project>

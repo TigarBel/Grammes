@@ -10,12 +10,12 @@
 
     public MessagesViewModel.MessagesViewModel MessagesViewModel { get; private set; }
 
-    public MainViewModel(MainMenuViewModel mainMenuViewModel, UsersListViewModel usersListViewModel, 
-                         MessagesViewModel.MessagesViewModel messagesViewModel)
+    public MainViewModel(MainMenuViewModel mainMenuViewModel, MessagesViewModel.MessagesViewModel messagesViewModel,
+                         UsersListViewModel usersListViewModel)
     {
       MainMenuViewModel = mainMenuViewModel;
-      UsersListViewModel = usersListViewModel;
       MessagesViewModel = messagesViewModel;
+      UsersListViewModel = usersListViewModel;
     }
   }
 }

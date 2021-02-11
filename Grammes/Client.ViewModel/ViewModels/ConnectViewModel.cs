@@ -88,7 +88,7 @@
       IpAddress = "192.168.37.228";
       Port = "3000";
       UserName = "";
-      SelectTypeInterface = InterfaceType.TcpSocet.ToString();
+      SelectTypeInterface = InterfaceType.WebSocet.ToString();
     }
 
     #endregion
@@ -126,7 +126,7 @@
     {
       IpAddress = "192.168.37.228";
       Port = "3000";
-      SelectTypeInterface = InterfaceType.TcpSocet.ToString();
+      SelectTypeInterface = InterfaceType.WebSocet.ToString();
       UserName = "User1";
     }
 

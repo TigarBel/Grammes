@@ -13,13 +13,15 @@
   using Prism.Events;
   using Prism.Mvvm;
 
+  using ViewModel.Common;
+
   public class MessagesViewModel : BindableBase
   {
     #region Fields
 
     private string _chatName;
 
-    private ObservableCollection<MessageViewModel> _messagesUserList;
+    private AsyncObservableCollection<MessageViewModel> _messagesUserList;
 
     private DelegateCommand _commandSendMessage;
 
@@ -37,7 +39,7 @@
       set => SetProperty(ref _chatName, value);
     }
 
-    public ObservableCollection<MessageViewModel> MessagesUserList
+    public AsyncObservableCollection<MessageViewModel> MessagesUserList
     {
       get => _messagesUserList;
       set => SetProperty(ref _messagesUserList, value);
@@ -67,7 +69,7 @@
 
     public MessagesViewModel(IEventAggregator eventAggregator)
     {
-      MessagesUserList = new ObservableCollection<MessageViewModel>();
+      MessagesUserList = new AsyncObservableCollection<MessageViewModel>();
       CommandSendMessage = new DelegateCommand(ExecuteSendMessage);
       eventAggregator.GetEvent<ChatNameEvent>().Subscribe(SetChatName);
     }
