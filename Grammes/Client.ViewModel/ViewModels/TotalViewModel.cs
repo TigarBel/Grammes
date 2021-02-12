@@ -67,7 +67,6 @@
 
     private void ExecuteChangeOnMainView()
     {
-      ContentPresenter = (int)ViewSelect.MainView;
 
       Client = new WsClient(_connectViewModel.UserName);
       Client.ConnectionStateChanged += HandleConnectionStateChanged;
@@ -89,6 +88,14 @@
 
     private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs e)
     {
+      if (Client.IsConnected)
+      {
+        ContentPresenter = (int)ViewSelect.MainView;
+      }
+      else
+      {
+        _connectViewModel.UserName = "NO CONNECTION";
+      }
     }
 
     private void ExecuteChangeOnConnectView()

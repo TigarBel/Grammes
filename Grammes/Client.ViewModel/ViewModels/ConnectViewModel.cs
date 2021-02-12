@@ -14,6 +14,8 @@
   using Prism.Commands;
   using Prism.Events;
 
+  using Properties;
+
   public class ConnectViewModel : LeafViewModel
   {
     #region Fields
@@ -31,8 +33,6 @@
     };
 
     private string _userName;
-
-    private readonly Regex _regexIP = new Regex(@"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
 
     private readonly Regex _regexLogin = new Regex(@"^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$");
 
@@ -108,8 +108,6 @@
     public override void Check()
     {
       _errorsContainer.ClearErrors(() => IpAddress);
-      _errorsContainer.ClearErrors(() => Port);
-      _errorsContainer.ClearErrors(() => UserName);
 
       try
       {
@@ -120,9 +118,13 @@
         _errorsContainer.SetErrors(() => IpAddress, new[] { "IP address not is parsing" });
       }
 
+      _errorsContainer.ClearErrors(() => Port);
+
       if (Port < IPEndPoint.MinPort || Port > IPEndPoint.MaxPort) {
         _errorsContainer.SetErrors(() => Port, new[] { "Port not available" });
       }
+
+      _errorsContainer.ClearErrors(() => UserName);
 
       if (UserName?.Length == 0)
       {
@@ -134,11 +136,11 @@
         _errorsContainer.SetErrors(() => UserName, new[] { "Username up to 16 characters" });
       }
 
-      //if (!new Regex(UserSettings.USERNAME_MASK, RegexOptions.IgnoreCase).IsMatch(UserName)) {
-      //  _errorsContainer.SetErrors(
-      //    () => UserName,
-      //    new[] { string.Format(Resources.UserNameUnacceptableSymbols, UserSettings.USERNAME_UNACCEPTABLE_SYMBOLS) });
-      //}
+      if (!new Regex(Resources.UserNameUnacceptableSymbols, RegexOptions.IgnoreCase).IsMatch(UserName ?? string.Empty)) {
+        _errorsContainer.SetErrors(
+          () => UserName,
+          new[] { "Username unmasked" });
+      }
 
       IsAvailableRightButton = _errorsContainer.GetErrors().Count == 0;
     }

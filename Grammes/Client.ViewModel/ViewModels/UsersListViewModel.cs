@@ -10,6 +10,8 @@
   using Prism.Events;
   using Prism.Mvvm;
 
+  using ViewModel.Common;
+
   public class UsersListViewModel : BindableBase
   {
     #region Fields
@@ -18,11 +20,11 @@
 
     private GeneralUser _general;
 
-    private ObservableCollection<OnlineUser> _onlineUsers;
+    private AsyncObservableCollection<OnlineUser> _onlineUsers;
 
-    private ObservableCollection<OfflineUser> _offlineUsers;
+    private AsyncObservableCollection<OfflineUser> _offlineUsers;
 
-    private ObservableCollection<GroupUser> _groups;
+    private AsyncObservableCollection<GroupUser> _groups;
 
     private object _selectChat;
 
@@ -44,19 +46,19 @@
       set => SetProperty(ref _general, value);
     }
 
-    public ObservableCollection<OnlineUser> OnlineUsers
+    public AsyncObservableCollection<OnlineUser> OnlineUsers
     {
       get => _onlineUsers;
       set => SetProperty(ref _onlineUsers, value);
     }
 
-    public ObservableCollection<OfflineUser> OfflineUsers
+    public AsyncObservableCollection<OfflineUser> OfflineUsers
     {
       get => _offlineUsers;
       set => SetProperty(ref _offlineUsers, value);
     }
 
-    public ObservableCollection<GroupUser> Groups
+    public AsyncObservableCollection<GroupUser> Groups
     {
       get => _groups;
       set => SetProperty(ref _groups, value);
@@ -101,19 +103,19 @@
       General = new GeneralUser();
       SelectChat = General;
       /*<Hard-Code>*/
-      OnlineUsers = new ObservableCollection<OnlineUser>
+      OnlineUsers = new AsyncObservableCollection<OnlineUser>
       {
         new OnlineUser("User1"),
         new OnlineUser("User3"),
         new OnlineUser("User13")
       };
-      OfflineUsers = new ObservableCollection<OfflineUser>
+      OfflineUsers = new AsyncObservableCollection<OfflineUser>
       {
         new OfflineUser("User2"),
         new OfflineUser("User4"),
         new OfflineUser("User24")
       };
-      Groups = new ObservableCollection<GroupUser>
+      Groups = new AsyncObservableCollection<GroupUser>
       {
         new GroupUser("User2"),
         new GroupUser("User4"),
