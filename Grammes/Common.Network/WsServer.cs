@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Server.BusinessLogic
+﻿namespace Common.Network
 {
+  using System;
   using System.Collections.Concurrent;
+  using System.Linq;
   using System.Net;
 
-  using Common.Network.Messages;
+  using Messages;
 
   using Newtonsoft.Json.Linq;
 
@@ -87,7 +83,7 @@ namespace Server.BusinessLogic
       switch (container.Identifier) {
         case DispatchType.ConnectionRequest:
           var connectionRequest = ((JObject)container.Payload).ToObject(typeof(ConnectionRequestContainer)) as ConnectionRequestContainer;
-          var connectionResponse = new ConnectionResponseContainer {Content = new Response(ResponseStatus.Ok,"")};
+          var connectionResponse = new ConnectionResponseContainer {Content = new Response(ResponseStatus.Ok,"Подключился")};
           if (_connections.Values.Any(item => item.Login == connectionRequest.Content)) {
             connectionResponse.Content = new Response(ResponseStatus.Failure, 
               $"Клиент с именем '{connectionRequest.Content}' уже подключен.");
@@ -102,6 +98,12 @@ namespace Server.BusinessLogic
           var messageRequest = ((JObject)container.Payload).ToObject(typeof(MessageRequestContainer)) as MessageRequestContainer;
           MessageReceived?.Invoke(this, new MessageReceivedEventArgs(connection.Login, messageRequest.Content));
           break;
+        case DispatchType.ConnectionResponse:
+          break;
+        case DispatchType.MessageBroadcast:
+          break;
+        default:
+          throw new ArgumentOutOfRangeException();
       }
     }
 

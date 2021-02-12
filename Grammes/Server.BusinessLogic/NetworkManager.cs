@@ -3,6 +3,7 @@
   using System;
   using System.Net;
 
+  using Common.Network;
   using Common.Network.Messages;
 
   using Serializer;

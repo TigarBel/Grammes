@@ -1,18 +1,14 @@
 ﻿namespace Client.ViewModel.ViewModels
 {
   using System;
-  using System.Windows.Threading;
 
+  using global::Common.Network;
   using global::Common.Network.Messages;
 
   using MessagesViewModel;
 
   using Prism.Commands;
   using Prism.Mvvm;
-
-  using Server.BusinessLogic;
-
-  using Unity;
 
   using ViewModel.Common._Enum_;
 
@@ -67,11 +63,10 @@
 
     private void ExecuteChangeOnMainView()
     {
-
       Client = new WsClient(_connectViewModel.UserName);
       Client.ConnectionStateChanged += HandleConnectionStateChanged;
       Client.MessageReceived += HandleMessageReceived;
-      Client.Connect(_connectViewModel.IpAddress, _connectViewModel.Port);
+      Client.ConnectAsync(_connectViewModel.IpAddress, _connectViewModel.Port);
     }
 
     private void ExecuteSendMessage()
@@ -79,26 +74,38 @@
       Client.Send(_mainViewModel.MessagesViewModel.TextMessage);
       _mainViewModel.MessagesViewModel.TextMessage = "";
     }
-
+    
     private void HandleMessageReceived(object sender, MessageReceivedEventArgs e)
     {
-      _mainViewModel.MessagesViewModel.MessagesUserList.Add(new MessageViewModel(e.Message, DateTime.Now,
-        false, true));
+      if (string.IsNullOrEmpty(e.Message)) {
+        _mainViewModel.MessagesViewModel.MessagesUserList.Add(new MessageViewModel("Connect", DateTime.Now,
+          false, true));
+      }
+      else {
+        _mainViewModel.MessagesViewModel.MessagesUserList.Add(new MessageViewModel(e.Message, DateTime.Now,
+          false, true));
+      }
     }
 
     private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs e)
     {
-      if (Client.IsConnected)
+      if (e.Connected)
       {
         ContentPresenter = (int)ViewSelect.MainView;
       }
       else
       {
-        _connectViewModel.UserName = "NO CONNECTION";
+        _connectViewModel.UserName = "NO|CONNECTION";
+        LostConnection();
       }
     }
 
     private void ExecuteChangeOnConnectView()
+    {
+      LostConnection();
+    }
+
+    private void LostConnection()
     {
       _mainViewModel.MessagesViewModel.MessagesUserList.Clear();
       Client.ConnectionStateChanged -= HandleConnectionStateChanged;

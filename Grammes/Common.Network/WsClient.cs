@@ -1,10 +1,11 @@
-﻿namespace Server.BusinessLogic
+﻿namespace Common.Network
 {
   using System;
   using System.Collections.Concurrent;
   using System.Threading;
+  using System.Threading.Tasks;
 
-  using Common.Network.Messages;
+  using Messages;
 
   using Newtonsoft.Json;
   using Newtonsoft.Json.Linq;
@@ -50,7 +51,7 @@
 
     #region Methods
 
-    public void Connect(string address, int port)
+    public async void ConnectAsync(string address, int port)
     {
       if (IsConnected)
       {
@@ -62,6 +63,7 @@
       _socket.OnClose += OnClose;
       _socket.OnMessage += OnMessage;
       _socket.ConnectAsync();
+      await Task.Run(Login);
     }
 
     public void Disconnect()
@@ -96,6 +98,7 @@
 
     private void Login()
     {
+      Thread.Sleep(500);
       _sendQueue.Enqueue(new ConnectionRequestContainer(_login).GetContainer());
 
       if (Interlocked.CompareExchange(ref _sending, 1, 0) == 0)
@@ -155,7 +158,6 @@
             _login = string.Empty;
             MessageReceived?.Invoke(this, new MessageReceivedEventArgs(_login, connectionResponse.Content.Reason));
           }
-
           ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, true));
           break;
         case DispatchType.MessageBroadcast:
@@ -173,7 +175,6 @@
     private void OnOpen(object sender, EventArgs e)
     {
       ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, true));
-      Login();
     }
 
     #endregion
