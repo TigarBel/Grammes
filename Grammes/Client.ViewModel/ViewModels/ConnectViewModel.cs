@@ -1,6 +1,8 @@
 ﻿namespace Client.ViewModel.ViewModels
 {
+  using System;
   using System.Collections.Generic;
+  using System.Net;
   using System.Text.RegularExpressions;
 
   using BusinessLogic.Model.Common;
@@ -18,7 +20,7 @@
 
     private string _ipAddress;
 
-    private string _port;
+    private int _port;
 
     private string _selectTypeInterface;
 
@@ -49,13 +51,21 @@
     public string IpAddress
     {
       get => _ipAddress;
-      set => SetProperty(ref _ipAddress, value);
+      set
+      {
+        SetProperty(ref _ipAddress, value);
+        Check();
+      }
     }
 
-    public string Port
+    public int Port
     {
       get => _port;
-      set => SetProperty(ref _port, value);
+      set
+      {
+        SetProperty(ref _port, value);
+        Check();
+      }
     }
 
     public string SelectTypeInterface
@@ -86,7 +96,7 @@
       LeftSendCommand = new DelegateCommand(ExecuteSendCommandTest);
       IsAvailableLeftButton = true;
       IpAddress = "192.168.37.228";
-      Port = "3000";
+      Port = 3000;
       UserName = "";
       SelectTypeInterface = InterfaceType.WebSocet.ToString();
     }
@@ -97,21 +107,32 @@
 
     public override void Check()
     {
+      _errorsContainer.ClearErrors(() => IpAddress);
+      _errorsContainer.ClearErrors(() => Port);
       _errorsContainer.ClearErrors(() => UserName);
 
-      if (UserName.Length == 0)
+      try
+      {
+        IPAddress.Parse(IpAddress);
+      }
+      catch (FormatException)
+      {
+        _errorsContainer.SetErrors(() => IpAddress, new[] { "IP address not is parsing" });
+      }
+
+      if (Port < IPEndPoint.MinPort || Port > IPEndPoint.MaxPort) {
+        _errorsContainer.SetErrors(() => Port, new[] { "Port not available" });
+      }
+
+      if (UserName?.Length == 0)
       {
         _errorsContainer.SetErrors(() => UserName, new[] { "User not entered" });
       }
 
-      if (UserName.Length > 16)
+      if (UserName?.Length > 16)
       {
         _errorsContainer.SetErrors(() => UserName, new[] { "Username up to 16 characters" });
       }
-
-      //if (!IsNameUnique()) {
-      //  _errorsContainer.SetErrors(() => UserName, new[] { Resources.NameMustBeUnique });
-      //}
 
       //if (!new Regex(UserSettings.USERNAME_MASK, RegexOptions.IgnoreCase).IsMatch(UserName)) {
       //  _errorsContainer.SetErrors(
@@ -125,7 +146,7 @@
     private void ExecuteSendCommandTest()
     {
       IpAddress = "192.168.37.228";
-      Port = "3000";
+      Port = 3000;
       SelectTypeInterface = InterfaceType.WebSocet.ToString();
       UserName = "User1";
     }

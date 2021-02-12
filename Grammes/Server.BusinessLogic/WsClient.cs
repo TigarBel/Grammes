@@ -50,7 +50,7 @@
 
     #region Methods
 
-    public void Connect(string address, string port)
+    public void Connect(string address, int port)
     {
       if (IsConnected)
       {
