@@ -1,95 +1,49 @@
 ﻿namespace Client.ViewModel.ViewModels.Common
 {
-  using System;
-
   using Prism.Commands;
 
   using ViewModel.Common;
 
-  public class LeafViewModel : ViewModelBase
+  public abstract class LeafViewModel : ViewModelBase
   {
     #region Fields
 
-    private string _leftButtonText;
+    private string _buttonText;
 
-    private string _rightButtonText;
+    private DelegateCommand _buttonCommand;
 
-    private DelegateCommand _leftButtonCommand;
-
-    private DelegateCommand _rightButtonCommand;
-
-    private bool _isAvailableLeftButton;
-
-    private bool _isAvailableRightButton;
+    private bool _isAvailableButton;
 
     #endregion
 
     #region Properties
-
-    public string LeftButtonText
+    
+    public string ButtonText
     {
-      get => _leftButtonText;
-      set => SetProperty(ref _leftButtonText, value);
+      get => _buttonText;
+      set => SetProperty(ref _buttonText, value);
     }
-
-    public string RightButtonText
+    
+    public DelegateCommand SendCommand
     {
-      get => _rightButtonText;
-      set => SetProperty(ref _rightButtonText, value);
+      get => _buttonCommand;
+      set => SetProperty(ref _buttonCommand, value);
     }
-
-    public DelegateCommand LeftSendCommand
+    
+    public bool IsAvailableButton
     {
-      get => _leftButtonCommand;
-      set => SetProperty(ref _leftButtonCommand, value);
-    }
-
-    public DelegateCommand RightSendCommand
-    {
-      get => _rightButtonCommand;
-      set => SetProperty(ref _rightButtonCommand, value);
-    }
-
-    public bool IsAvailableLeftButton
-    {
-      get => _isAvailableLeftButton;
-      set => SetProperty(ref _isAvailableLeftButton, value);
-    }
-
-    public bool IsAvailableRightButton
-    {
-      get => _isAvailableRightButton;
-      set => SetProperty(ref _isAvailableRightButton, value);
+      get => _isAvailableButton;
+      set => SetProperty(ref _isAvailableButton, value);
     }
 
     #endregion
 
     #region Constructors
 
-    public LeafViewModel(string buttonText)
+    protected LeafViewModel(string buttonText)
     {
-      LeftButtonText = null;
-      LeftSendCommand = null;
-
-      RightButtonText = buttonText;
-      RightSendCommand = null;
-    }
-
-    public LeafViewModel(string leftButtonText, string rightButtonText)
-    {
-      LeftButtonText = leftButtonText;
-      RightButtonText = rightButtonText;
-      LeftSendCommand = null;
-      RightSendCommand = null;
-    }
-
-    #endregion
-
-    #region Methods
-
-    public override void Check()
-    {
-      throw new NotImplementedException();
+      ButtonText = buttonText;
+      SendCommand = null;
     }
 
     #endregion

@@ -1,21 +1,29 @@
 ﻿namespace Common.Network.Messages
 {
+  using System;
+
   public abstract class BaseContainer<TClassContent>
   {
     #region Properties
 
+    public DispatchType Request { get; private set; }
+
+    protected string _author;
+
+    protected string _target;
+
+    public DateTime TimePoint { get; private set; }
+
     public TClassContent Content { get; set; }
-
-    public DispatchType Request { get; set; }
-
     #endregion
 
     #region Constructors
 
-    protected BaseContainer(TClassContent content, DispatchType request)
+    protected BaseContainer(DispatchType request, DateTime timePoint, TClassContent content)
     {
-      Content = content;
       Request = request;
+      TimePoint = timePoint;
+      Content = content;
     }
 
     #endregion

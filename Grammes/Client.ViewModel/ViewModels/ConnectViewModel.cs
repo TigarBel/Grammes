@@ -28,8 +28,8 @@
 
     private List<string> _typeInterfaceList = new List<string>
     {
-      InterfaceType.WebSocet.ToString(),
-      InterfaceType.TcpSocet.ToString()
+      InterfaceType.WebSocket.ToString(),
+      InterfaceType.TcpSocket.ToString()
     };
 
     private string _userName;
@@ -81,7 +81,7 @@
       {
         SetProperty(ref _userName, value);
         Check();
-        _userNameEa.GetEvent<UserNameEvent>().Publish(_userName);
+        _userNameEa.GetEvent<ChannelNameEvent>().Publish(_userName);
       }
     }
 
@@ -90,15 +90,13 @@
     #region Constructors
 
     public ConnectViewModel(IEventAggregator eventAggregator)
-      : base("Test", "Connect")
+      : base("Connect")
     {
       _userNameEa = eventAggregator;
-      LeftSendCommand = new DelegateCommand(ExecuteSendCommandTest);
-      IsAvailableLeftButton = true;
       IpAddress = "192.168.37.228";
       Port = 3000;
       UserName = "";
-      SelectTypeInterface = InterfaceType.WebSocet.ToString();
+      SelectTypeInterface = InterfaceType.WebSocket.ToString();
     }
 
     #endregion
@@ -120,7 +118,8 @@
 
       _errorsContainer.ClearErrors(() => Port);
 
-      if (Port < IPEndPoint.MinPort || Port > IPEndPoint.MaxPort) {
+      if (Port < IPEndPoint.MinPort || Port > IPEndPoint.MaxPort)
+      {
         _errorsContainer.SetErrors(() => Port, new[] { "Port not available" });
       }
 
@@ -136,26 +135,17 @@
         _errorsContainer.SetErrors(() => UserName, new[] { "Username up to 16 characters" });
       }
 
-      if (!new Regex(Resources.UserNameUnacceptableSymbols, RegexOptions.IgnoreCase).IsMatch(UserName ?? string.Empty)) {
-        _errorsContainer.SetErrors(
-          () => UserName,
-          new[] { "Username unmasked" });
+      if (!new Regex(Resources.UserNameUnacceptableSymbols, RegexOptions.IgnoreCase).IsMatch(UserName ?? string.Empty))
+      {
+        _errorsContainer.SetErrors(() => UserName, new[] { "Username unmasked" });
       }
 
-      IsAvailableRightButton = _errorsContainer.GetErrors().Count == 0;
-    }
-
-    private void ExecuteSendCommandTest()
-    {
-      IpAddress = "192.168.37.228";
-      Port = 3000;
-      SelectTypeInterface = InterfaceType.WebSocet.ToString();
-      UserName = "User1";
+      IsAvailableButton = _errorsContainer.GetErrors().Count == 0;
     }
 
     private void IsAvailable()
     {
-      IsAvailableRightButton = true;
+      IsAvailableButton = true;
     }
 
     #endregion

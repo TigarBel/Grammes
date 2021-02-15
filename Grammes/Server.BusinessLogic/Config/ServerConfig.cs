@@ -1,18 +1,18 @@
-﻿namespace Server.BusinessLogic.Serializer
+﻿namespace Server.BusinessLogic.Config
 {
   using System;
   using System.IO;
   using System.Net;
 
-  using Address;
+  using BusinessLogic.ServerConfig.Address;
 
   using Newtonsoft.Json;
 
-  public class ConfSerialize
+  public class ServerConfig
   {
     #region Methods
 
-    public void Serialize(IPEndPoint address)
+    public void SetAddress(IPEndPoint address)
     {
       try
       {
@@ -25,7 +25,7 @@
       }
     }
 
-    public IPEndPoint Deserialize()
+    public IPEndPoint GetAddress()
     {
       try
       {

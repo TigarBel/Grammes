@@ -6,15 +6,33 @@
              xmlns:mvvm="http://prismlibrary.com/"
              mvvm:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style TargetType="Border" x:Key="BorderStyle">
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style TargetType="Label" x:Key="LabelStyle">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+
+        <Style TargetType="Button" x:Key="ButtonStyle">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Width" Value="50"/>
+        </Style>
+    </UserControl.Resources>
     <Grid Background="LightGray">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
-        <Border Grid.ColumnSpan="3" BorderBrush="Black" BorderThickness="1"/>
-        <Label Grid.Column="0" Content="To disconnect" FontSize="12" HorizontalAlignment="Right"></Label>
-        <Button Grid.Column="1" Width="50" Background="Transparent" HorizontalAlignment="Right" BorderBrush="Black"
+        <Border Grid.ColumnSpan="3" Style="{StaticResource BorderStyle}"/>
+        <Label Grid.Column="0" Content="To disconnect" Style="{StaticResource LabelStyle}"></Label>
+        <Button Grid.Column="1" Style="{StaticResource ButtonStyle}"
                 Command="{Binding Command}">
             <Image Source="Resource/DisconnectButton.png"/>
         </Button>

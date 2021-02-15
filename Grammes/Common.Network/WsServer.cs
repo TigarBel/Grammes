@@ -2,12 +2,16 @@
 {
   using System;
   using System.Collections.Concurrent;
+  using System.Collections.Generic;
   using System.Linq;
   using System.Net;
 
   using Messages;
+  using Messages.EventLog;
 
   using Newtonsoft.Json.Linq;
+
+  using Properties;
 
   using WebSocketSharp.Server;
 
@@ -20,36 +24,39 @@
 
     private WebSocketServer _server;
 
-    #endregion Fields
+    private readonly string _name;
+
+    #endregion
 
     #region Events
 
     public event EventHandler<ConnectionStateChangedEventArgs> ConnectionStateChanged;
     public event EventHandler<MessageReceivedEventArgs> MessageReceived;
 
-    #endregion Events
+    #endregion
 
     #region Constructors
 
     public WsServer(IPEndPoint listenAddress)
     {
+      _name = Resources.ServerName;
       _listenAddress = listenAddress;
       _connections = new ConcurrentDictionary<Guid, WsConnection>();
     }
 
-    #endregion Constructors
+    #endregion
 
     #region Methods
 
     public void Start()
     {
       _server = new WebSocketServer(_listenAddress.Address, _listenAddress.Port, false);
-      //_server.AddWebSocketService("/", () => new WsConnection(this));
-      _server.AddWebSocketService<WsConnection>("/",
-          client =>
-          {
-            client.AddServer(this);
-          });
+      _server.AddWebSocketService<WsConnection>(
+        "/",
+        client =>
+        {
+          client.AddServer(this);
+        });
       _server.Start();
     }
 
@@ -58,19 +65,21 @@
       _server?.Stop();
       _server = null;
 
-      var connections = _connections.Select(item => item.Value).ToArray();
-      foreach (var connection in connections) {
+      WsConnection[] connections = _connections.Select(item => item.Value).ToArray();
+      foreach (WsConnection connection in connections)
+      {
         connection.Close();
       }
 
       _connections.Clear();
     }
 
-    public void Send(string message)
+    public void Send<TClass>(BaseContainer<TClass> message)
     {
-      var messageBroadcast = new MessageBroadcastContainer(message).GetContainer();
+      Container messageBroadcast = message.GetContainer();
 
-      foreach (var connection in _connections) {
+      foreach (KeyValuePair<Guid, WsConnection> connection in _connections)
+      {
         connection.Value.Send(messageBroadcast);
       }
     }
@@ -78,30 +87,50 @@
     internal void HandleMessage(Guid clientId, Container container)
     {
       if (!_connections.TryGetValue(clientId, out WsConnection connection))
+      {
         return;
+      }
 
-      switch (container.Identifier) {
+      switch (container.Identifier)
+      {
         case DispatchType.ConnectionRequest:
-          var connectionRequest = ((JObject)container.Payload).ToObject(typeof(ConnectionRequestContainer)) as ConnectionRequestContainer;
-          var connectionResponse = new ConnectionResponseContainer {Content = new Response(ResponseStatus.Ok,"Подключился")};
-          if (_connections.Values.Any(item => item.Login == connectionRequest.Content)) {
-            connectionResponse.Content = new Response(ResponseStatus.Failure, 
-              $"Клиент с именем '{connectionRequest.Content}' уже подключен.");
-            connection.Send(connectionResponse.GetContainer());
-          } else {
-            connection.Login = connectionRequest.Content;
-            connection.Send(connectionResponse.GetContainer());
-            ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(connection.Login, true));
+          if (((JObject)container.Payload).ToObject(typeof(ConnectionRequestContainer)) is ConnectionRequestContainer connectionRequest)
+          {
+            var connectionResponse = new ConnectionResponseContainer(
+              DateTime.Now,
+              new Response(ResponseStatus.Ok, "Connected"));
+
+            if (_connections.Values.Any(item => item.Login == connectionRequest.Content))
+            {
+              connectionResponse.Content = new Response(ResponseStatus.Failure, 
+                $"Client with name '{connectionRequest.Content}' yet connect.");
+              connection.Send(connectionResponse.GetContainer());
+            }
+            else
+            {
+              connection.Login = connectionRequest.Content;
+              connection.Send(connectionResponse.GetContainer());
+              ConnectionStateChanged?.Invoke(
+                this,
+                new ConnectionStateChangedEventArgs(
+                  connection.Login,
+                  true,
+                  new EventLogMessage(connection.Login, true, DispatchType.ConnectionRequest, 
+                    connectionResponse.Content.Reason, DateTime.Now)));
+            }
+          }
+
+          break;
+
+        case DispatchType.MessageRequest:
+          if (((JObject)container.Payload).ToObject(typeof(MessageRequestContainer)) is MessageRequestContainer messageRequest) {
+            MessageReceived?.Invoke(this, new MessageReceivedEventArgs(connection.Login, messageRequest.Content));
           }
           break;
-        case DispatchType.MessageRequest:
-          var messageRequest = ((JObject)container.Payload).ToObject(typeof(MessageRequestContainer)) as MessageRequestContainer;
-          MessageReceived?.Invoke(this, new MessageReceivedEventArgs(connection.Login, messageRequest.Content));
-          break;
+
         case DispatchType.ConnectionResponse:
           break;
-        case DispatchType.MessageBroadcast:
-          break;
+
         default:
           throw new ArgumentOutOfRangeException();
       }
@@ -115,9 +144,16 @@
     internal void FreeConnection(Guid connectionId)
     {
       if (_connections.TryRemove(connectionId, out WsConnection connection) && !string.IsNullOrEmpty(connection.Login))
-        ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(connection.Login, false));
+      {
+        ConnectionStateChanged?.Invoke(
+          this,
+          new ConnectionStateChangedEventArgs(
+            connection.Login,
+            false,
+            new EventLogMessage(connection.Login, true, DispatchType.ConnectionResponse, "Disconnect", DateTime.Now)));
+      }
     }
 
-    #endregion Methods
+    #endregion
   }
 }

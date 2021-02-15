@@ -22,6 +22,18 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="DataGridStyle" TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="DarkGray"/>
+            <Setter Property="RowBackground" Value="LightGray"/>
+            <Setter Property="AlternatingRowBackground" Value="White"/>
+        </Style>
+
+        <Style x:Key="BorderStyle" TargetType="Border">
+            <Setter Property="BorderBrush" Value="SlateGray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -41,16 +53,17 @@
             </RowDefinition>
         </Grid.RowDefinitions>
         <Expander x:Name="ExpanderEventLog" Header="EventLog">
-            <DataGrid Name="logGrid"  AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray"
-                      RowBackground="LightGray" AlternatingRowBackground="White" 
+            <DataGrid Name="logGrid" Style="{StaticResource DataGridStyle}"
                       ItemsSource="{Binding Events}" ItemContainerStyle="{StaticResource ContainerStyle}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Width="3*"  Binding="{Binding Path=Event}"/>
-                    <DataGridTextColumn Width="1*"  Binding="{Binding Path=Time}"/>
+                    <DataGridTextColumn Binding="{Binding Path=SenderName}"/>
+                    <DataGridTextColumn Binding="{Binding Path=Type}"/>
+                    <DataGridTextColumn Binding="{Binding Path=Text}"/>
+                    <DataGridTextColumn Binding="{Binding Path=Time}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Expander>
-        <Border BorderBrush="SlateGray" BorderThickness="1"/>
+        <Border Style="{StaticResource BorderStyle}"/>
 
     </Grid>
 </UserControl>

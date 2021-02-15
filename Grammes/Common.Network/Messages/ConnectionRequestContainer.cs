@@ -1,11 +1,13 @@
 ﻿namespace Common.Network.Messages
 {
+  using System;
+
   public class ConnectionRequestContainer : BaseContainer<string>
   {
     #region Constructors
 
-    public ConnectionRequestContainer(string login)
-      : base(login, DispatchType.ConnectionRequest)
+    public ConnectionRequestContainer(DateTime timeNow, string author)
+      : base(DispatchType.ConnectionRequest, timeNow, author)
     {
     }
 

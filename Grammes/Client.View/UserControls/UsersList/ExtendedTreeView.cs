@@ -1,6 +1,5 @@
 ﻿namespace Client.View.UserControls.UsersList
 {
-  using System;
   using System.Windows;
   using System.Windows.Controls;
 
@@ -14,7 +13,7 @@
       typeof(ExtendedTreeView),
       new FrameworkPropertyMetadata(default(object))
       {
-        BindsTwoWayByDefault = true 
+        BindsTwoWayByDefault = true
       });
 
     #endregion

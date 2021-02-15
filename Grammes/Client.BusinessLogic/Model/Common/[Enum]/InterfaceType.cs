@@ -2,7 +2,7 @@
 {
   public enum InterfaceType
   {
-    WebSocet = 0,
-    TcpSocet
+    WebSocket = 0,
+    TcpSocket
   }
 }

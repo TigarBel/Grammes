@@ -1,12 +1,16 @@
 ﻿namespace Common.Network.Messages
 {
+  using System;
+
   public class MessageRequestContainer : BaseContainer<string>
   {
     #region Constructors
 
-    public MessageRequestContainer(string message)
-      : base(message, DispatchType.MessageRequest)
+    public MessageRequestContainer(string author, string target, DateTime timeNow, string message)
+      : base(DispatchType.MessageRequest, timeNow, message)
     {
+      _author = author;
+      _target = target;
     }
 
     #endregion

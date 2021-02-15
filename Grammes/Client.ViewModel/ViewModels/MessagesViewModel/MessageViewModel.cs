@@ -9,7 +9,7 @@
     #region Fields
 
     private bool _isOutgoingMessage;
-    
+
     private bool _isReadingMessage;
 
     #endregion

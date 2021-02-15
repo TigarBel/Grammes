@@ -1,9 +1,10 @@
 ﻿namespace Client.ViewModel.ViewModels
 {
-  using System.Collections.ObjectModel;
+  using System.Collections.Generic;
   using System.Windows.Controls;
 
-  using BusinessLogic.Model.UsersListModel;
+  using BusinessLogic.Model.ChannelsListModel;
+  using BusinessLogic.Model.ChannelsListModel.BaseUserChannel;
 
   using EventAggregator;
 
@@ -18,13 +19,13 @@
 
     private string _userName;
 
-    private GeneralUser _general;
+    private GeneralChannel _general;
 
-    private AsyncObservableCollection<OnlineUser> _onlineUsers;
+    private AsyncObservableCollection<OnlineChannel> _onlineUsers;
 
-    private AsyncObservableCollection<OfflineUser> _offlineUsers;
+    private AsyncObservableCollection<OfflineChannel> _offlineUsers;
 
-    private AsyncObservableCollection<GroupUser> _groups;
+    private AsyncObservableCollection<GroupChannel> _groups;
 
     private object _selectChat;
 
@@ -40,25 +41,25 @@
       set => SetProperty(ref _userName, "Your name: " + value);
     }
 
-    public GeneralUser General
+    public GeneralChannel General
     {
       get => _general;
       set => SetProperty(ref _general, value);
     }
 
-    public AsyncObservableCollection<OnlineUser> OnlineUsers
+    public AsyncObservableCollection<OnlineChannel> OnlineUsers
     {
       get => _onlineUsers;
       set => SetProperty(ref _onlineUsers, value);
     }
 
-    public AsyncObservableCollection<OfflineUser> OfflineUsers
+    public AsyncObservableCollection<OfflineChannel> OfflineUsers
     {
       get => _offlineUsers;
       set => SetProperty(ref _offlineUsers, value);
     }
 
-    public AsyncObservableCollection<GroupUser> Groups
+    public AsyncObservableCollection<GroupChannel> Groups
     {
       get => _groups;
       set => SetProperty(ref _groups, value);
@@ -73,14 +74,14 @@
 
         switch (value)
         {
-          case BaseUser user:
+          case BaseChannel user:
           {
             _chatNameEa.GetEvent<ChatNameEvent>().Publish(user.ToString());
             break;
           }
           case TreeViewItem item:
           {
-            if (item.Header is BaseUser)
+            if (item.Header is BaseChannel)
             {
               _chatNameEa.GetEvent<ChatNameEvent>().Publish(item.Header.ToString());
             }
@@ -98,34 +99,88 @@
     public UsersListViewModel(IEventAggregator eventAggregator)
     {
       _chatNameEa = eventAggregator;
-      eventAggregator.GetEvent<UserNameEvent>().Subscribe(SetUserName);
+      eventAggregator.GetEvent<ChannelNameEvent>().Subscribe(SetUserName);
 
-      General = new GeneralUser();
+      General = new GeneralChannel();
       SelectChat = General;
       /*<Hard-Code>*/
-      OnlineUsers = new AsyncObservableCollection<OnlineUser>
+      OnlineUsers = new AsyncObservableCollection<OnlineChannel>
       {
-        new OnlineUser("User1"),
-        new OnlineUser("User3"),
-        new OnlineUser("User13")
+        new OnlineChannel("User1"),
+        new OnlineChannel("User3"),
+        new OnlineChannel("User13")
       };
-      OfflineUsers = new AsyncObservableCollection<OfflineUser>
+      OfflineUsers = new AsyncObservableCollection<OfflineChannel>
       {
-        new OfflineUser("User2"),
-        new OfflineUser("User4"),
-        new OfflineUser("User24")
+        new OfflineChannel("User2"),
+        new OfflineChannel("User4"),
+        new OfflineChannel("User24")
       };
-      Groups = new AsyncObservableCollection<GroupUser>
+      Groups = new AsyncObservableCollection<GroupChannel>
       {
-        new GroupUser("User2"),
-        new GroupUser("User4"),
-        new GroupUser("User24"),
-        new GroupUser("User224"),
-        new GroupUser("User424"),
-        new GroupUser("User2424"),
-        new GroupUser("User242"),
-        new GroupUser("User442"),
-        new GroupUser("User2442")
+        new GroupChannel(
+          "User2",
+          new List<UserChannel>
+          {
+            new OfflineChannel("User1"),
+            new OfflineChannel("User1")
+          }),
+        new GroupChannel(
+          "User4",
+          new List<UserChannel>
+          {
+            new OfflineChannel("User1"),
+            new OfflineChannel("User1")
+          }),
+        new GroupChannel(
+          "User24",
+          new List<UserChannel>
+          {
+            new OfflineChannel("User1"),
+            new OfflineChannel("User1")
+          }),
+        new GroupChannel(
+          "User224",
+          new List<UserChannel>
+          {
+            new OfflineChannel("User1"),
+            new OfflineChannel("User1")
+          }),
+        new GroupChannel(
+          "User424",
+          new List<UserChannel>
+          {
+            new OfflineChannel("User1"),
+            new OfflineChannel("User1")
+          }),
+        new GroupChannel(
+          "User2424",
+          new List<UserChannel>
+          {
+            new OfflineChannel("User1"),
+            new OfflineChannel("User1")
+          }),
+        new GroupChannel(
+          "User242",
+          new List<UserChannel>
+          {
+            new OfflineChannel("User1"),
+            new OfflineChannel("User1")
+          }),
+        new GroupChannel(
+          "User442",
+          new List<UserChannel>
+          {
+            new OfflineChannel("User1"),
+            new OfflineChannel("User1")
+          }),
+        new GroupChannel(
+          "User2442",
+          new List<UserChannel>
+          {
+            new OfflineChannel("User1"),
+            new OfflineChannel("User1")
+          })
       };
       /*</Hard-Code>*/
 

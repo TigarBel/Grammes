@@ -39,9 +39,9 @@
             <Grid>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <messagesViews:MessageUserView  Grid.ColumnSpan="2" Grid.Column="0"/>
 
@@ -97,7 +97,7 @@
 
         <Label Content="{Binding ChatName}" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-        <ListBox Grid.Row="1" HorizontalContentAlignment="Stretch"
+        <ListBox Grid.Row="1"
             ItemContainerStyle="{StaticResource ContainerStyle}"
             ItemsSource="{Binding MessagesUserList}"/>
 
@@ -119,4 +119,3 @@
         </Button>
     </Grid>
 </UserControl>
-<!--Content="Send"-->

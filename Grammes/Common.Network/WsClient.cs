@@ -6,6 +6,7 @@
   using System.Threading.Tasks;
 
   using Messages;
+  using Messages.EventLog;
 
   using Newtonsoft.Json;
   using Newtonsoft.Json.Linq;
@@ -62,8 +63,8 @@
       _socket.OnOpen += OnOpen;
       _socket.OnClose += OnClose;
       _socket.OnMessage += OnMessage;
-      _socket.ConnectAsync();
-      await Task.Run(Login);
+      await Task.Run(_socket.ConnectAsync);
+      Login();
     }
 
     public void Disconnect()
@@ -86,9 +87,9 @@
       _login = string.Empty;
     }
 
-    public void Send(string message)
+    public void Send<TClass>(BaseContainer<TClass> message)
     {
-      _sendQueue.Enqueue(new MessageRequestContainer(message).GetContainer());
+      _sendQueue.Enqueue(message.GetContainer());
 
       if (Interlocked.CompareExchange(ref _sending, 1, 0) == 0)
       {
@@ -98,8 +99,7 @@
 
     private void Login()
     {
-      Thread.Sleep(500);
-      _sendQueue.Enqueue(new ConnectionRequestContainer(_login).GetContainer());
+      _sendQueue.Enqueue(new ConnectionRequestContainer(DateTime.Now, _login).GetContainer());
 
       if (Interlocked.CompareExchange(ref _sending, 1, 0) == 0)
       {
@@ -113,7 +113,8 @@
       if (!completed)
       {
         Disconnect();
-        ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, false));
+        var eventLog = new EventLogMessage(_login, false, DispatchType.MessageEventLog, "Doesn't completed", DateTime.Now);
+        ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, false, eventLog));
         return;
       }
 
@@ -152,29 +153,43 @@
       switch (container.Identifier)
       {
         case DispatchType.ConnectionResponse:
-          var connectionResponse = ((JObject)container.Payload).ToObject(typeof(ConnectionResponseContainer)) as ConnectionResponseContainer;
-          if (connectionResponse.Content.Result == ResponseStatus.Failure)
+          var eventLog = new EventLogMessage(_login, true, DispatchType.ConnectionRequest, "Connect", DateTime.Now);
+          if (((JObject)container.Payload).ToObject(typeof(ConnectionResponseContainer)) is ConnectionResponseContainer connectionResponse)
           {
-            _login = string.Empty;
-            MessageReceived?.Invoke(this, new MessageReceivedEventArgs(_login, connectionResponse.Content.Reason));
+            if (connectionResponse.Content.Result == ResponseStatus.Failure)
+            {
+              eventLog = new EventLogMessage(_login, false, DispatchType.ConnectionRequest, connectionResponse.Content.Reason, DateTime.Now);
+              _login = string.Empty;
+              MessageReceived?.Invoke(this, new MessageReceivedEventArgs(_login, connectionResponse.Content.Reason));
+            }
           }
-          ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, true));
+
+          ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, true, eventLog));
           break;
-        case DispatchType.MessageBroadcast:
-          var messageBroadcast = ((JObject)container.Payload).ToObject(typeof(MessageBroadcastContainer)) as MessageBroadcastContainer;
-          MessageReceived?.Invoke(this, new MessageReceivedEventArgs(_login, messageBroadcast.Content));
+
+        case DispatchType.MessageRequest:
+          if (((JObject)container.Payload).ToObject(typeof(MessageRequestContainer)) is MessageRequestContainer messageRequest)
+          {
+            MessageReceived?.Invoke(this, new MessageReceivedEventArgs(_login, messageRequest.Content));
+          }
+
+          break;
+
+        case DispatchType.MessageEventLog:
           break;
       }
     }
 
     private void OnClose(object sender, CloseEventArgs e)
     {
-      ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, false));
+      var eventLog = new EventLogMessage(_login, true, DispatchType.MessageEventLog, "Close", DateTime.Now);
+      ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, false, eventLog));
     }
 
     private void OnOpen(object sender, EventArgs e)
     {
-      ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, true));
+      var eventLog = new EventLogMessage(_login, true, DispatchType.MessageEventLog, "Open", DateTime.Now);
+      ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, true, eventLog));
     }
 
     #endregion

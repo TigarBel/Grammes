@@ -1,16 +1,20 @@
 ﻿namespace Client.ViewModel.ViewModels
 {
   using System;
+  using System.Net;
+
+  using BusinessLogic.Model.Network;
 
   using global::Common.Network;
   using global::Common.Network.Messages;
+  using global::Common.Network.Messages.EventLog;
 
   using MessagesViewModel;
 
   using Prism.Commands;
   using Prism.Mvvm;
 
-  using ViewModel.Common._Enum_;
+  using ViewModel.Common;
 
   public class TotalViewModel : BindableBase
   {
@@ -40,7 +44,7 @@
       set => SetProperty(ref _nameViews, value);
     }
 
-    public WsClient Client { get; set; }
+    private NetworkClient _client;
 
     #endregion
 
@@ -51,7 +55,7 @@
       NameViews = new TemplateSelectorViewModel().Views;
       ContentPresenter = 0;
       _connectViewModel = connectViewModel;
-      _connectViewModel.RightSendCommand = new DelegateCommand(ExecuteChangeOnMainView);
+      _connectViewModel.SendCommand = new DelegateCommand(ExecuteChangeOnMainView);
       _mainViewModel = mainViewModel;
       _mainViewModel.MainMenuViewModel.Command = new DelegateCommand(ExecuteChangeOnConnectView);
       _mainViewModel.MessagesViewModel.CommandSendMessage = new DelegateCommand(ExecuteSendMessage);
@@ -63,56 +67,24 @@
 
     private void ExecuteChangeOnMainView()
     {
-      Client = new WsClient(_connectViewModel.UserName);
-      Client.ConnectionStateChanged += HandleConnectionStateChanged;
-      Client.MessageReceived += HandleMessageReceived;
-      Client.ConnectAsync(_connectViewModel.IpAddress, _connectViewModel.Port);
+      string name = _connectViewModel.UserName;
+      IPAddress address = IPAddress.Parse(_connectViewModel.IpAddress);
+      int port = _connectViewModel.Port;
+      IPEndPoint ipEndPoin = new IPEndPoint(address, port);
+      _client = new NetworkClient(name, ipEndPoin);
+
+      ContentPresenter = (int)ViewSelect.MainView;
     }
 
     private void ExecuteSendMessage()
     {
-      Client.Send(_mainViewModel.MessagesViewModel.TextMessage);
-      _mainViewModel.MessagesViewModel.TextMessage = "";
-    }
-    
-    private void HandleMessageReceived(object sender, MessageReceivedEventArgs e)
-    {
-      if (string.IsNullOrEmpty(e.Message)) {
-        _mainViewModel.MessagesViewModel.MessagesUserList.Add(new MessageViewModel("Connect", DateTime.Now,
-          false, true));
-      }
-      else {
-        _mainViewModel.MessagesViewModel.MessagesUserList.Add(new MessageViewModel(e.Message, DateTime.Now,
-          false, true));
-      }
-    }
 
-    private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs e)
-    {
-      if (e.Connected)
-      {
-        ContentPresenter = (int)ViewSelect.MainView;
-      }
-      else
-      {
-        _connectViewModel.UserName = "NO|CONNECTION";
-        LostConnection();
-      }
     }
 
     private void ExecuteChangeOnConnectView()
     {
-      LostConnection();
-    }
-
-    private void LostConnection()
-    {
-      _mainViewModel.MessagesViewModel.MessagesUserList.Clear();
-      Client.ConnectionStateChanged -= HandleConnectionStateChanged;
-      Client.MessageReceived -= HandleMessageReceived;
-      Client.Disconnect();
-
       ContentPresenter = (int)ViewSelect.ConnectView;
+      _client.LostConnection();
     }
 
     #endregion

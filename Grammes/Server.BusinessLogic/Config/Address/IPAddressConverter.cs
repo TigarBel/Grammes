@@ -1,4 +1,4 @@
-﻿namespace Server.BusinessLogic.Serializer.Address
+﻿namespace Server.BusinessLogic.ServerConfig.Address
 {
   using System;
   using System.Net;

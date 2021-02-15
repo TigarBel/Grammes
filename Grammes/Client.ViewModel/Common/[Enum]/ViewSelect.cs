@@ -1,9 +1,8 @@
-﻿namespace Client.ViewModel.Common._Enum_
+﻿namespace Client.ViewModel.Common
 {
   public enum ViewSelect
   {
     ConnectView = 0,
-    MainView,
-    MessagesView
+    MainView
   }
 }

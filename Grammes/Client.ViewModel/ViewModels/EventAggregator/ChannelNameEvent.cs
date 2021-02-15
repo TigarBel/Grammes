@@ -2,7 +2,7 @@
 {
   using Prism.Events;
 
-  public class UserNameEvent : PubSubEvent<string>
+  public class ChannelNameEvent : PubSubEvent<string>
   {
   }
 }

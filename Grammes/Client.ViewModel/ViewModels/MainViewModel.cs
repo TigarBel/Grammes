@@ -4,18 +4,32 @@
 
   public class MainViewModel : BindableBase
   {
-    public MainMenuViewModel MainMenuViewModel { get; private set; }
+    #region Properties
 
-    public UsersListViewModel UsersListViewModel { get; private set; }
+    public MainMenuViewModel MainMenuViewModel { get; }
 
-    public MessagesViewModel.MessagesViewModel MessagesViewModel { get; private set; }
+    public UsersListViewModel UsersListViewModel { get; }
 
-    public MainViewModel(MainMenuViewModel mainMenuViewModel, MessagesViewModel.MessagesViewModel messagesViewModel,
-                         UsersListViewModel usersListViewModel)
+    public MessagesViewModel.MessagesViewModel MessagesViewModel { get; }
+
+    public EventLogViewModel EventLogViewModel { get; }
+
+    #endregion
+
+    #region Constructors
+
+    public MainViewModel(
+      MainMenuViewModel mainMenuViewModel,
+      MessagesViewModel.MessagesViewModel messagesViewModel,
+      UsersListViewModel usersListViewModel,
+      EventLogViewModel eventLogViewModel)
     {
       MainMenuViewModel = mainMenuViewModel;
       MessagesViewModel = messagesViewModel;
       UsersListViewModel = usersListViewModel;
+      EventLogViewModel = eventLogViewModel;
     }
+
+    #endregion
   }
 }

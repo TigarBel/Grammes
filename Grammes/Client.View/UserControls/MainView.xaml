@@ -22,7 +22,5 @@
                       IsEnabled="True"/>
         <local:EventLogView Grid.Row="3" VerticalAlignment="Stretch"
                             IsEnabled="True"/>
-        <local:WarningView Grid.Row="0" Grid.RowSpan="4" Width="400" Height="300"
-                           Visibility="Hidden"/>
     </Grid>
 </UserControl>

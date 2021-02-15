@@ -4,7 +4,7 @@
   {
     ConnectionRequest = 0,
     ConnectionResponse,
-    MessageBroadcast,
+    MessageEventLog,
     MessageRequest
   }
 }

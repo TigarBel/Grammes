@@ -1,11 +1,6 @@
 ﻿namespace Client.ViewModel.ViewModels.MessagesViewModel
 {
-  using System;
-  using System.Collections.ObjectModel;
   using System.Linq;
-  using System.Windows.Input;
-
-  using BusinessLogic.Model.UsersListModel;
 
   using EventAggregator;
 
@@ -70,7 +65,6 @@
     public MessagesViewModel(IEventAggregator eventAggregator)
     {
       MessagesUserList = new AsyncObservableCollection<MessageViewModel>();
-      CommandSendMessage = new DelegateCommand(ExecuteSendMessage);
       eventAggregator.GetEvent<ChatNameEvent>().Subscribe(SetChatName);
     }
 
@@ -78,16 +72,10 @@
 
     #region Methods
 
-    private void ExecuteSendMessage()
-    {
-      MessagesUserList.Add(new MessageViewModel(TextMessage,
-        new DateTime(2001, 10, 10, 10, 10, 10), false, true));
-      TextMessage = "";
-    }
-
     private void Validate()
     {
-      if (string.IsNullOrEmpty(TextMessage)) {
+      if (string.IsNullOrEmpty(TextMessage))
+      {
         IsAvailable = false;
       }
 

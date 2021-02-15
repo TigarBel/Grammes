@@ -42,18 +42,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\EventLogModel\EventLogModel.cs" />
-    <Compile Include="Model\UsersListModel\GeneralUser.cs" />
-    <Compile Include="Model\UsersListModel\GroupUser.cs" />
-    <Compile Include="Model\UsersListModel\OfflineUser.cs" />
-    <Compile Include="Model\UsersListModel\OnlineUser.cs" />
-    <Compile Include="Model\UsersListModel\UserStatus.cs" />
-    <Compile Include="Model\UsersListModel\UsersListModel.cs" />
-    <Compile Include="Model\UsersListModel\BaseUser.cs" />
+    <Compile Include="Model\ChannelsListModel\BaseUserChannel\OfflineChannel.cs" />
+    <Compile Include="Model\ChannelsListModel\GeneralChannel.cs" />
+    <Compile Include="Model\ChannelsListModel\GroupChannel.cs" />
+    <Compile Include="Model\ChannelsListModel\UserChannel.cs" />
+    <Compile Include="Model\ChannelsListModel\BaseUserChannel\OnlineChannel.cs" />
+    <Compile Include="Model\ChannelsListModel\[Enum]\ChannelType.cs" />
+    <Compile Include="Model\ChannelsListModel\BaseChannel.cs" />
+    <Compile Include="Model\Network\NetworkClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Model\Common\LeafLogic.cs" />
     <Compile Include="Model\Common\[Enum]\InterfaceType.cs" />
-    <Compile Include="Model\Common\[Interfaces]\IButtonable.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common.Network\Common.Network.csproj">
+      <Project>{42847006-d2dd-4a7d-864c-947c41cfe41d}</Project>
+      <Name>Common.Network</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
