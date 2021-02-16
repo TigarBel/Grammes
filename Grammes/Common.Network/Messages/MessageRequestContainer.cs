@@ -7,7 +7,7 @@
     #region Constructors
 
     public MessageRequestContainer(string author, string target, DateTime timeNow, string message)
-      : base(DispatchType.MessageRequest, timeNow, message)
+      : base(DispatchType.Message, timeNow, message)
     {
       _author = author;
       _target = target;

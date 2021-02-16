@@ -35,6 +35,7 @@
     #region Events
 
     public event EventHandler<ConnectionStateChangedEventArgs> ConnectionStateChanged;
+    public event EventHandler<LoginEventArgs> LoginEvent;
     public event EventHandler<MessageReceivedEventArgs> MessageReceived;
 
     #endregion
@@ -64,20 +65,15 @@
       _socket.OnClose += OnClose;
       _socket.OnMessage += OnMessage;
       await Task.Run(_socket.ConnectAsync);
-      Login();
     }
 
     public void Disconnect()
     {
       if (_socket == null)
-      {
         return;
-      }
 
       if (IsConnected)
-      {
         _socket.CloseAsync();
-      }
 
       _socket.OnOpen -= OnOpen;
       _socket.OnClose -= OnClose;
@@ -99,7 +95,7 @@
 
     private void Login()
     {
-      _sendQueue.Enqueue(new ConnectionRequestContainer(DateTime.Now, _login).GetContainer());
+      _sendQueue.Enqueue(new LoginRequestContainer(DateTime.Now, _login).GetContainer());
 
       if (Interlocked.CompareExchange(ref _sending, 1, 0) == 0)
       {
@@ -113,7 +109,7 @@
       if (!completed)
       {
         Disconnect();
-        var eventLog = new EventLogMessage(_login, false, DispatchType.MessageEventLog, "Doesn't completed", DateTime.Now);
+        var eventLog = new EventLogMessage(_login, false, DispatchType.Message, "Doesn't completed", DateTime.Now);
         ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, false, eventLog));
         return;
       }
@@ -149,47 +145,35 @@
       }
 
       var container = JsonConvert.DeserializeObject<Container>(e.Data);
-
+      
       switch (container.Identifier)
       {
-        case DispatchType.ConnectionResponse:
-          var eventLog = new EventLogMessage(_login, true, DispatchType.ConnectionRequest, "Connect", DateTime.Now);
-          if (((JObject)container.Payload).ToObject(typeof(ConnectionResponseContainer)) is ConnectionResponseContainer connectionResponse)
+        case DispatchType.Login:
+          if (((JObject)container.Payload).ToObject(typeof(LoginResponseContainer)) is LoginResponseContainer loginResponse)
           {
-            if (connectionResponse.Content.Result == ResponseStatus.Failure)
+            var eventLog = new EventLogMessage(_login, true, DispatchType.EventLog, "Login", DateTime.Now);
+            if (loginResponse.Content.Result == ResponseStatus.Failure)
             {
-              eventLog = new EventLogMessage(_login, false, DispatchType.ConnectionRequest, connectionResponse.Content.Reason, DateTime.Now);
-              _login = string.Empty;
-              MessageReceived?.Invoke(this, new MessageReceivedEventArgs(_login, connectionResponse.Content.Reason));
+              eventLog.IsSuccessfully = false;
+              eventLog.Text = loginResponse.Content.Reason;
             }
+            LoginEvent?.Invoke(this, new LoginEventArgs(_login, eventLog.IsSuccessfully, eventLog));
           }
-
-          ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, true, eventLog));
-          break;
-
-        case DispatchType.MessageRequest:
-          if (((JObject)container.Payload).ToObject(typeof(MessageRequestContainer)) is MessageRequestContainer messageRequest)
-          {
-            MessageReceived?.Invoke(this, new MessageReceivedEventArgs(_login, messageRequest.Content));
-          }
-
-          break;
-
-        case DispatchType.MessageEventLog:
           break;
       }
     }
 
     private void OnClose(object sender, CloseEventArgs e)
     {
-      var eventLog = new EventLogMessage(_login, true, DispatchType.MessageEventLog, "Close", DateTime.Now);
+      var eventLog = new EventLogMessage(_login, true, DispatchType.Connection, "Close", DateTime.Now);
       ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, false, eventLog));
     }
 
     private void OnOpen(object sender, EventArgs e)
     {
-      var eventLog = new EventLogMessage(_login, true, DispatchType.MessageEventLog, "Open", DateTime.Now);
+      var eventLog = new EventLogMessage(_login, true, DispatchType.Connection, "Open", DateTime.Now);
       ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, true, eventLog));
+      Login();
     }
 
     #endregion

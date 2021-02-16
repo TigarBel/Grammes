@@ -8,11 +8,11 @@
 
     public string SenderName { get; }
 
-    public bool IsSuccessfully { get; }
+    public bool IsSuccessfully { get; set; }
 
     public DispatchType Type { get; }
 
-    public string Text { get; }
+    public string Text { get; set; }
 
     public DateTime Time { get; }
 

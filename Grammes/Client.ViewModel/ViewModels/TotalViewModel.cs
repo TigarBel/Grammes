@@ -44,13 +44,13 @@
       set => SetProperty(ref _nameViews, value);
     }
 
-    private NetworkClient _client;
+    private IConnectionController _connectionController;
 
     #endregion
 
     #region Constructors
 
-    public TotalViewModel(ConnectViewModel connectViewModel, MainViewModel mainViewModel)
+    public TotalViewModel(ConnectViewModel connectViewModel, MainViewModel mainViewModel, IConnectionController connectionController)
     {
       NameViews = new TemplateSelectorViewModel().Views;
       ContentPresenter = 0;
@@ -59,6 +59,8 @@
       _mainViewModel = mainViewModel;
       _mainViewModel.MainMenuViewModel.Command = new DelegateCommand(ExecuteChangeOnConnectView);
       _mainViewModel.MessagesViewModel.CommandSendMessage = new DelegateCommand(ExecuteSendMessage);
+
+      _connectionController = connectionController ?? throw new ArgumentNullException(nameof(connectionController));
     }
 
     #endregion
@@ -67,13 +69,35 @@
 
     private void ExecuteChangeOnMainView()
     {
-      string name = _connectViewModel.UserName;
-      IPAddress address = IPAddress.Parse(_connectViewModel.IpAddress);
+      string address = _connectViewModel.IpAddress;
       int port = _connectViewModel.Port;
-      IPEndPoint ipEndPoin = new IPEndPoint(address, port);
-      _client = new NetworkClient(name, ipEndPoin);
+      string name = _connectViewModel.UserName;
 
-      ContentPresenter = (int)ViewSelect.MainView;
+      _connectionController.Connect(address, port, name);
+      _connectionController.ConnectionStateChanged += HandleConnectionStateChanged;
+      _connectionController.Login += HandleLogin;
+      _connectionController.MessageReceived += HandleMessageReceived;
+    }
+
+    private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs e)
+    {
+      if (!e.Connected)
+      {
+        ContentPresenter = (int)ViewSelect.ConnectView;
+      }
+    }
+
+    private void HandleLogin(object sender, LoginEventArgs e)
+    {
+      if (e.Connected)
+      {
+        ContentPresenter = (int)ViewSelect.MainView;
+      }
+    }
+
+    private void HandleMessageReceived(object sender, MessageReceivedEventArgs e)
+    {
+
     }
 
     private void ExecuteSendMessage()
@@ -83,10 +107,12 @@
 
     private void ExecuteChangeOnConnectView()
     {
-      ContentPresenter = (int)ViewSelect.ConnectView;
-      _client.LostConnection();
+      _connectionController.Disconnect();
+      _connectionController.ConnectionStateChanged -= HandleConnectionStateChanged;
+      _connectionController.Login -= HandleLogin;
+      _connectionController.MessageReceived -= HandleMessageReceived;
     }
-
+    
     #endregion
   }
 }

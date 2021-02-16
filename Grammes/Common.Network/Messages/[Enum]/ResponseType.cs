@@ -3,6 +3,6 @@
   public enum ResponseStatus : byte
   {
     Ok,
-    Failure
+    Failure,
   }
 }

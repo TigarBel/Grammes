@@ -48,8 +48,6 @@
 
       string message = $"Client '{e.ClientName}' {clientState}.";
       Console.WriteLine(message);
-
-      _wsServer.Send(new ConnectionResponseContainer(DateTime.Now, response));
     }
 
     private void HandleMessageReceived(object sender, MessageReceivedEventArgs e)
@@ -57,8 +55,6 @@
       string message = $"Client '{e.ClientName}' send message '{e.Message}'.";
 
       Console.WriteLine(message);
-
-      _wsServer.Send(new MessageRequestContainer("server", e.ClientName, DateTime.Now, e.Message));
     }
 
     #endregion

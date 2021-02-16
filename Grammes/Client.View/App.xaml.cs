@@ -2,6 +2,8 @@
 {
   using System.Windows;
 
+  using BusinessLogic.Model.Network;
+
   using Prism.Ioc;
   using Prism.Mvvm;
   using Prism.Unity;
@@ -24,13 +26,14 @@
 
       containerRegistry.RegisterSingleton<ConnectViewModel>();
 
-
       containerRegistry.RegisterSingleton<MainViewModel>();
 
       containerRegistry.RegisterSingleton<MainMenuViewModel>();
       containerRegistry.RegisterSingleton<MessagesViewModel>();
       containerRegistry.RegisterSingleton<UsersListViewModel>();
       containerRegistry.RegisterSingleton<EventLogViewModel>();
+
+      containerRegistry.RegisterSingleton<IConnectionController, NetworkController>();
     }
 
     protected override void ConfigureViewModelLocator()

@@ -93,46 +93,35 @@
 
       switch (container.Identifier)
       {
-        case DispatchType.ConnectionRequest:
-          if (((JObject)container.Payload).ToObject(typeof(ConnectionRequestContainer)) is ConnectionRequestContainer connectionRequest)
+        case DispatchType.Login:
+          if (((JObject)container.Payload).ToObject(typeof(LoginRequestContainer)) is LoginRequestContainer loginRequest)
           {
-            var connectionResponse = new ConnectionResponseContainer(
+            bool isLogin = true;
+            var loginResponse = new LoginResponseContainer(
               DateTime.Now,
               new Response(ResponseStatus.Ok, "Connected"));
 
-            if (_connections.Values.Any(item => item.Login == connectionRequest.Content))
+            if (_connections.Values.Any(item => item.Login == loginRequest.Content))
             {
-              connectionResponse.Content = new Response(ResponseStatus.Failure, 
-                $"Client with name '{connectionRequest.Content}' yet connect.");
-              connection.Send(connectionResponse.GetContainer());
+              loginResponse.Content = new Response(ResponseStatus.Failure, 
+                $"Client with name '{loginRequest.Content}' yet connect.");
+              isLogin = false;
             }
             else
             {
-              connection.Login = connectionRequest.Content;
-              connection.Send(connectionResponse.GetContainer());
-              ConnectionStateChanged?.Invoke(
-                this,
-                new ConnectionStateChangedEventArgs(
-                  connection.Login,
-                  true,
-                  new EventLogMessage(connection.Login, true, DispatchType.ConnectionRequest, 
-                    connectionResponse.Content.Reason, DateTime.Now)));
+              connection.Login = loginRequest.Content;
             }
+            connection.Send(loginResponse.GetContainer());
+            ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(loginRequest.Content, isLogin,
+              new EventLogMessage(_name, isLogin, DispatchType.Login, loginResponse.Content.Reason, DateTime.Now)));
           }
-
           break;
 
-        case DispatchType.MessageRequest:
+        case DispatchType.Message:
           if (((JObject)container.Payload).ToObject(typeof(MessageRequestContainer)) is MessageRequestContainer messageRequest) {
             MessageReceived?.Invoke(this, new MessageReceivedEventArgs(connection.Login, messageRequest.Content));
           }
           break;
-
-        case DispatchType.ConnectionResponse:
-          break;
-
-        default:
-          throw new ArgumentOutOfRangeException();
       }
     }
 
@@ -150,7 +139,7 @@
           new ConnectionStateChangedEventArgs(
             connection.Login,
             false,
-            new EventLogMessage(connection.Login, true, DispatchType.ConnectionResponse, "Disconnect", DateTime.Now)));
+            new EventLogMessage(connection.Login, true, DispatchType.EventLog, "Disconnect", DateTime.Now)));
       }
     }
 
