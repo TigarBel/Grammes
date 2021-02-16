@@ -182,7 +182,9 @@
 
             LoginEvent?.Invoke(this, new LoginEventArgs(_login, eventLog.IsSuccessfully, eventLog));
           }
-
+          break;
+        case DispatchType.Message:
+          MessageReceived?.Invoke(this, MessageSorter.GetSortedMessage("server", (JObject)container.Payload));
           break;
       }
     }

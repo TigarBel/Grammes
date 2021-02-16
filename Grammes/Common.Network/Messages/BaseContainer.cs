@@ -10,8 +10,6 @@
 
     protected string _author;
 
-    protected string _target;
-
     public DateTime TimePoint { get; private set; }
 
     public TClassContent Content { get; set; }

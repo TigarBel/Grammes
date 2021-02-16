@@ -6,6 +6,8 @@
 
   using global::Common.Network.Messages;
 
+  using MessagesViewModel;
+
   using Prism.Commands;
   using Prism.Mvvm;
 
@@ -65,7 +67,8 @@
     private void ExecuteConnect()
     {
       _connectViewModel.Warning = "";
-
+      _mainViewModel.EventLogViewModel.Events.Clear();
+      
       string address = _connectViewModel.IpAddress;
       int port = _connectViewModel.Port;
       string name = _connectViewModel.UserName;
@@ -93,6 +96,8 @@
         _connectionController.Login -= HandleLogin;
         _connectionController.MessageReceived -= HandleMessageReceived;
       }
+
+      _mainViewModel.EventLogViewModel.Events.Add(e.EventLog);
     }
 
     private void HandleLogin(object sender, LoginEventArgs e)
@@ -106,14 +111,25 @@
         _connectionController.Disconnect();
         _connectViewModel.Warning = $"{e.EventLog.Text}";
       }
+
+      _mainViewModel.EventLogViewModel.Events.Add(e.EventLog);
     }
 
     private void HandleMessageReceived(object sender, MessageReceivedEventArgs e)
     {
+      //_mainViewModel.EventLogViewModel.Events.Add(e.EventLog);
+      _mainViewModel.MessagesViewModel.MessagesUserList.Add(
+        new MessageViewModel(e.Message, e.Time,true,true));
     }
 
     private void ExecuteSendMessage()
     {
+      string author = _connectViewModel.UserName;
+      DateTime time = DateTime.Now;
+      string message = _mainViewModel.MessagesViewModel.TextMessage;
+      _mainViewModel.MessagesViewModel.MessagesUserList.Add(
+        new MessageViewModel(message, time, false, true));
+      _connectionController.Send(new GeneralMessageRequestContainer(author, time, message));
     }
 
     private void ExecuteDisconnect()

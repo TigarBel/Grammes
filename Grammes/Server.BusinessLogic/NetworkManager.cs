@@ -52,7 +52,7 @@
 
     private void HandleMessageReceived(object sender, MessageReceivedEventArgs e)
     {
-      string message = $"Client '{e.ClientName}' send message '{e.Message}'.";
+      string message = $"Client '{e.Author}' send message '{e.Message}'.";
 
       Console.WriteLine(message);
     }

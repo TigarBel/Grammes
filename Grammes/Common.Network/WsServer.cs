@@ -120,11 +120,11 @@
           break;
 
         case DispatchType.Message:
-          if (((JObject)container.Payload).ToObject(typeof(MessageRequestContainer)) is MessageRequestContainer messageRequest)
+          MessageReceived?.Invoke(this, MessageSorter.GetSortedMessage(connection.Login, (JObject)container.Payload));
+          foreach (var connection in _connections)
           {
-            MessageReceived?.Invoke(this, new MessageReceivedEventArgs(connection.Login, messageRequest.Content));
+            
           }
-
           break;
       }
     }
