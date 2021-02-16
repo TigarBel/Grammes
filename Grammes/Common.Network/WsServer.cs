@@ -96,31 +96,35 @@
         case DispatchType.Login:
           if (((JObject)container.Payload).ToObject(typeof(LoginRequestContainer)) is LoginRequestContainer loginRequest)
           {
-            bool isLogin = true;
-            var loginResponse = new LoginResponseContainer(
-              DateTime.Now,
-              new Response(ResponseStatus.Ok, "Connected"));
+            var loginResponse = new LoginResponseContainer(DateTime.Now, new Response(ResponseStatus.Ok, "Connected"));
 
             if (_connections.Values.Any(item => item.Login == loginRequest.Content))
             {
-              loginResponse.Content = new Response(ResponseStatus.Failure, 
-                $"Client with name '{loginRequest.Content}' yet connect.");
-              isLogin = false;
+              loginResponse.Content = new Response(ResponseStatus.Failure, $"Client with name '{loginRequest.Content}' yet connect.");
+              connection.Login = $"pseudo-{loginRequest.Content}";
             }
             else
             {
               connection.Login = loginRequest.Content;
             }
+
             connection.Send(loginResponse.GetContainer());
-            ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(loginRequest.Content, isLogin,
-              new EventLogMessage(_name, isLogin, DispatchType.Login, loginResponse.Content.Reason, DateTime.Now)));
+            ConnectionStateChanged?.Invoke(
+              this,
+              new ConnectionStateChangedEventArgs(
+                connection.Login,
+                true,
+                new EventLogMessage(_name, true, DispatchType.Login, loginResponse.Content.Reason, DateTime.Now)));
           }
+
           break;
 
         case DispatchType.Message:
-          if (((JObject)container.Payload).ToObject(typeof(MessageRequestContainer)) is MessageRequestContainer messageRequest) {
+          if (((JObject)container.Payload).ToObject(typeof(MessageRequestContainer)) is MessageRequestContainer messageRequest)
+          {
             MessageReceived?.Invoke(this, new MessageReceivedEventArgs(connection.Login, messageRequest.Content));
           }
+
           break;
       }
     }

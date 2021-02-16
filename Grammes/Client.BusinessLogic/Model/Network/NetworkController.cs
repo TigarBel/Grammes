@@ -9,8 +9,6 @@
   {
     #region Fields
 
-    public bool IsConnected;
-
     private WsClient _client;
 
     #endregion
@@ -27,6 +25,13 @@
 
     public void Connect(string address, int port, string name)
     {
+      if (_client != null)
+      {
+        _client.ConnectionStateChanged -= HandleConnectionStateChanged;
+        _client.LoginEvent -= HandleLogin;
+        _client.MessageReceived -= HandleMessageReceived;
+      }
+
       _client = new WsClient(name);
       _client.ConnectionStateChanged += HandleConnectionStateChanged;
       _client.LoginEvent += HandleLogin;
@@ -36,9 +41,6 @@
 
     public void Disconnect()
     {
-      _client.ConnectionStateChanged -= HandleConnectionStateChanged;
-      _client.LoginEvent -= HandleLogin;
-      _client.MessageReceived -= HandleMessageReceived;
       _client.Disconnect();
     }
 

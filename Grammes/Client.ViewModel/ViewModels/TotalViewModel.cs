@@ -1,15 +1,10 @@
 ﻿namespace Client.ViewModel.ViewModels
 {
   using System;
-  using System.Net;
 
   using BusinessLogic.Model.Network;
 
-  using global::Common.Network;
   using global::Common.Network.Messages;
-  using global::Common.Network.Messages.EventLog;
-
-  using MessagesViewModel;
 
   using Prism.Commands;
   using Prism.Mvvm;
@@ -28,6 +23,8 @@
 
     private readonly MainViewModel _mainViewModel;
 
+    private readonly IConnectionController _connectionController;
+
     #endregion
 
     #region Properties
@@ -44,8 +41,6 @@
       set => SetProperty(ref _nameViews, value);
     }
 
-    private IConnectionController _connectionController;
-
     #endregion
 
     #region Constructors
@@ -55,9 +50,9 @@
       NameViews = new TemplateSelectorViewModel().Views;
       ContentPresenter = 0;
       _connectViewModel = connectViewModel;
-      _connectViewModel.SendCommand = new DelegateCommand(ExecuteChangeOnMainView);
+      _connectViewModel.SendCommand = new DelegateCommand(ExecuteConnect);
       _mainViewModel = mainViewModel;
-      _mainViewModel.MainMenuViewModel.Command = new DelegateCommand(ExecuteChangeOnConnectView);
+      _mainViewModel.MainMenuViewModel.Command = new DelegateCommand(ExecuteDisconnect);
       _mainViewModel.MessagesViewModel.CommandSendMessage = new DelegateCommand(ExecuteSendMessage);
 
       _connectionController = connectionController ?? throw new ArgumentNullException(nameof(connectionController));
@@ -67,23 +62,36 @@
 
     #region Methods
 
-    private void ExecuteChangeOnMainView()
+    private void ExecuteConnect()
     {
+      _connectViewModel.Warning = "";
+
       string address = _connectViewModel.IpAddress;
       int port = _connectViewModel.Port;
       string name = _connectViewModel.UserName;
 
-      _connectionController.Connect(address, port, name);
       _connectionController.ConnectionStateChanged += HandleConnectionStateChanged;
       _connectionController.Login += HandleLogin;
       _connectionController.MessageReceived += HandleMessageReceived;
+      _connectionController.Connect(address, port, name);
     }
 
     private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs e)
     {
       if (!e.Connected)
       {
-        ContentPresenter = (int)ViewSelect.ConnectView;
+        if (ContentPresenter == (int)ViewSelect.ConnectView)
+        {
+          _connectViewModel.Warning = $"{e.EventLog.Text}";
+        }
+        else
+        {
+          ContentPresenter = (int)ViewSelect.ConnectView;
+        }
+        
+        _connectionController.ConnectionStateChanged -= HandleConnectionStateChanged;
+        _connectionController.Login -= HandleLogin;
+        _connectionController.MessageReceived -= HandleMessageReceived;
       }
     }
 
@@ -93,26 +101,26 @@
       {
         ContentPresenter = (int)ViewSelect.MainView;
       }
+      else
+      {
+        _connectionController.Disconnect();
+        _connectViewModel.Warning = $"{e.EventLog.Text}";
+      }
     }
 
     private void HandleMessageReceived(object sender, MessageReceivedEventArgs e)
     {
-
     }
 
     private void ExecuteSendMessage()
     {
-
     }
 
-    private void ExecuteChangeOnConnectView()
+    private void ExecuteDisconnect()
     {
       _connectionController.Disconnect();
-      _connectionController.ConnectionStateChanged -= HandleConnectionStateChanged;
-      _connectionController.Login -= HandleLogin;
-      _connectionController.MessageReceived -= HandleMessageReceived;
     }
-    
+
     #endregion
   }
 }

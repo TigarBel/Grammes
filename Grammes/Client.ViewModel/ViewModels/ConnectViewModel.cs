@@ -20,6 +20,8 @@
   {
     #region Fields
 
+    private string _warning;
+
     private string _ipAddress;
 
     private int _port;
@@ -41,6 +43,12 @@
     #endregion
 
     #region Properties
+
+    public string Warning
+    {
+      get => _warning;
+      set => SetProperty(ref _warning, value);
+    }
 
     public List<string> TypeInterfaceList
     {
@@ -92,6 +100,7 @@
     public ConnectViewModel(IEventAggregator eventAggregator)
       : base("Connect")
     {
+      Warning = "";
       _userNameEa = eventAggregator;
       IpAddress = "192.168.37.228";
       Port = 3000;

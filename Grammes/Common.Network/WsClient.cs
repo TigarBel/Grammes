@@ -15,6 +15,12 @@
 
   public class WsClient
   {
+    #region Constants
+
+    private const int CONNECT_WAIT_TIME = 2000;
+
+    #endregion
+
     #region Fields
 
     private readonly ConcurrentQueue<Container> _sendQueue;
@@ -64,16 +70,22 @@
       _socket.OnOpen += OnOpen;
       _socket.OnClose += OnClose;
       _socket.OnMessage += OnMessage;
-      await Task.Run(_socket.ConnectAsync);
+      _socket.ConnectAsync();
+      await Task.Run(CheckConnect);
     }
 
     public void Disconnect()
     {
       if (_socket == null)
+      {
         return;
+      }
 
       if (IsConnected)
+      {
         _socket.CloseAsync();
+        Close();
+      }
 
       _socket.OnOpen -= OnOpen;
       _socket.OnClose -= OnClose;
@@ -90,6 +102,16 @@
       if (Interlocked.CompareExchange(ref _sending, 1, 0) == 0)
       {
         SendImpl();
+      }
+    }
+
+    private void CheckConnect()
+    {
+      Thread.Sleep(CONNECT_WAIT_TIME);
+      if (!IsConnected)
+      {
+        var eventLog = new EventLogMessage(_login, false, DispatchType.Connection, "No connection", DateTime.Now);
+        ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, false, eventLog));
       }
     }
 
@@ -145,7 +167,7 @@
       }
 
       var container = JsonConvert.DeserializeObject<Container>(e.Data);
-      
+
       switch (container.Identifier)
       {
         case DispatchType.Login:
@@ -157,13 +179,20 @@
               eventLog.IsSuccessfully = false;
               eventLog.Text = loginResponse.Content.Reason;
             }
+
             LoginEvent?.Invoke(this, new LoginEventArgs(_login, eventLog.IsSuccessfully, eventLog));
           }
+
           break;
       }
     }
 
     private void OnClose(object sender, CloseEventArgs e)
+    {
+      Close();
+    }
+
+    private void Close()
     {
       var eventLog = new EventLogMessage(_login, true, DispatchType.Connection, "Close", DateTime.Now);
       ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, false, eventLog));
