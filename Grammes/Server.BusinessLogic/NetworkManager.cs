@@ -1,10 +1,14 @@
 ﻿namespace Server.BusinessLogic
 {
   using System;
+  using System.Linq;
   using System.Net;
 
   using Common.Network;
   using Common.Network.Messages;
+  using Common.Network.Messages.MessageReceived;
+
+  using DataBase;
 
   public class NetworkManager
   {
@@ -14,6 +18,8 @@
 
     private readonly WsServer _wsServer;
 
+    private readonly UsersList _usersList;
+
     #endregion
 
     #region Constructors
@@ -21,6 +27,7 @@
     public NetworkManager()
     {
       _address = new Config.ServerConfig().GetAddress();
+      _usersList = new UsersList();
       _wsServer = new WsServer(_address);
       _wsServer.ConnectionStateChanged += HandleConnectionStateChanged;
       _wsServer.MessageReceived += HandleMessageReceived;
@@ -41,18 +48,23 @@
       _wsServer.Stop();
     }
 
-    private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs e)
+    private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs eventArgs)
     {
-      string clientState = e.Connected ? "connect" : "disconnect";
-      var response = new Response(ResponseStatus.Ok, clientState);
+      if (_usersList.List.All(item => item != eventArgs.ClientName))
+      {
+        _wsServer.Send(
+          new LoginResponseContainer(new Response(ResponseStatus.Failure, "Not in the database")),
+          new PrivateAgenda(eventArgs.ClientName));
+      }
 
-      string message = $"Client '{e.ClientName}' {clientState}.";
+      string clientState = eventArgs.Connected ? "connect" : "disconnect";
+      string message = $"Client '{eventArgs.ClientName}' {clientState}.";
       Console.WriteLine(message);
     }
 
-    private void HandleMessageReceived(object sender, MessageReceivedEventArgs e)
+    private void HandleMessageReceived(object sender, MessageReceivedEventArgs eventArgs)
     {
-      string message = $"Client '{e.Author}' send message '{e.Message}'.";
+      string message = $"Client '{eventArgs.Author}' send message '{eventArgs.Message}'.";
 
       Console.WriteLine(message);
     }

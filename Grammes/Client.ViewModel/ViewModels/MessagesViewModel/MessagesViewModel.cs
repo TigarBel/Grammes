@@ -8,6 +8,7 @@
   using EventAggregator;
 
   using global::Common.Network.Messages;
+  using global::Common.Network.Messages.MessageReceived;
 
   using Prism.Commands;
   using Prism.Events;
@@ -82,7 +83,7 @@
       MessagesUserList = new AsyncObservableCollection<MessageViewModel>();
       eventAggregator.GetEvent<ChannelNameEvent>().Subscribe(SetChannel);
       eventAggregator.GetEvent<LoginNameEvent>().Subscribe(SetClient);
-      eventAggregator.GetEvent<MessageReceivedEvent>().Subscribe(AddMessageToChannel);
+      eventAggregator.GetEvent<MessageReceivedEvent>().Subscribe(AddMessage);
     }
 
     #endregion
@@ -115,19 +116,31 @@
       _loginName = client;
     }
 
-    public void AddMessageToChannel(MessageReceivedEventArgs eventArgs)
+    public void AddMessage(MessageReceivedEventArgs eventArgs)
     {
-      if(Channel.Type != eventArgs.Target.Type) return;
+      if(IsNotThisChannel(eventArgs)) return;
+      
       bool IsOut = _loginName != eventArgs.Author;
       string content = $"{eventArgs.Author}: {eventArgs.Message}";
-      MessageModel message = new MessageModel(content, eventArgs.Time, IsOut, true);
-      Channel.MessageList.Add(message);
-      AddMessageToLocalMessageList(new MessageViewModel(message));
+      MessageViewModel message = new MessageViewModel(content, eventArgs.Time, IsOut, true);
+      MessagesUserList.Add(message);
     }
 
-    private void AddMessageToLocalMessageList(MessageViewModel message)
+    private bool IsNotThisChannel(MessageReceivedEventArgs eventArgs)
     {
-      MessagesUserList.Add(message);
+      if (Channel.Type != eventArgs.Agenda.Type) return true;
+
+      switch (eventArgs.Agenda.Type)
+      {
+        case ChannelType.General: return false;
+        case ChannelType.Private:
+          if (eventArgs.Author == Channel.Name) return false;
+          break;
+        case ChannelType.Group:
+          if (((GroupAgenda)eventArgs.Agenda).GroupName == Channel.Name) return false;
+          break;
+      }
+      return true;
     }
 
     #endregion

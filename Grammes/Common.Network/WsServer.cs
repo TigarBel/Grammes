@@ -87,7 +87,15 @@
           {
             connection.Value.Send(messageRequest);
           }
-
+          break;
+        }
+        case ChannelType.Private:
+        {
+          foreach (KeyValuePair<Guid, WsConnection> connection in _connections)
+          {
+            if(connection.Value.Login == message.Author || connection.Value.Login == ((PrivateAgenda)agenda).Target)
+              connection.Value.Send(messageRequest);
+          }
           break;
         }
       }

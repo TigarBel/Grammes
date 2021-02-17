@@ -1,12 +1,19 @@
 ﻿namespace Client.ViewModel.ViewModels
 {
   using System.Collections.Generic;
+  using System.Linq;
   using System.Windows.Controls;
 
+  using BusinessLogic.Model;
   using BusinessLogic.Model.ChannelsListModel;
   using BusinessLogic.Model.ChannelsListModel.BaseUserChannel;
 
   using EventAggregator;
+
+  using global::Common.Network.Messages;
+  using global::Common.Network.Messages.MessageReceived;
+
+  using MessagesViewModel;
 
   using Prism.Events;
   using Prism.Mvvm;
@@ -100,6 +107,7 @@
     {
       _chatNameEa = eventAggregator;
       eventAggregator.GetEvent<LoginNameEvent>().Subscribe(SetUserName);
+      eventAggregator.GetEvent<MessageReceivedEvent>().Subscribe(AddMessageOnChannel);
 
       General = new GeneralChannel();
       SelectChat = General;
@@ -196,6 +204,29 @@
       UsersName = userName;
     }
 
+    private void AddMessageOnChannel(MessageReceivedEventArgs eventArgs)
+    {
+      bool IsOut = _userName != eventArgs.Author;
+      string content = $"{eventArgs.Author}: {eventArgs.Message}";
+      MessageModel message = new MessageModel(content, eventArgs.Time, IsOut, true);
+
+      switch (eventArgs.Agenda.Type)
+      {
+        case ChannelType.General:
+          General.MessageList.Add(message);
+          break;
+        case ChannelType.Private:
+          OnlineChannel onlineChannel = OnlineUsers.Where(
+            userItem => userItem.Name == eventArgs.Author).GetEnumerator().Current;
+          onlineChannel?.MessageList.Add(message);
+          break;
+        case ChannelType.Group:
+          GroupChannel groupChannel = Groups.Where(
+            item => item.Name == ((GroupAgenda)eventArgs.Agenda).GroupName).GetEnumerator().Current;
+          groupChannel?.MessageList.Add(message);
+          break;
+      }
+    }
     #endregion
   }
 }
