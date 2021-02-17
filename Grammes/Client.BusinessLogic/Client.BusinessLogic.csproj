@@ -51,9 +51,8 @@
     <Compile Include="Model\ChannelsListModel\BaseUserChannel\OfflineChannel.cs" />
     <Compile Include="Model\ChannelsListModel\GeneralChannel.cs" />
     <Compile Include="Model\ChannelsListModel\GroupChannel.cs" />
-    <Compile Include="Model\ChannelsListModel\UserChannel.cs" />
+    <Compile Include="Model\ChannelsListModel\PrivateChannel.cs" />
     <Compile Include="Model\ChannelsListModel\BaseUserChannel\OnlineChannel.cs" />
-    <Compile Include="Model\ChannelsListModel\[Enum]\ChannelType.cs" />
     <Compile Include="Model\ChannelsListModel\BaseChannel.cs" />
     <Compile Include="Model\MessageModel.cs" />
     <Compile Include="Model\Network\NetworkController.cs" />
@@ -70,5 +69,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

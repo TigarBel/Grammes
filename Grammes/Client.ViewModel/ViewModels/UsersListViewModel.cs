@@ -120,63 +120,63 @@
       {
         new GroupChannel(
           "User2",
-          new List<UserChannel>
+          new List<PrivateChannel>
           {
             new OfflineChannel("User1"),
             new OfflineChannel("User1")
           }),
         new GroupChannel(
           "User4",
-          new List<UserChannel>
+          new List<PrivateChannel>
           {
             new OfflineChannel("User1"),
             new OfflineChannel("User1")
           }),
         new GroupChannel(
           "User24",
-          new List<UserChannel>
+          new List<PrivateChannel>
           {
             new OfflineChannel("User1"),
             new OfflineChannel("User1")
           }),
         new GroupChannel(
           "User224",
-          new List<UserChannel>
+          new List<PrivateChannel>
           {
             new OfflineChannel("User1"),
             new OfflineChannel("User1")
           }),
         new GroupChannel(
           "User424",
-          new List<UserChannel>
+          new List<PrivateChannel>
           {
             new OfflineChannel("User1"),
             new OfflineChannel("User1")
           }),
         new GroupChannel(
           "User2424",
-          new List<UserChannel>
+          new List<PrivateChannel>
           {
             new OfflineChannel("User1"),
             new OfflineChannel("User1")
           }),
         new GroupChannel(
           "User242",
-          new List<UserChannel>
+          new List<PrivateChannel>
           {
             new OfflineChannel("User1"),
             new OfflineChannel("User1")
           }),
         new GroupChannel(
           "User442",
-          new List<UserChannel>
+          new List<PrivateChannel>
           {
             new OfflineChannel("User1"),
             new OfflineChannel("User1")
           }),
         new GroupChannel(
           "User2442",
-          new List<UserChannel>
+          new List<PrivateChannel>
           {
             new OfflineChannel("User1"),
             new OfflineChannel("User1")

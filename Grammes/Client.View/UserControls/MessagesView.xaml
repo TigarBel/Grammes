@@ -63,12 +63,12 @@
 
         <Style TargetType="{x:Type ListBoxItem}" x:Key="ContainerStyle">
             <Style.Triggers>
-                <DataTrigger  Binding="{Binding Path=IsOutgoingMessage}"
+                <DataTrigger  Binding="{Binding Path=Model.IsOutgoingMessage}"
                               Value="False">
                     <Setter Property="ContentTemplate" Value="{StaticResource IncomingMessage}" />
                 </DataTrigger>
 
-                <DataTrigger  Binding="{Binding Path=IsOutgoingMessage}"
+                <DataTrigger  Binding="{Binding Path=Model.IsOutgoingMessage}"
                               Value="True">
                     <Setter Property="ContentTemplate" Value="{StaticResource OutgoingMessage}" />
                 </DataTrigger>

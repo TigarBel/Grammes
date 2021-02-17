@@ -81,7 +81,7 @@
       Container messageRequest = message.GetContainer();
       switch (agenda.Type)
       {
-        case MessageReceivedType.General:
+        case ChannelType.General:
         {
           foreach (KeyValuePair<Guid, WsConnection> connection in _connections)
           {

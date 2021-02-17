@@ -1,6 +1,9 @@
 ﻿namespace Client.BusinessLogic.Model.ChannelsListModel
 {
   using System;
+  using System.Collections.Generic;
+
+  using global::Common.Network.Messages.MessageReceived;
 
   public abstract class BaseChannel
   {
@@ -9,6 +12,8 @@
     public string Name { get; private set; }
 
     public ChannelType Type { get; private set; }
+
+    public List<MessageModel> MessageList = new List<MessageModel>();
 
     #endregion
 

@@ -14,7 +14,7 @@
     #region Constructors
 
     public GroupAgenda(List<string> targetList)
-      : base(MessageReceivedType.Group)
+      : base(ChannelType.Group)
     {
       TargetList = targetList ?? throw new NullReferenceException("Group message received target list is null!");
     }

@@ -1,6 +1,6 @@
 ﻿namespace Common.Network.Messages.MessageReceived
 {
-  public enum MessageReceivedType
+  public enum ChannelType
   {
     General = 0,
     Private,

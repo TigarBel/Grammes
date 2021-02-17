@@ -3,17 +3,19 @@
   using System;
   using System.Collections.Generic;
 
+  using global::Common.Network.Messages.MessageReceived;
+
   public class GroupChannel : BaseChannel
   {
     #region Fields
 
-    public List<UserChannel> ListUsers;
+    public List<PrivateChannel> ListUsers;
 
     #endregion
 
     #region Constructors
 
-    public GroupChannel(string name, List<UserChannel> listUsers)
+    public GroupChannel(string name, List<PrivateChannel> listUsers)
       : base(name, ChannelType.Group)
     {
       if (listUsers == null)

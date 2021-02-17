@@ -17,12 +17,12 @@
             <Setter Property="RadiusY" Value="3"/>
 
             <Style.Triggers>
-                <DataTrigger  Binding="{Binding Path=IsReadingMessage}"
+                <DataTrigger  Binding="{Binding Path=Model.IsReadingMessage}"
                               Value="True">
                     <Setter Property="Fill" Value="Transparent" />
                 </DataTrigger>
 
-                <DataTrigger  Binding="{Binding Path=IsReadingMessage}"
+                <DataTrigger  Binding="{Binding Path=Model.IsReadingMessage}"
                               Value="False">
                     <Setter Property="Fill" Value="LightGray"/>
                 </DataTrigger>
@@ -38,10 +38,10 @@
         </Grid.RowDefinitions>
 
         <Rectangle Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource RectangleStyle}"/>
-        <TextBox Grid.Row="0" Text="{Binding Message}" 
+        <TextBox Grid.Row="0" Text="{Binding Model.Message}" 
                  TextWrapping="Wrap" AcceptsReturn="True" HorizontalAlignment="Left" VerticalAlignment="Top" 
                  Style="{StaticResource StyleTextBox}"/>
-        <TextBox Grid.Row="1" Text="{Binding Time}" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+        <TextBox Grid.Row="1" Text="{Binding Model.Time}" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                  Style="{StaticResource StyleTextBox}"/>
     </Grid>
 </UserControl>

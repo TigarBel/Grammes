@@ -4,13 +4,13 @@
   {
     #region Properties
 
-    public MessageReceivedType Type { get; }
+    public ChannelType Type { get; }
 
     #endregion
 
     #region Constructors
 
-    protected BaseAgenda(MessageReceivedType type)
+    protected BaseAgenda(ChannelType type)
     {
       Type = type;
     }

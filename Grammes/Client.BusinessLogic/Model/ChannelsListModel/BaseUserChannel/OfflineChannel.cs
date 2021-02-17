@@ -1,6 +1,6 @@
 ﻿namespace Client.BusinessLogic.Model.ChannelsListModel.BaseUserChannel
 {
-  public class OfflineChannel : UserChannel
+  public class OfflineChannel : PrivateChannel
   {
     #region Constructors
 

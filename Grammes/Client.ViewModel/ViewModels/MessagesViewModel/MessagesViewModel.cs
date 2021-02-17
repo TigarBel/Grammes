@@ -2,6 +2,7 @@
 {
   using System.Linq;
 
+  using BusinessLogic.Model;
   using BusinessLogic.Model.ChannelsListModel;
 
   using EventAggregator;
@@ -37,7 +38,15 @@
     public BaseChannel Channel
     {
       get => _channel;
-      set => SetProperty(ref _channel, value);
+      set
+      {
+        SetProperty(ref _channel, value);
+        MessagesUserList.Clear();
+        foreach (MessageModel message in value.MessageList)
+        {
+          MessagesUserList.Add(new MessageViewModel(message));//TODO List = List
+        }
+      }
     }
 
     public AsyncObservableCollection<MessageViewModel> MessagesUserList
@@ -73,7 +82,7 @@
       MessagesUserList = new AsyncObservableCollection<MessageViewModel>();
       eventAggregator.GetEvent<ChannelNameEvent>().Subscribe(SetChannel);
       eventAggregator.GetEvent<LoginNameEvent>().Subscribe(SetClient);
-      eventAggregator.GetEvent<MessageReceivedEvent>().Subscribe(AddMessage);
+      eventAggregator.GetEvent<MessageReceivedEvent>().Subscribe(AddMessageToChannel);
     }
 
     #endregion
@@ -106,11 +115,18 @@
       _loginName = client;
     }
 
-    public void AddMessage(MessageReceivedEventArgs eventArgs)
+    public void AddMessageToChannel(MessageReceivedEventArgs eventArgs)
     {
+      if(Channel.Type != eventArgs.Target.Type) return;
       bool IsOut = _loginName != eventArgs.Author;
       string content = $"{eventArgs.Author}: {eventArgs.Message}";
-      MessageViewModel message = new MessageViewModel(content, eventArgs.Time, IsOut, true);
+      MessageModel message = new MessageModel(content, eventArgs.Time, IsOut, true);
+      Channel.MessageList.Add(message);
+      AddMessageToLocalMessageList(new MessageViewModel(message));
+    }
+
+    private void AddMessageToLocalMessageList(MessageViewModel message)
+    {
       MessagesUserList.Add(message);
     }
 

@@ -5,7 +5,7 @@
     #region Constructors
 
     public GeneralAgenda()
-      : base(MessageReceivedType.General)
+      : base(ChannelType.General)
     {
     }
 

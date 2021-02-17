@@ -1,6 +1,8 @@
 ﻿namespace Client.BusinessLogic.Model.ChannelsListModel
 {
-  public abstract class UserChannel : BaseChannel
+  using global::Common.Network.Messages.MessageReceived;
+
+  public abstract class PrivateChannel : BaseChannel
   {
     #region Fields
 
@@ -10,8 +12,8 @@
 
     #region Constructors
 
-    protected UserChannel(string name, bool isOnline)
-      : base(name, ChannelType.User)
+    protected PrivateChannel(string name, bool isOnline)
+      : base(name, ChannelType.Private)
     {
       IsOnline = isOnline;
     }

@@ -13,7 +13,7 @@
     #region Constructors
 
     public PrivateAgenda(string target)
-      : base(MessageReceivedType.Private)
+      : base(ChannelType.Private)
     {
       Target = target ?? throw new NullReferenceException("Private message received target is null!");
     }
