@@ -30,6 +30,12 @@
       EventLogViewModel = eventLogViewModel;
     }
 
+    public void Clear()
+    {
+      MessagesViewModel.MessagesUserList.Clear();
+      EventLogViewModel.Events.Clear();
+    }
+
     #endregion
   }
 }

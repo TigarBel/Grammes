@@ -76,14 +76,14 @@
         {
           case BaseChannel user:
           {
-            _chatNameEa.GetEvent<ChatNameEvent>().Publish(user.ToString());
+            _chatNameEa.GetEvent<ChannelNameEvent>().Publish(user);
             break;
           }
           case TreeViewItem item:
           {
             if (item.Header is BaseChannel)
             {
-              _chatNameEa.GetEvent<ChatNameEvent>().Publish(item.Header.ToString());
+              _chatNameEa.GetEvent<ChannelNameEvent>().Publish((BaseChannel)item.Header);
             }
 
             break;
@@ -99,7 +99,7 @@
     public UsersListViewModel(IEventAggregator eventAggregator)
     {
       _chatNameEa = eventAggregator;
-      eventAggregator.GetEvent<ChannelNameEvent>().Subscribe(SetUserName);
+      eventAggregator.GetEvent<LoginNameEvent>().Subscribe(SetUserName);
 
       General = new GeneralChannel();
       SelectChat = General;

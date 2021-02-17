@@ -12,7 +12,7 @@
 
     public string Message { get; }
 
-    public BaseMessageReceived Target { get; }
+    public BaseAgenda Target { get; }
 
     public DateTime Time { get; }
 
@@ -20,7 +20,7 @@
 
     #region Constructors
 
-    public MessageReceivedEventArgs(string author, string message, BaseMessageReceived target, DateTime time)
+    public MessageReceivedEventArgs(string author, string message, BaseAgenda target, DateTime time)
     {
       Author = author;
       Message = message;

@@ -52,6 +52,6 @@
                   SelectedItem="{Binding SelectTypeInterface}">
         </ComboBox>
         <TextBox Grid.Column="2" Grid.Row="4" Style="{StaticResource StyleText}"
-                 Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}"/>
+                 Text="{Binding LoginName, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </UserControl>

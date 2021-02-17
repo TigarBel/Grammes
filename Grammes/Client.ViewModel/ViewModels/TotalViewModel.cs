@@ -4,11 +4,14 @@
 
   using BusinessLogic.Model.Network;
 
+  using EventAggregator;
+
   using global::Common.Network.Messages;
 
   using MessagesViewModel;
 
   using Prism.Commands;
+  using Prism.Events;
   using Prism.Mvvm;
 
   using ViewModel.Common;
@@ -26,6 +29,8 @@
     private readonly MainViewModel _mainViewModel;
 
     private readonly IConnectionController _connectionController;
+
+    private readonly IEventAggregator _eventAggregator;
 
     #endregion
 
@@ -47,7 +52,10 @@
 
     #region Constructors
 
-    public TotalViewModel(ConnectViewModel connectViewModel, MainViewModel mainViewModel, IConnectionController connectionController)
+    public TotalViewModel(ConnectViewModel connectViewModel, 
+                          MainViewModel mainViewModel, 
+                          IConnectionController connectionController,
+                          IEventAggregator eventAggregator)
     {
       NameViews = new TemplateSelectorViewModel().Views;
       ContentPresenter = 0;
@@ -56,6 +64,7 @@
       _mainViewModel = mainViewModel;
       _mainViewModel.MainMenuViewModel.Command = new DelegateCommand(ExecuteDisconnect);
       _mainViewModel.MessagesViewModel.CommandSendMessage = new DelegateCommand(ExecuteSendMessage);
+      _eventAggregator = eventAggregator;
 
       _connectionController = connectionController ?? throw new ArgumentNullException(nameof(connectionController));
     }
@@ -67,11 +76,11 @@
     private void ExecuteConnect()
     {
       _connectViewModel.Warning = "";
-      _mainViewModel.EventLogViewModel.Events.Clear();
+      _mainViewModel.Clear();
       
       string address = _connectViewModel.IpAddress;
       int port = _connectViewModel.Port;
-      string name = _connectViewModel.UserName;
+      string name = _connectViewModel.LoginName;
 
       _connectionController.ConnectionStateChanged += HandleConnectionStateChanged;
       _connectionController.Login += HandleLogin;
@@ -79,57 +88,60 @@
       _connectionController.Connect(address, port, name);
     }
 
-    private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs e)
+    private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs eventArgs)
     {
-      if (!e.Connected)
+      if (eventArgs.Connected)
       {
+        _connectViewModel.IsAvailableButton = false;
+      }
+      else
+      {
+        _connectViewModel.IsAvailableButton = true;
         if (ContentPresenter == (int)ViewSelect.ConnectView)
         {
-          _connectViewModel.Warning = $"{e.EventLog.Text}";
+          _connectViewModel.Warning = $"{eventArgs.EventLog.Text}";
         }
         else
         {
           ContentPresenter = (int)ViewSelect.ConnectView;
         }
-        
+
         _connectionController.ConnectionStateChanged -= HandleConnectionStateChanged;
         _connectionController.Login -= HandleLogin;
         _connectionController.MessageReceived -= HandleMessageReceived;
       }
 
-      _mainViewModel.EventLogViewModel.Events.Add(e.EventLog);
+      _mainViewModel.EventLogViewModel.Events.Add(eventArgs.EventLog);
     }
 
-    private void HandleLogin(object sender, LoginEventArgs e)
+    private void HandleLogin(object sender, LoginEventArgs eventArgs)
     {
-      if (e.Connected)
+      if (eventArgs.Connected)
       {
         ContentPresenter = (int)ViewSelect.MainView;
       }
       else
       {
         _connectionController.Disconnect();
-        _connectViewModel.Warning = $"{e.EventLog.Text}";
+        _connectViewModel.Warning = $"{eventArgs.EventLog.Text}";
       }
 
-      _mainViewModel.EventLogViewModel.Events.Add(e.EventLog);
+      _mainViewModel.EventLogViewModel.Events.Add(eventArgs.EventLog);
     }
 
-    private void HandleMessageReceived(object sender, MessageReceivedEventArgs e)
+    private void HandleMessageReceived(object sender, MessageReceivedEventArgs eventArgs)
     {
       //_mainViewModel.EventLogViewModel.Events.Add(e.EventLog);
-      _mainViewModel.MessagesViewModel.MessagesUserList.Add(
-        new MessageViewModel(e.Message, e.Time,true,true));
+      _eventAggregator.GetEvent<MessageReceivedEvent>().Publish(eventArgs);
     }
 
     private void ExecuteSendMessage()
     {
-      string author = _connectViewModel.UserName;
+      string author = _connectViewModel.LoginName;
       DateTime time = DateTime.Now;
       string message = _mainViewModel.MessagesViewModel.TextMessage;
-      _mainViewModel.MessagesViewModel.MessagesUserList.Add(
-        new MessageViewModel(message, time, false, true));
-      _connectionController.Send(new GeneralMessageRequestContainer(author, time, message));
+      
+      _connectionController.Send(new GeneralMessageContainer(author, message));
     }
 
     private void ExecuteDisconnect()

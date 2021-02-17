@@ -7,6 +7,7 @@
 
   using Messages;
   using Messages.EventLog;
+  using Messages.MessageSorter;
 
   using Newtonsoft.Json;
   using Newtonsoft.Json.Linq;
@@ -117,7 +118,7 @@
 
     private void Login()
     {
-      _sendQueue.Enqueue(new LoginRequestContainer(DateTime.Now, _login).GetContainer());
+      _sendQueue.Enqueue(new LoginRequestContainer(_login).GetContainer());
 
       if (Interlocked.CompareExchange(ref _sending, 1, 0) == 0)
       {
@@ -184,7 +185,7 @@
           }
           break;
         case DispatchType.Message:
-          MessageReceived?.Invoke(this, MessageSorter.GetSortedMessage("server", (JObject)container.Payload));
+          MessageReceived?.Invoke(this, MessageSorter.GetSortedMessage((JObject)container.Payload));
           break;
       }
     }

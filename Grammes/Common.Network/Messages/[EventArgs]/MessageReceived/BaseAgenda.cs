@@ -1,6 +1,6 @@
 ﻿namespace Common.Network.Messages.MessageReceived
 {
-  public abstract class BaseMessageReceived
+  public abstract class BaseAgenda
   {
     #region Properties
 
@@ -10,7 +10,7 @@
 
     #region Constructors
 
-    protected BaseMessageReceived(MessageReceivedType type)
+    protected BaseAgenda(MessageReceivedType type)
     {
       Type = type;
     }

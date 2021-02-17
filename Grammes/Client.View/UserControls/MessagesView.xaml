@@ -95,7 +95,7 @@
             <RowDefinition Height="*" MinHeight="36"/>
         </Grid.RowDefinitions>
 
-        <Label Content="{Binding ChatName}" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label Content="{Binding Channel}" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
         <ListBox Grid.Row="1"
             ItemContainerStyle="{StaticResource ContainerStyle}"

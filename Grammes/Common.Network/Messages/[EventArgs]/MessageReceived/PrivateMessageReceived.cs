@@ -2,7 +2,7 @@
 {
   using System;
 
-  public class PrivateMessageReceived : BaseMessageReceived
+  public class PrivateAgenda : BaseAgenda
   {
     #region Properties
 
@@ -12,7 +12,7 @@
 
     #region Constructors
 
-    public PrivateMessageReceived(string target)
+    public PrivateAgenda(string target)
       : base(MessageReceivedType.Private)
     {
       Target = target ?? throw new NullReferenceException("Private message received target is null!");

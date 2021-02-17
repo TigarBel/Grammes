@@ -8,6 +8,8 @@
 
   using Messages;
   using Messages.EventLog;
+  using Messages.MessageReceived;
+  using Messages.MessageSorter;
 
   using Newtonsoft.Json.Linq;
 
@@ -74,13 +76,20 @@
       _connections.Clear();
     }
 
-    public void Send<TClass>(BaseContainer<TClass> message)
+    public void Send<TClass>(BaseContainer<TClass> message, BaseAgenda agenda)
     {
-      Container messageBroadcast = message.GetContainer();
-
-      foreach (KeyValuePair<Guid, WsConnection> connection in _connections)
+      Container messageRequest = message.GetContainer();
+      switch (agenda.Type)
       {
-        connection.Value.Send(messageBroadcast);
+        case MessageReceivedType.General:
+        {
+          foreach (KeyValuePair<Guid, WsConnection> connection in _connections)
+          {
+            connection.Value.Send(messageRequest);
+          }
+
+          break;
+        }
       }
     }
 
@@ -96,7 +105,7 @@
         case DispatchType.Login:
           if (((JObject)container.Payload).ToObject(typeof(LoginRequestContainer)) is LoginRequestContainer loginRequest)
           {
-            var loginResponse = new LoginResponseContainer(DateTime.Now, new Response(ResponseStatus.Ok, "Connected"));
+            var loginResponse = new LoginResponseContainer(new Response(ResponseStatus.Ok, "Connected"));
 
             if (_connections.Values.Any(item => item.Login == loginRequest.Content))
             {
@@ -120,11 +129,10 @@
           break;
 
         case DispatchType.Message:
-          MessageReceived?.Invoke(this, MessageSorter.GetSortedMessage(connection.Login, (JObject)container.Payload));
-          foreach (var connection in _connections)
-          {
-            
-          }
+          MessageReceivedEventArgs message = MessageSorter.GetSortedMessage((JObject)container.Payload);
+          MessageReceived?.Invoke(this, message);
+          
+          Send(new GeneralMessageContainer(message.Author, message.Message),new GeneralAgenda());
           break;
       }
     }

@@ -55,6 +55,7 @@
     <Compile Include="Model\ChannelsListModel\BaseUserChannel\OnlineChannel.cs" />
     <Compile Include="Model\ChannelsListModel\[Enum]\ChannelType.cs" />
     <Compile Include="Model\ChannelsListModel\BaseChannel.cs" />
+    <Compile Include="Model\MessageModel.cs" />
     <Compile Include="Model\Network\NetworkController.cs" />
     <Compile Include="Model\Network\[Interface]\IConnectionController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,10 +1,10 @@
 ﻿namespace Common.Network.Messages.MessageReceived
 {
-  public class GeneralMessageReceived : BaseMessageReceived
+  public class GeneralAgenda : BaseAgenda
   {
     #region Constructors
 
-    public GeneralMessageReceived()
+    public GeneralAgenda()
       : base(MessageReceivedType.General)
     {
     }

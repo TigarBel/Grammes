@@ -2,7 +2,7 @@
 {
   using Prism.Events;
 
-  public class ChatNameEvent : PubSubEvent<string>
+  public class LoginNameEvent : PubSubEvent<string>
   {
   }
 }

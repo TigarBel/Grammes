@@ -85,8 +85,9 @@
     <Compile Include="TemplateSelectorViewModel.cs" />
     <Compile Include="ViewModels\Common\LeafViewModel.cs" />
     <Compile Include="ViewModels\ConnectViewModel.cs" />
-    <Compile Include="ViewModels\EventAggregator\ChatNameEvent.cs" />
     <Compile Include="ViewModels\EventAggregator\ChannelNameEvent.cs" />
+    <Compile Include="ViewModels\EventAggregator\LoginNameEvent.cs" />
+    <Compile Include="ViewModels\EventAggregator\MessageReceivedEvent.cs" />
     <Compile Include="ViewModels\EventLogViewModel.cs" />
     <Compile Include="ViewModels\MainMenuViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

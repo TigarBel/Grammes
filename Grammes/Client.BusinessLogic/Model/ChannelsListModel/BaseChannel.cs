@@ -33,16 +33,6 @@
       return Name;
     }
 
-    public override bool Equals(object obj)
-    {
-      return Equals(obj as BaseChannel);
-    }
-
-    public bool Equals(BaseChannel channel)
-    {
-      return Name == channel.Name;
-    }
-
     #endregion
   }
 }

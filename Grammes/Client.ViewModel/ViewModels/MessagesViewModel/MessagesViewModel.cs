@@ -2,7 +2,11 @@
 {
   using System.Linq;
 
+  using BusinessLogic.Model.ChannelsListModel;
+
   using EventAggregator;
+
+  using global::Common.Network.Messages;
 
   using Prism.Commands;
   using Prism.Events;
@@ -14,7 +18,9 @@
   {
     #region Fields
 
-    private string _chatName;
+    private string _loginName;
+
+    private BaseChannel _channel;
 
     private AsyncObservableCollection<MessageViewModel> _messagesUserList;
 
@@ -28,10 +34,10 @@
 
     #region Properties
 
-    public string ChatName
+    public BaseChannel Channel
     {
-      get => "Chat name: " + _chatName;
-      set => SetProperty(ref _chatName, value);
+      get => _channel;
+      set => SetProperty(ref _channel, value);
     }
 
     public AsyncObservableCollection<MessageViewModel> MessagesUserList
@@ -65,7 +71,9 @@
     public MessagesViewModel(IEventAggregator eventAggregator)
     {
       MessagesUserList = new AsyncObservableCollection<MessageViewModel>();
-      eventAggregator.GetEvent<ChatNameEvent>().Subscribe(SetChatName);
+      eventAggregator.GetEvent<ChannelNameEvent>().Subscribe(SetChannel);
+      eventAggregator.GetEvent<LoginNameEvent>().Subscribe(SetClient);
+      eventAggregator.GetEvent<MessageReceivedEvent>().Subscribe(AddMessage);
     }
 
     #endregion
@@ -88,9 +96,22 @@
       IsAvailable = false;
     }
 
-    private void SetChatName(string chatName)
+    private void SetChannel(BaseChannel channel)
     {
-      ChatName = chatName;
+      Channel = channel;
+    }
+
+    private void SetClient(string client)
+    {
+      _loginName = client;
+    }
+
+    public void AddMessage(MessageReceivedEventArgs eventArgs)
+    {
+      bool IsOut = _loginName != eventArgs.Author;
+      string content = $"{eventArgs.Author}: {eventArgs.Message}";
+      MessageViewModel message = new MessageViewModel(content, eventArgs.Time, IsOut, true);
+      MessagesUserList.Add(message);
     }
 
     #endregion

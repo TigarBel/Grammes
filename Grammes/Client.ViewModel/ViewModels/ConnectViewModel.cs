@@ -34,7 +34,7 @@
       InterfaceType.TcpSocket.ToString()
     };
 
-    private string _userName;
+    private string _loginName;
 
     private readonly Regex _regexLogin = new Regex(@"^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$");
 
@@ -82,14 +82,14 @@
       set => SetProperty(ref _selectTypeInterface, value);
     }
 
-    public string UserName
+    public string LoginName
     {
-      get => _userName;
+      get => _loginName;
       set
       {
-        SetProperty(ref _userName, value);
+        SetProperty(ref _loginName, value);
         Check();
-        _userNameEa.GetEvent<ChannelNameEvent>().Publish(_userName);
+        _userNameEa.GetEvent<LoginNameEvent>().Publish(_loginName);
       }
     }
 
@@ -104,7 +104,7 @@
       _userNameEa = eventAggregator;
       IpAddress = "192.168.37.228";
       Port = 3000;
-      UserName = "";
+      LoginName = "";
       SelectTypeInterface = InterfaceType.WebSocket.ToString();
     }
 
@@ -132,21 +132,21 @@
         _errorsContainer.SetErrors(() => Port, new[] { "Port not available" });
       }
 
-      _errorsContainer.ClearErrors(() => UserName);
+      _errorsContainer.ClearErrors(() => LoginName);
 
-      if (UserName?.Length == 0)
+      if (LoginName?.Length == 0)
       {
-        _errorsContainer.SetErrors(() => UserName, new[] { "User not entered" });
+        _errorsContainer.SetErrors(() => LoginName, new[] { "User not entered" });
       }
 
-      if (UserName?.Length > 16)
+      if (LoginName?.Length > 16)
       {
-        _errorsContainer.SetErrors(() => UserName, new[] { "Username up to 16 characters" });
+        _errorsContainer.SetErrors(() => LoginName, new[] { "Username up to 16 characters" });
       }
 
-      if (!new Regex(Resources.UserNameUnacceptableSymbols, RegexOptions.IgnoreCase).IsMatch(UserName ?? string.Empty))
+      if (!new Regex(Resources.UserNameUnacceptableSymbols, RegexOptions.IgnoreCase).IsMatch(LoginName ?? string.Empty))
       {
-        _errorsContainer.SetErrors(() => UserName, new[] { "Username unmasked" });
+        _errorsContainer.SetErrors(() => LoginName, new[] { "Username unmasked" });
       }
 
       IsAvailableButton = _errorsContainer.GetErrors().Count == 0;

@@ -1,4 +1,4 @@
-﻿namespace Common.Network.Messages
+﻿namespace Common.Network.Messages.MessageSorter
 {
   using System;
 
@@ -10,12 +10,12 @@
   {
     #region Methods
 
-    public static MessageReceivedEventArgs GetSortedMessage(string author,JObject message)
+    public static MessageReceivedEventArgs GetSortedMessage(JObject message)
     {
-      if (message.ToObject(typeof(GeneralMessageRequestContainer)) is GeneralMessageRequestContainer messageRequest)
+      if (message.ToObject(typeof(GeneralMessageContainer)) is GeneralMessageContainer messageRequest) 
       {
-        return new MessageReceivedEventArgs(author, messageRequest.Content,
-          new GeneralMessageReceived(), messageRequest.TimePoint);
+        return new MessageReceivedEventArgs(messageRequest.Author, messageRequest.Content,
+          new GeneralAgenda(), DateTime.Now);
       }
 
       throw new ArgumentException("Get sorted message unknown!");

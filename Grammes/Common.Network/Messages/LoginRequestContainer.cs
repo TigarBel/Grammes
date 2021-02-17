@@ -6,8 +6,8 @@
   {
     #region Constructors
 
-    public LoginRequestContainer(DateTime timeNow, string author)
-      : base(DispatchType.Login, timeNow, author)
+    public LoginRequestContainer(string author)
+      : base(DispatchType.Login, author)
     {
     }
 

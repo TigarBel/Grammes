@@ -6,8 +6,8 @@
   {
     #region Constructors
 
-    public LoginResponseContainer(DateTime timeNow, Response response)
-      : base(DispatchType.Login, timeNow, response)
+    public LoginResponseContainer(Response response)
+      : base(DispatchType.Login, response)
     {
 
     }

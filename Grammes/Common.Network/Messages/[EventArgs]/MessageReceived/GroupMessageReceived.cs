@@ -3,7 +3,7 @@
   using System;
   using System.Collections.Generic;
 
-  public class GroupMessageReceived : BaseMessageReceived
+  public class GroupAgenda : BaseAgenda
   {
     #region Properties
 
@@ -13,7 +13,7 @@
 
     #region Constructors
 
-    public GroupMessageReceived(List<string> targetList)
+    public GroupAgenda(List<string> targetList)
       : base(MessageReceivedType.Group)
     {
       TargetList = targetList ?? throw new NullReferenceException("Group message received target list is null!");

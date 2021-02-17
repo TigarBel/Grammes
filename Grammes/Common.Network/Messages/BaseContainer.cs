@@ -8,19 +8,16 @@
 
     public DispatchType Request { get; private set; }
 
-    protected string _author;
-
-    public DateTime TimePoint { get; private set; }
+    public string Author { get; protected set; }
 
     public TClassContent Content { get; set; }
     #endregion
 
     #region Constructors
 
-    protected BaseContainer(DispatchType request, DateTime timePoint, TClassContent content)
+    protected BaseContainer(DispatchType request, TClassContent content)
     {
       Request = request;
-      TimePoint = timePoint;
       Content = content;
     }
 
