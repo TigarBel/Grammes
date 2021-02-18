@@ -61,7 +61,7 @@
         <local:UsersListMessagesView Grid.Row="0" 
                                      IsEnabled="True"/>
         <GridSplitter Grid.Row="1" Height="7" HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                      IsEnabled="False"/>
+                      IsEnabled="{Binding ElementName=ExpanderEventLog, Path=IsExpanded}"/>
 
         <Expander Grid.Row="2" x:Name="ExpanderEventLog" Header="EventLog"
                   eventLog:ExpanderRowHeightBehavior.IsEnabled="True"
