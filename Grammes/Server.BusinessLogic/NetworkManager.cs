@@ -1,16 +1,15 @@
 ﻿namespace Server.BusinessLogic
 {
   using System;
-  using System.Collections.Generic;
   using System.Linq;
   using System.Net;
 
+  using Common.DataBase;
+  using Common.DataBase.DataBase;
   using Common.Network;
   using Common.Network.Messages;
   using Common.Network.Messages.Channels;
   using Common.Network.Messages.MessageReceived;
-
-  using DataBase;
 
   public class NetworkManager
   {
@@ -30,7 +29,8 @@
     {
       _address = new Config.ServerConfig().GetAddress();
       _usersList = new UsersList();
-      _wsServer = new WsServer(_address);
+      _wsServer = new WsServer(_address, new BaseManager());
+
       _wsServer.ConnectionStateChanged += HandleConnectionStateChanged;
       _wsServer.MessageReceived += HandleMessageReceived;
     }
@@ -55,12 +55,15 @@
       if (_usersList.GetUsersList().All(item => item != eventArgs.ClientName) && eventArgs.Connected)
       {
         _wsServer.Send(
-          new LoginResponseContainer(new Response(ResponseStatus.Failure, "Not in the database")),
+          new LoginResponseContainer(new Response(ResponseStatus.Failure, "Not in the database"), null, null),
           new PrivateAgenda(eventArgs.ClientName));
       }
 
       string clientState = eventArgs.Connected ? "connect" : "disconnect";
       string message = $"Client '{eventArgs.ClientName}' {clientState}.";
+      _wsServer.Send(
+        new ChannelResponseContainer(new UpdateChannel(eventArgs.Connected, eventArgs.ClientName)), 
+        new GeneralAgenda());
       Console.WriteLine(message);
     }
 

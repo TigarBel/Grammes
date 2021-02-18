@@ -5,6 +5,7 @@
     Connection = 0,
     Login,
     Message,
+    Channel,
     EventLog
   }
 }

@@ -1,6 +1,7 @@
 ﻿namespace Client.ViewModel.ViewModels
 {
   using System;
+  using System.Collections.Generic;
   using System.Linq;
 
   using BusinessLogic.Model.ChannelsListModel.BaseUserChannel;
@@ -85,12 +86,32 @@
       _connectionController.ConnectionStateChanged += HandleConnectionStateChanged;
       _connectionController.Login += HandleLogin;
       _connectionController.MessageReceived += HandleMessageReceived;
-      _connectionController.ChannelUsersList += HandleChannelUsersList;
       _connectionController.Connect(address, port, name);
     }
 
     private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs eventArgs)
     {
+      string selfLogin = _connectViewModel.LoginName;
+      string comeLogin = eventArgs.ClientName;
+
+      if (selfLogin != comeLogin)
+      {
+        if (eventArgs.Connected)
+        {
+          _mainViewModel.UsersListViewModel.OnlineUsers.Add(new OnlineChannel(comeLogin));
+          OfflineChannel user = _mainViewModel.UsersListViewModel.OfflineUsers.Single(offline => offline.Name == comeLogin);
+          _mainViewModel.UsersListViewModel.OfflineUsers.Remove(user);
+        }
+        else
+        {
+          _mainViewModel.UsersListViewModel.OfflineUsers.Add(new OfflineChannel(comeLogin));
+          OnlineChannel user = _mainViewModel.UsersListViewModel.OnlineUsers.Single(online => online.Name == comeLogin);
+          _mainViewModel.UsersListViewModel.OnlineUsers.Remove(user);
+        }
+
+        return;
+      }
+
       if (eventArgs.Connected)
       {
         _connectViewModel.IsAvailableButton = false;
@@ -110,7 +131,6 @@
         _connectionController.ConnectionStateChanged -= HandleConnectionStateChanged;
         _connectionController.Login -= HandleLogin;
         _connectionController.MessageReceived -= HandleMessageReceived;
-        _connectionController.ChannelUsersList -= HandleChannelUsersList;
       }
 
       _mainViewModel.EventLogViewModel.Events.Add(eventArgs.EventLog);
@@ -128,6 +148,19 @@
         _connectViewModel.Warning = $"{eventArgs.EventLog.Text}";
       }
 
+      _mainViewModel.UsersListViewModel.OnlineUsers.Clear();
+      _mainViewModel.UsersListViewModel.OfflineUsers.Clear();
+      _mainViewModel.UsersListViewModel.Groups.Clear();
+      
+      foreach (string online in eventArgs.OnlineList.Where(online => _connectViewModel.LoginName != online))
+      {
+        _mainViewModel.UsersListViewModel.OnlineUsers.Add(new OnlineChannel(online));
+      }
+      
+      foreach (string offline in eventArgs.OfflineList) {
+        _mainViewModel.UsersListViewModel.OfflineUsers.Add(new OfflineChannel(offline));
+      }
+
       _mainViewModel.EventLogViewModel.Events.Add(eventArgs.EventLog);
     }
 
@@ -136,24 +169,7 @@
       //_mainViewModel.EventLogViewModel.Events.Add(e.EventLog);
       _eventAggregator.GetEvent<MessageReceivedEvent>().Publish(eventArgs);
     }
-
-    private void HandleChannelUsersList(object sender, ChannelUsersListEventArgs eventArgs)
-    {
-      _mainViewModel.UsersListViewModel.OnlineUsers.Clear();
-      _mainViewModel.UsersListViewModel.OfflineUsers.Clear();
-      _mainViewModel.UsersListViewModel.Groups.Clear();
-
-      foreach (string online in eventArgs.OnlineList.Where(online => _connectViewModel.LoginName != online))
-      {
-        _mainViewModel.UsersListViewModel.OnlineUsers.Add(new OnlineChannel(online));
-      }
-
-      foreach (string offline in eventArgs.OfflineList)
-      {
-        _mainViewModel.UsersListViewModel.OfflineUsers.Add(new OfflineChannel(offline));
-      }
-    }
-
+    
     private void ExecuteDisconnect()
     {
       _connectionController.Disconnect();

@@ -88,9 +88,9 @@
           }
           case TreeViewItem item:
           {
-            if (item.Header is BaseChannel)
+            if (item.Header is BaseChannel channel)
             {
-              _chatNameEa.GetEvent<ChannelNameEvent>().Publish((BaseChannel)item.Header);
+              _chatNameEa.GetEvent<ChannelNameEvent>().Publish(channel);
             }
 
             break;

@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Server.BusinessLogic.DataBase
+﻿namespace Common.DataBase.DataBase
 {
+  using System.Collections.Generic;
+
   public class UsersList
   {
     #region Fields
 
-    private List<string> _list;
+    private readonly List<string> _list;
 
     #endregion
 
@@ -30,10 +26,14 @@ namespace Server.BusinessLogic.DataBase
       };
     }
 
+    #endregion
+
+    #region Methods
+
     public List<string> GetUsersList()
     {
-      List<string> usersList = new List<string>();
-      foreach (var user in _list)
+      var usersList = new List<string>();
+      foreach (string user in _list)
       {
         usersList.Add(user);
       }

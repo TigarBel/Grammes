@@ -44,7 +44,6 @@
     public event EventHandler<ConnectionStateChangedEventArgs> ConnectionStateChanged;
     public event EventHandler<LoginEventArgs> LoginEvent;
     public event EventHandler<MessageReceivedEventArgs> MessageReceived;
-    public event EventHandler<ChannelUsersListEventArgs> ChannelUsersList;
 
     #endregion
 
@@ -182,13 +181,19 @@
               eventLog.Text = loginResponse.Content.Reason;
             }
 
-            LoginEvent?.Invoke(this, new LoginEventArgs(_login, eventLog.IsSuccessfully, eventLog));
+            LoginEvent?.Invoke(this, new LoginEventArgs(_login, eventLog.IsSuccessfully, eventLog, 
+              loginResponse.OnlineList, loginResponse.OfflineList));
           }
 
           break;
         case DispatchType.Message:
           MessageReceived?.Invoke(this, MessageSorter.GetSortedEventMessage((JObject)container.Payload));
           break;
+        case DispatchType.Channel:
+          ConnectionStateChanged?.Invoke(this, MessageSorter.GetSortedChannel((JObject)container.Payload));
+          break;
+        default:
+          throw new ArgumentOutOfRangeException();
       }
     }
 

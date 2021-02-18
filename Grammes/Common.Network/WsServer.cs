@@ -6,8 +6,10 @@
   using System.Linq;
   using System.Net;
 
+  using DataBase;
+  using DataBase.DataBase;
+
   using Messages;
-  using Messages.Channels;
   using Messages.EventLog;
   using Messages.MessageReceived;
   using Messages.MessageSorter;
@@ -31,6 +33,12 @@
 
     #endregion
 
+    #region Properties
+
+    private readonly BaseManager _baseManager;
+
+    #endregion
+
     #region Events
 
     public event EventHandler<ConnectionStateChangedEventArgs> ConnectionStateChanged;
@@ -40,10 +48,11 @@
 
     #region Constructors
 
-    public WsServer(IPEndPoint listenAddress)
+    public WsServer(IPEndPoint listenAddress, BaseManager baseManager)
     {
       _name = Resources.ServerName;
       _listenAddress = listenAddress;
+      _baseManager = baseManager;
       _connections = new ConcurrentDictionary<Guid, WsConnection>();
     }
 
@@ -84,17 +93,9 @@
       {
         case ChannelType.General:
         {
-          switch (message.Request)
+          foreach (KeyValuePair<Guid, WsConnection> connection in _connections)
           {
-            case DispatchType.Message:
-            {
-              foreach (KeyValuePair<Guid, WsConnection> connection in _connections)
-              {
-                connection.Value.Send(messageRequest);
-              }
-
-              break;
-            }
+            connection.Value.Send(messageRequest);
           }
 
           break;
@@ -119,15 +120,22 @@
         case DispatchType.Login:
           if (((JObject)container.Payload).ToObject(typeof(LoginRequestContainer)) is LoginRequestContainer loginRequest)
           {
-            var loginResponse = new LoginResponseContainer(new Response(ResponseStatus.Ok, "Connected"));
+            LoginResponseContainer loginResponse;
 
             if (_connections.Values.Any(item => item.Login == loginRequest.Content))
             {
-              loginResponse.Content = new Response(ResponseStatus.Failure, $"Client with name '{loginRequest.Content}' yet connect.");
+              loginResponse = new LoginResponseContainer(new Response(ResponseStatus.Failure,
+                  $"Client with name '{loginRequest.Content}' yet connect."),
+                null, null);
               connection.Login = $"pseudo-{loginRequest.Content}";
             }
             else
             {
+              _baseManager.UserOnlineList.Add(loginRequest.Content);
+              _baseManager.UserOnlineList.Sort();
+              _baseManager.UserOfflineList.Remove(loginRequest.Content);
+              loginResponse = new LoginResponseContainer(new Response(ResponseStatus.Ok, "Connected"),
+                _baseManager.UserOnlineList, _baseManager.UserOfflineList);
               connection.Login = loginRequest.Content;
             }
 
@@ -157,15 +165,20 @@
 
     internal void FreeConnection(Guid connectionId)
     {
-      if (_connections.TryRemove(connectionId, out WsConnection connection) && !string.IsNullOrEmpty(connection.Login))
+      if (!_connections.TryRemove(connectionId, out WsConnection connection) || string.IsNullOrEmpty(connection.Login))
       {
-        ConnectionStateChanged?.Invoke(
-          this,
-          new ConnectionStateChangedEventArgs(
-            connection.Login,
-            false,
-            new EventLogMessage(connection.Login, true, DispatchType.EventLog, "Disconnect", DateTime.Now)));
+        return;
       }
+
+      _baseManager.UserOfflineList.Add(connection.Login);
+      _baseManager.UserOfflineList.Sort();
+      _baseManager.UserOnlineList.Remove(connection.Login);
+      ConnectionStateChanged?.Invoke(
+        this,
+        new ConnectionStateChangedEventArgs(
+          connection.Login,
+          false,
+          new EventLogMessage(connection.Login, true, DispatchType.EventLog, "Disconnect", DateTime.Now)));
     }
 
     #endregion
