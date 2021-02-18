@@ -45,7 +45,7 @@
     public string UsersName
     {
       get => _userName;
-      set => SetProperty(ref _userName, "Your name: " + value);
+      set => SetProperty(ref _userName, value);
     }
 
     public GeneralChannel General
@@ -110,89 +110,11 @@
       eventAggregator.GetEvent<MessageReceivedEvent>().Subscribe(AddMessageOnChannel);
 
       General = new GeneralChannel();
-      SelectChat = General;
-      /*<Hard-Code>*/
-      OnlineUsers = new AsyncObservableCollection<OnlineChannel>
-      {
-        new OnlineChannel("User1"),
-        new OnlineChannel("User3"),
-        new OnlineChannel("User13")
-      };
-      OfflineUsers = new AsyncObservableCollection<OfflineChannel>
-      {
-        new OfflineChannel("User2"),
-        new OfflineChannel("User4"),
-        new OfflineChannel("User24")
-      };
-      Groups = new AsyncObservableCollection<GroupChannel>
-      {
-        new GroupChannel(
-          "User2",
-          new List<PrivateChannel>
-          {
-            new OfflineChannel("User1"),
-            new OfflineChannel("User1")
-          }),
-        new GroupChannel(
-          "User4",
-          new List<PrivateChannel>
-          {
-            new OfflineChannel("User1"),
-            new OfflineChannel("User1")
-          }),
-        new GroupChannel(
-          "User24",
-          new List<PrivateChannel>
-          {
-            new OfflineChannel("User1"),
-            new OfflineChannel("User1")
-          }),
-        new GroupChannel(
-          "User224",
-          new List<PrivateChannel>
-          {
-            new OfflineChannel("User1"),
-            new OfflineChannel("User1")
-          }),
-        new GroupChannel(
-          "User424",
-          new List<PrivateChannel>
-          {
-            new OfflineChannel("User1"),
-            new OfflineChannel("User1")
-          }),
-        new GroupChannel(
-          "User2424",
-          new List<PrivateChannel>
-          {
-            new OfflineChannel("User1"),
-            new OfflineChannel("User1")
-          }),
-        new GroupChannel(
-          "User242",
-          new List<PrivateChannel>
-          {
-            new OfflineChannel("User1"),
-            new OfflineChannel("User1")
-          }),
-        new GroupChannel(
-          "User442",
-          new List<PrivateChannel>
-          {
-            new OfflineChannel("User1"),
-            new OfflineChannel("User1")
-          }),
-        new GroupChannel(
-          "User2442",
-          new List<PrivateChannel>
-          {
-            new OfflineChannel("User1"),
-            new OfflineChannel("User1")
-          })
-      };
-      /*</Hard-Code>*/
+      OnlineUsers = new AsyncObservableCollection<OnlineChannel>();
+      OfflineUsers = new AsyncObservableCollection<OfflineChannel>();
+      Groups = new AsyncObservableCollection<GroupChannel>();
 
-      //SelectChat = (BaseUser)TreeItemList[0];
+      SelectChat = General;
     }
 
     #endregion
@@ -216,9 +138,19 @@
           General.MessageList.Add(message);
           break;
         case ChannelType.Private:
-          OnlineChannel onlineChannel = OnlineUsers.Where(
-            userItem => userItem.Name == eventArgs.Author).GetEnumerator().Current;
-          onlineChannel?.MessageList.Add(message);
+          if (eventArgs.Author == _userName)
+          {
+            OnlineChannel onlineChannel = OnlineUsers.Where(userItem => 
+              userItem.Name == ((PrivateAgenda)eventArgs.Agenda).Target).GetEnumerator().Current;
+            onlineChannel?.MessageList.Add(message);
+          }
+          else
+          {
+            OnlineChannel onlineChannel = OnlineUsers.Where(userItem => 
+              userItem.Name == eventArgs.Author).GetEnumerator().Current;
+            onlineChannel?.MessageList.Add(message);
+          }
+
           break;
         case ChannelType.Group:
           GroupChannel groupChannel = Groups.Where(

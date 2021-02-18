@@ -1,11 +1,13 @@
 ﻿namespace Server.BusinessLogic
 {
   using System;
+  using System.Collections.Generic;
   using System.Linq;
   using System.Net;
 
   using Common.Network;
   using Common.Network.Messages;
+  using Common.Network.Messages.Channels;
   using Common.Network.Messages.MessageReceived;
 
   using DataBase;
@@ -50,7 +52,7 @@
 
     private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs eventArgs)
     {
-      if (_usersList.List.All(item => item != eventArgs.ClientName))
+      if (_usersList.GetUsersList().All(item => item != eventArgs.ClientName) && eventArgs.Connected)
       {
         _wsServer.Send(
           new LoginResponseContainer(new Response(ResponseStatus.Failure, "Not in the database")),

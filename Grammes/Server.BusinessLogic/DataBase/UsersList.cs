@@ -10,7 +10,7 @@ namespace Server.BusinessLogic.DataBase
   {
     #region Fields
 
-    public List<string> List;
+    private List<string> _list;
 
     #endregion
 
@@ -18,7 +18,7 @@ namespace Server.BusinessLogic.DataBase
 
     public UsersList()
     {
-      List = new List<string>
+      _list = new List<string>
       {
         "123",
         "321",
@@ -28,6 +28,17 @@ namespace Server.BusinessLogic.DataBase
         "User4",
         "User5"
       };
+    }
+
+    public List<string> GetUsersList()
+    {
+      List<string> usersList = new List<string>();
+      foreach (var user in _list)
+      {
+        usersList.Add(user);
+      }
+
+      return usersList;
     }
 
     #endregion

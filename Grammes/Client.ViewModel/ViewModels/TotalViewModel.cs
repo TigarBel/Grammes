@@ -1,14 +1,14 @@
 ﻿namespace Client.ViewModel.ViewModels
 {
   using System;
+  using System.Linq;
 
+  using BusinessLogic.Model.ChannelsListModel.BaseUserChannel;
   using BusinessLogic.Model.Network;
 
   using EventAggregator;
 
   using global::Common.Network.Messages;
-
-  using MessagesViewModel;
 
   using Prism.Commands;
   using Prism.Events;
@@ -52,10 +52,11 @@
 
     #region Constructors
 
-    public TotalViewModel(ConnectViewModel connectViewModel, 
-                          MainViewModel mainViewModel, 
-                          IConnectionController connectionController,
-                          IEventAggregator eventAggregator)
+    public TotalViewModel(
+      ConnectViewModel connectViewModel,
+      MainViewModel mainViewModel,
+      IConnectionController connectionController,
+      IEventAggregator eventAggregator)
     {
       NameViews = new TemplateSelectorViewModel().Views;
       ContentPresenter = 0;
@@ -63,7 +64,6 @@
       _connectViewModel.SendCommand = new DelegateCommand(ExecuteConnect);
       _mainViewModel = mainViewModel;
       _mainViewModel.MainMenuViewModel.Command = new DelegateCommand(ExecuteDisconnect);
-      _mainViewModel.MessagesViewModel.CommandSendMessage = new DelegateCommand(ExecuteSendMessage);
       _eventAggregator = eventAggregator;
 
       _connectionController = connectionController ?? throw new ArgumentNullException(nameof(connectionController));
@@ -77,7 +77,7 @@
     {
       _connectViewModel.Warning = "";
       _mainViewModel.Clear();
-      
+
       string address = _connectViewModel.IpAddress;
       int port = _connectViewModel.Port;
       string name = _connectViewModel.LoginName;
@@ -85,6 +85,7 @@
       _connectionController.ConnectionStateChanged += HandleConnectionStateChanged;
       _connectionController.Login += HandleLogin;
       _connectionController.MessageReceived += HandleMessageReceived;
+      _connectionController.ChannelUsersList += HandleChannelUsersList;
       _connectionController.Connect(address, port, name);
     }
 
@@ -109,6 +110,7 @@
         _connectionController.ConnectionStateChanged -= HandleConnectionStateChanged;
         _connectionController.Login -= HandleLogin;
         _connectionController.MessageReceived -= HandleMessageReceived;
+        _connectionController.ChannelUsersList -= HandleChannelUsersList;
       }
 
       _mainViewModel.EventLogViewModel.Events.Add(eventArgs.EventLog);
@@ -135,13 +137,21 @@
       _eventAggregator.GetEvent<MessageReceivedEvent>().Publish(eventArgs);
     }
 
-    private void ExecuteSendMessage()
+    private void HandleChannelUsersList(object sender, ChannelUsersListEventArgs eventArgs)
     {
-      string author = _connectViewModel.LoginName;
-      DateTime time = DateTime.Now;
-      string message = _mainViewModel.MessagesViewModel.TextMessage;
-      
-      _connectionController.Send(new GeneralMessageContainer(author, message));
+      _mainViewModel.UsersListViewModel.OnlineUsers.Clear();
+      _mainViewModel.UsersListViewModel.OfflineUsers.Clear();
+      _mainViewModel.UsersListViewModel.Groups.Clear();
+
+      foreach (string online in eventArgs.OnlineList.Where(online => _connectViewModel.LoginName != online))
+      {
+        _mainViewModel.UsersListViewModel.OnlineUsers.Add(new OnlineChannel(online));
+      }
+
+      foreach (string offline in eventArgs.OfflineList)
+      {
+        _mainViewModel.UsersListViewModel.OfflineUsers.Add(new OfflineChannel(offline));
+      }
     }
 
     private void ExecuteDisconnect()

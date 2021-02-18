@@ -44,6 +44,7 @@
     public event EventHandler<ConnectionStateChangedEventArgs> ConnectionStateChanged;
     public event EventHandler<LoginEventArgs> LoginEvent;
     public event EventHandler<MessageReceivedEventArgs> MessageReceived;
+    public event EventHandler<ChannelUsersListEventArgs> ChannelUsersList;
 
     #endregion
 
@@ -183,9 +184,10 @@
 
             LoginEvent?.Invoke(this, new LoginEventArgs(_login, eventLog.IsSuccessfully, eventLog));
           }
+
           break;
         case DispatchType.Message:
-          MessageReceived?.Invoke(this, MessageSorter.GetSortedMessage((JObject)container.Payload));
+          MessageReceived?.Invoke(this, MessageSorter.GetSortedEventMessage((JObject)container.Payload));
           break;
       }
     }

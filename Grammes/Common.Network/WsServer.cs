@@ -7,6 +7,7 @@
   using System.Net;
 
   using Messages;
+  using Messages.Channels;
   using Messages.EventLog;
   using Messages.MessageReceived;
   using Messages.MessageSorter;
@@ -83,19 +84,24 @@
       {
         case ChannelType.General:
         {
-          foreach (KeyValuePair<Guid, WsConnection> connection in _connections)
+          switch (message.Request)
           {
-            connection.Value.Send(messageRequest);
+            case DispatchType.Message:
+            {
+              foreach (KeyValuePair<Guid, WsConnection> connection in _connections)
+              {
+                connection.Value.Send(messageRequest);
+              }
+
+              break;
+            }
           }
+
           break;
         }
         case ChannelType.Private:
         {
-          foreach (KeyValuePair<Guid, WsConnection> connection in _connections)
-          {
-            if(connection.Value.Login == message.Author || connection.Value.Login == ((PrivateAgenda)agenda).Target)
-              connection.Value.Send(messageRequest);
-          }
+          _connections.Values.First(item => item.Login == ((PrivateAgenda)agenda).Target).Send(messageRequest);
           break;
         }
       }
@@ -137,10 +143,9 @@
           break;
 
         case DispatchType.Message:
-          MessageReceivedEventArgs message = MessageSorter.GetSortedMessage((JObject)container.Payload);
+          MessageReceivedEventArgs message = MessageSorter.GetSortedEventMessage((JObject)container.Payload);
           MessageReceived?.Invoke(this, message);
-          
-          Send(new GeneralMessageContainer(message.Author, message.Message),new GeneralAgenda());
+          Send(MessageSorter.GetSortedMessage(message.Author, message.Message, message.Agenda), message.Agenda);
           break;
       }
     }

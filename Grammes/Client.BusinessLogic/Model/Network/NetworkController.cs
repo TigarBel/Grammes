@@ -18,6 +18,7 @@
     public event EventHandler<ConnectionStateChangedEventArgs> ConnectionStateChanged;
     public event EventHandler<LoginEventArgs> Login;
     public event EventHandler<MessageReceivedEventArgs> MessageReceived;
+    public event EventHandler<ChannelUsersListEventArgs> ChannelUsersList;
 
     #endregion
 
@@ -30,12 +31,14 @@
         _client.ConnectionStateChanged -= HandleConnectionStateChanged;
         _client.LoginEvent -= HandleLogin;
         _client.MessageReceived -= HandleMessageReceived;
+        _client.ChannelUsersList -= HandleChannelUsersList;
       }
 
       _client = new WsClient(name);
       _client.ConnectionStateChanged += HandleConnectionStateChanged;
       _client.LoginEvent += HandleLogin;
       _client.MessageReceived += HandleMessageReceived;
+      _client.ChannelUsersList += HandleChannelUsersList;
       _client.ConnectAsync(address, port);
     }
 
@@ -49,19 +52,24 @@
       _client.Send(message);
     }
 
-    private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs e)
+    private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs eventArgs)
     {
-      ConnectionStateChanged?.Invoke(sender, e);
+      ConnectionStateChanged?.Invoke(sender, eventArgs);
     }
 
-    private void HandleLogin(object sender, LoginEventArgs e)
+    private void HandleLogin(object sender, LoginEventArgs eventArgs)
     {
-      Login?.Invoke(sender, e);
+      Login?.Invoke(sender, eventArgs);
     }
 
-    private void HandleMessageReceived(object sender, MessageReceivedEventArgs e)
+    private void HandleMessageReceived(object sender, MessageReceivedEventArgs eventArgs)
     {
-      MessageReceived?.Invoke(sender, e);
+      MessageReceived?.Invoke(sender, eventArgs);
+    }
+
+    private void HandleChannelUsersList(object sender, ChannelUsersListEventArgs eventArgs)
+    {
+      ChannelUsersList?.Invoke(sender, eventArgs);
     }
 
     #endregion

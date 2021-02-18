@@ -1,9 +1,11 @@
 ﻿namespace Client.ViewModel.ViewModels.MessagesViewModel
 {
+  using System;
   using System.Linq;
 
   using BusinessLogic.Model;
   using BusinessLogic.Model.ChannelsListModel;
+  using BusinessLogic.Model.Network;
 
   using EventAggregator;
 
@@ -31,6 +33,8 @@
     private string _textMessage;
 
     private bool _isAvailable;
+
+    private readonly IConnectionController _connectionController;
 
     #endregion
 
@@ -78,12 +82,15 @@
 
     #region Constructors
 
-    public MessagesViewModel(IEventAggregator eventAggregator)
+    public MessagesViewModel(IEventAggregator eventAggregator,
+                             IConnectionController connectionController)
     {
       MessagesUserList = new AsyncObservableCollection<MessageViewModel>();
       eventAggregator.GetEvent<ChannelNameEvent>().Subscribe(SetChannel);
       eventAggregator.GetEvent<LoginNameEvent>().Subscribe(SetClient);
       eventAggregator.GetEvent<MessageReceivedEvent>().Subscribe(AddMessage);
+      _connectionController = connectionController;
+      CommandSendMessage = new DelegateCommand(Send);
     }
 
     #endregion
@@ -141,6 +148,26 @@
           break;
       }
       return true;
+    }
+
+    private void Send()
+    {
+      string author = _loginName;
+      DateTime time = DateTime.Now;
+      string message = TextMessage;
+
+      switch (Channel.Type)
+      {
+        case ChannelType.General:
+          _connectionController.Send(new GeneralMessageContainer(author, message));
+          break;
+        case ChannelType.Private:
+          _connectionController.Send(new PrivateMessageContainer(author, Channel.Name, message));
+          break;
+        case ChannelType.Group:
+
+          break;
+      }
     }
 
     #endregion
