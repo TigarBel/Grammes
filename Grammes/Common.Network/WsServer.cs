@@ -7,7 +7,6 @@
   using System.Net;
 
   using DataBase;
-  using DataBase.DataBase;
 
   using Messages;
   using Messages.EventLog;
@@ -30,10 +29,6 @@
     private WebSocketServer _server;
 
     private readonly string _name;
-
-    #endregion
-
-    #region Properties
 
     private readonly BaseManager _baseManager;
 
@@ -93,7 +88,9 @@
       {
         case ChannelType.General:
         {
-          foreach (KeyValuePair<Guid, WsConnection> connection in _connections)
+          foreach (KeyValuePair<Guid, WsConnection> connection in _connections.Where(
+            author => author.Value.Login != message.Author)
+          )
           {
             connection.Value.Send(messageRequest);
           }
@@ -124,9 +121,10 @@
 
             if (_connections.Values.Any(item => item.Login == loginRequest.Content))
             {
-              loginResponse = new LoginResponseContainer(new Response(ResponseStatus.Failure,
-                  $"Client with name '{loginRequest.Content}' yet connect."),
-                null, null);
+              loginResponse = new LoginResponseContainer(
+                new Response(ResponseStatus.Failure, $"Client with name '{loginRequest.Content}' yet connect."),
+                null,
+                null);
               connection.Login = $"pseudo-{loginRequest.Content}";
             }
             else
@@ -134,8 +132,10 @@
               _baseManager.UserOnlineList.Add(loginRequest.Content);
               _baseManager.UserOnlineList.Sort();
               _baseManager.UserOfflineList.Remove(loginRequest.Content);
-              loginResponse = new LoginResponseContainer(new Response(ResponseStatus.Ok, "Connected"),
-                _baseManager.UserOnlineList, _baseManager.UserOfflineList);
+              loginResponse = new LoginResponseContainer(
+                new Response(ResponseStatus.Ok, "Connected"),
+                _baseManager.UserOnlineList,
+                _baseManager.UserOfflineList);
               connection.Login = loginRequest.Content;
             }
 

@@ -128,9 +128,8 @@
 
     private void AddMessageOnChannel(MessageReceivedEventArgs eventArgs)
     {
-      bool IsOut = _userName != eventArgs.Author;
       string content = $"{eventArgs.Author}: {eventArgs.Message}";
-      MessageModel message = new MessageModel(content, eventArgs.Time, IsOut, true);
+      MessageModel message = new MessageModel(content, eventArgs.Time, true, true);
 
       switch (eventArgs.Agenda.Type)
       {
@@ -138,27 +137,19 @@
           General.MessageList.Add(message);
           break;
         case ChannelType.Private:
-          if (eventArgs.Author == _userName)
+          foreach (OnlineChannel online in OnlineUsers.Where(user => user.Name == eventArgs.Author))
           {
-            OnlineChannel onlineChannel = OnlineUsers.Where(userItem => 
-              userItem.Name == ((PrivateAgenda)eventArgs.Agenda).Target).GetEnumerator().Current;
-            onlineChannel?.MessageList.Add(message);
-          }
-          else
-          {
-            OnlineChannel onlineChannel = OnlineUsers.Where(userItem => 
-              userItem.Name == eventArgs.Author).GetEnumerator().Current;
-            onlineChannel?.MessageList.Add(message);
+            online.MessageList.Add(message);
           }
 
           break;
         case ChannelType.Group:
-          GroupChannel groupChannel = Groups.Where(
-            item => item.Name == ((GroupAgenda)eventArgs.Agenda).GroupName).GetEnumerator().Current;
+          GroupChannel groupChannel = Groups.Where(item => item.Name == ((GroupAgenda)eventArgs.Agenda).GroupName).GetEnumerator().Current;
           groupChannel?.MessageList.Add(message);
           break;
       }
     }
+
     #endregion
   }
 }

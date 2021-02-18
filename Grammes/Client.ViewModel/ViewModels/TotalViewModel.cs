@@ -146,6 +146,7 @@
       {
         _connectionController.Disconnect();
         _connectViewModel.Warning = $"{eventArgs.EventLog.Text}";
+        return;
       }
 
       _mainViewModel.UsersListViewModel.OnlineUsers.Clear();

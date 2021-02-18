@@ -155,6 +155,7 @@
       string author = _loginName;
       DateTime time = DateTime.Now;
       string message = TextMessage;
+      var model = new MessageModel(message, time, false, true);
 
       switch (Channel.Type)
       {
@@ -168,6 +169,10 @@
 
           break;
       }
+
+      Channel.MessageList.Add(model);
+      MessagesUserList.Add(new MessageViewModel(model));
+      TextMessage = "";
     }
 
     #endregion
