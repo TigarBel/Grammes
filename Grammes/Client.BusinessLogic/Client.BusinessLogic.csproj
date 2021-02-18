@@ -61,6 +61,10 @@
     <Compile Include="Model\Common\[Enum]\InterfaceType.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common.DataBase\Common.DataBase.csproj">
+      <Project>{869071e2-902e-4457-9bc2-70e587dd315f}</Project>
+      <Name>Common.DataBase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common.Network\Common.Network.csproj">
       <Project>{42847006-d2dd-4a7d-864c-947c41cfe41d}</Project>
       <Name>Common.Network</Name>
