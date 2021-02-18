@@ -174,7 +174,7 @@
         case DispatchType.Login:
           if (((JObject)container.Payload).ToObject(typeof(LoginResponseContainer)) is LoginResponseContainer loginResponse)
           {
-            var eventLog = new EventLogMessage(_login, true, DispatchType.EventLog, "Login", DateTime.Now);
+            var eventLog = new EventLogMessage(_login, true, DispatchType.Login, "Login", DateTime.Now);
             if (loginResponse.Content.Result == ResponseStatus.Failure)
             {
               eventLog.IsSuccessfully = false;

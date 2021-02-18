@@ -91,6 +91,7 @@
 
     private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs eventArgs)
     {
+      _mainViewModel.EventLogViewModel.Events.Add(eventArgs.EventLog);
       string selfLogin = _connectViewModel.LoginName;
       string comeLogin = eventArgs.ClientName;
 
@@ -132,12 +133,12 @@
         _connectionController.Login -= HandleLogin;
         _connectionController.MessageReceived -= HandleMessageReceived;
       }
-
-      _mainViewModel.EventLogViewModel.Events.Add(eventArgs.EventLog);
     }
 
     private void HandleLogin(object sender, LoginEventArgs eventArgs)
     {
+      _mainViewModel.EventLogViewModel.Events.Add(eventArgs.EventLog);
+
       if (eventArgs.Connected)
       {
         ContentPresenter = (int)ViewSelect.MainView;
@@ -161,13 +162,11 @@
       foreach (string offline in eventArgs.OfflineList) {
         _mainViewModel.UsersListViewModel.OfflineUsers.Add(new OfflineChannel(offline));
       }
-
-      _mainViewModel.EventLogViewModel.Events.Add(eventArgs.EventLog);
     }
 
     private void HandleMessageReceived(object sender, MessageReceivedEventArgs eventArgs)
     {
-      //_mainViewModel.EventLogViewModel.Events.Add(e.EventLog);
+      //_mainViewModel.EventLogViewModel.Events.Add(eventArgs.EventLog);
       _eventAggregator.GetEvent<MessageReceivedEvent>().Publish(eventArgs);
     }
     

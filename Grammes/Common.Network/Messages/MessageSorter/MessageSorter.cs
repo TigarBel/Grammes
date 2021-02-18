@@ -56,10 +56,10 @@
         return new ConnectionStateChangedEventArgs(
           messageResponse.Content.Login,
           messageResponse.Content.IsConnect,
-          new EventLogMessage("server", true, DispatchType.Channel, "Update channel", DateTime.Now));
+          new EventLogMessage(@"$erver", true, DispatchType.Channel, "Update channel", DateTime.Now));
       }
 
-      throw new ArgumentException("Get sorted message without type!");
+      throw new ArgumentException("Get sorted channel out of range!");
     }
 
     #endregion
