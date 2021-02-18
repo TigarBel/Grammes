@@ -91,7 +91,7 @@
 
     private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs eventArgs)
     {
-      _mainViewModel.EventLogViewModel.Events.Add(eventArgs.EventLog);
+      _mainViewModel.Events.Add(eventArgs.EventLog);
       string selfLogin = _connectViewModel.LoginName;
       string comeLogin = eventArgs.ClientName;
 
@@ -137,7 +137,7 @@
 
     private void HandleLogin(object sender, LoginEventArgs eventArgs)
     {
-      _mainViewModel.EventLogViewModel.Events.Add(eventArgs.EventLog);
+      _mainViewModel.Events.Add(eventArgs.EventLog);
 
       if (eventArgs.Connected)
       {

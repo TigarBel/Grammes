@@ -1,9 +1,19 @@
 ﻿namespace Client.ViewModel.ViewModels
 {
+  using global::Common.Network.Messages.EventLog;
+
   using Prism.Mvvm;
+
+  using ViewModel.Common;
 
   public class MainViewModel : BindableBase
   {
+    #region Fields
+
+    private AsyncObservableCollection<EventLogMessage> _events;
+
+    #endregion
+
     #region Properties
 
     public MainMenuViewModel MainMenuViewModel { get; }
@@ -12,7 +22,11 @@
 
     public MessagesViewModel.MessagesViewModel MessagesViewModel { get; }
 
-    public EventLogViewModel EventLogViewModel { get; }
+    public AsyncObservableCollection<EventLogMessage> Events
+    {
+      get => _events;
+      set => SetProperty(ref _events, value);
+    }
 
     #endregion
 
@@ -21,19 +35,21 @@
     public MainViewModel(
       MainMenuViewModel mainMenuViewModel,
       MessagesViewModel.MessagesViewModel messagesViewModel,
-      UsersListViewModel usersListViewModel,
-      EventLogViewModel eventLogViewModel)
+      UsersListViewModel usersListViewModel)
     {
       MainMenuViewModel = mainMenuViewModel;
       MessagesViewModel = messagesViewModel;
       UsersListViewModel = usersListViewModel;
-      EventLogViewModel = eventLogViewModel;
+      Events = new AsyncObservableCollection<EventLogMessage>();
     }
+
+    #endregion
+
+    #region Methods
 
     public void Clear()
     {
       MessagesViewModel.MessagesUserList.Clear();
-      EventLogViewModel.Events.Clear();
     }
 
     #endregion

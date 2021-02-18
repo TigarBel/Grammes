@@ -3,7 +3,6 @@ C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\MessagesViews\MessageUserView.baml
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\MainMenuView.baml
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\MainWindow.g.cs
-C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\EventLogView.g.cs
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\Common\LeafView.g.cs
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\ConnectView.g.cs
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\MainView.g.cs
@@ -51,7 +50,6 @@ C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\bin\Debug\websocket-sha
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\bin\Debug\Newtonsoft.Json.xml
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\TotalView.g.cs
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\MainWindow.baml
-C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\EventLogView.baml
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\ConnectView.baml
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\MainView.baml
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\TotalView.baml

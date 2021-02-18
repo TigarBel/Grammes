@@ -31,7 +31,6 @@
       containerRegistry.RegisterSingleton<MainMenuViewModel>();
       containerRegistry.RegisterSingleton<MessagesViewModel>();
       containerRegistry.RegisterSingleton<UsersListViewModel>();
-      containerRegistry.RegisterSingleton<EventLogViewModel>();
 
       containerRegistry.RegisterSingleton<IConnectionController, NetworkController>();
     }
@@ -42,10 +41,10 @@
       BindViewModelToView<TotalViewModel, TotalView>();
       BindViewModelToView<ConnectViewModel, ConnectView>();
 
+      BindViewModelToView<MainViewModel, MainView>();
       BindViewModelToView<MainMenuViewModel, MainMenuView>();
       BindViewModelToView<MessagesViewModel, MessagesView>();
       BindViewModelToView<UsersListViewModel, UsersListView>();
-      BindViewModelToView<EventLogViewModel, EventLogView>();
     }
 
     protected override Window CreateShell()
