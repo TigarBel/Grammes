@@ -14,6 +14,7 @@
       {
         var networkManager = new NetworkManager();
         networkManager.Start();
+
         Console.ReadKey(true);
         networkManager.Stop();
       }

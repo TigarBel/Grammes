@@ -6,6 +6,7 @@
 
   using Common.DataBase;
   using Common.DataBase.DataBase;
+  using Common.DataBase.DataBase.Table;
   using Common.Network;
   using Common.Network.Messages;
   using Common.Network.Messages.Channels;
@@ -30,6 +31,25 @@
       _address = new Config.ServerConfig().GetAddress();
       _dataBaseManager = new DataBaseManager();
       _wsServer = new WsServer(_address, _dataBaseManager);
+
+      using (SqlUserRepository db = new SqlUserRepository()) {
+        // создаем два объекта User
+        User user1 = new User { Name = "Tom" };
+        User user2 = new User { Name = "Sam" };
+
+        // добавляем их в бд
+        db.Create(user1);
+        db.Create(user2);
+        db.Save();
+        Console.WriteLine("Объекты успешно сохранены");
+
+        // получаем объекты из бд и выводим на консоль
+        var users = db.GetItemList();
+        Console.WriteLine("Список объектов:");
+        foreach (User u in users) {
+          Console.WriteLine($"{u.Id}.{u.Name}");
+        }
+      }
 
       _wsServer.ConnectionStateChanged += HandleConnectionStateChanged;
       _wsServer.MessageReceived += HandleMessageReceived;

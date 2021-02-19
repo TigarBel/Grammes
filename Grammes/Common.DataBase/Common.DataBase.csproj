@@ -53,7 +53,12 @@
   <ItemGroup>
     <Compile Include="BaseManager.cs" />
     <Compile Include="DataBase\SQLUserRepository.cs" />
-    <Compile Include="DataBase\User.cs" />
+    <Compile Include="DataBase\Table\Band.cs" />
+    <Compile Include="DataBase\Table\GeneralMessage.cs" />
+    <Compile Include="DataBase\Table\Group.cs" />
+    <Compile Include="DataBase\Table\GroupMessage.cs" />
+    <Compile Include="DataBase\Table\PrivateMessage.cs" />
+    <Compile Include="DataBase\Table\User.cs" />
     <Compile Include="DataBase\UserContext.cs" />
     <Compile Include="DataBase\UsersList.cs" />
     <Compile Include="DataBase\[Interface]\IRepository.cs" />
@@ -63,6 +68,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
