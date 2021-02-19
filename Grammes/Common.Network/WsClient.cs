@@ -44,6 +44,7 @@
     public event EventHandler<ConnectionStateChangedEventArgs> ConnectionStateChanged;
     public event EventHandler<LoginEventArgs> LoginEvent;
     public event EventHandler<MessageReceivedEventArgs> MessageReceived;
+    public event EventHandler<UpdateChannelEventArgs> UpdateChannel;
 
     #endregion
 
@@ -190,7 +191,7 @@
           MessageReceived?.Invoke(this, MessageSorter.GetSortedEventMessage((JObject)container.Payload));
           break;
         case DispatchType.Channel:
-          ConnectionStateChanged?.Invoke(this, MessageSorter.GetSortedChannel((JObject)container.Payload));
+          UpdateChannel?.Invoke(this, MessageSorter.GetSortedChannel((JObject)container.Payload));
           break;
         default:
           throw new ArgumentOutOfRangeException();

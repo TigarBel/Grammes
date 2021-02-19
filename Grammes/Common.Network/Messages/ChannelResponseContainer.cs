@@ -6,10 +6,10 @@
   {
     #region Constructors
 
-    public ChannelResponseContainer(UpdateChannel channel)
+    public ChannelResponseContainer(UpdateChannel channel, string author)
       : base(DispatchType.Channel, channel)
     {
-
+      Author = author;
     }
 
     #endregion

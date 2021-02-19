@@ -102,8 +102,8 @@
     {
       Warning = "";
       _userNameEa = eventAggregator;
-      IpAddress = "192.168.37.228";
-      Port = 3000;
+      IpAddress = "127.0.0.1";
+      Port = 64500;
       LoginName = "";
       SelectTypeInterface = InterfaceType.WebSocket.ToString();
     }

@@ -19,7 +19,7 @@
 
     private readonly WsServer _wsServer;
 
-    private readonly UsersList _usersList;
+    private readonly DataBaseManager _dataBaseManager;
 
     #endregion
 
@@ -28,8 +28,8 @@
     public NetworkManager()
     {
       _address = new Config.ServerConfig().GetAddress();
-      _usersList = new UsersList();
-      _wsServer = new WsServer(_address, new BaseManager());
+      _dataBaseManager = new DataBaseManager();
+      _wsServer = new WsServer(_address, _dataBaseManager);
 
       _wsServer.ConnectionStateChanged += HandleConnectionStateChanged;
       _wsServer.MessageReceived += HandleMessageReceived;
@@ -52,18 +52,22 @@
 
     private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs eventArgs)
     {
-      if (_usersList.GetUsersList().All(item => item != eventArgs.ClientName) && eventArgs.Connected)
+      string client = eventArgs.ClientName;
+      bool isRegistration = false;
+      if (eventArgs.EventLog.Type == DispatchType.Login && !eventArgs.EventLog.IsSuccessfully)
       {
-        _wsServer.Send(
-          new LoginResponseContainer(new Response(ResponseStatus.Failure, "Not in the database"), null, null),
-          new PrivateAgenda(eventArgs.ClientName));
+        eventArgs.EventLog.IsSuccessfully = true;
+        isRegistration = true;
+      }
+
+      if (eventArgs.EventLog.IsSuccessfully)
+      {
+        _wsServer.Send(new ChannelResponseContainer(new UpdateChannel(eventArgs.Connected, client, isRegistration), client), new GeneralAgenda());
       }
 
       string clientState = eventArgs.Connected ? "connect" : "disconnect";
-      string message = $"Client '{eventArgs.ClientName}' {clientState}.";
-      _wsServer.Send(
-        new ChannelResponseContainer(new UpdateChannel(eventArgs.Connected, eventArgs.ClientName)), 
-        new GeneralAgenda());
+      string message = $"Client '{client}' {clientState}.";
+
       Console.WriteLine(message);
     }
 

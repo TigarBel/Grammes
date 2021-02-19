@@ -66,3 +66,5 @@ C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\Client.View.p
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\bin\Debug\Common.DataBase.dll
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\bin\Debug\Common.DataBase.pdb
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\bin\Debug\Common.DataBase.dll.config
+C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\bin\Debug\EntityFramework.dll
+C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\bin\Debug\EntityFramework.xml

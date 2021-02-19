@@ -8,14 +8,17 @@
 
     public string Login { get; }
 
+    public bool IsRegistration { get; }
+
     #endregion
 
     #region Constructors
 
-    public UpdateChannel(bool isConnect, string login)
+    public UpdateChannel(bool isConnect, string login, bool isRegistration = false)
     {
       IsConnect = isConnect;
       Login = login;
+      IsRegistration = isRegistration;
     }
 
     #endregion

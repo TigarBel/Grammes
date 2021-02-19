@@ -10,6 +10,7 @@
   using EventAggregator;
 
   using global::Common.Network.Messages;
+  using global::Common.Network.Messages.EventLog;
 
   using Prism.Commands;
   using Prism.Events;
@@ -86,32 +87,13 @@
       _connectionController.ConnectionStateChanged += HandleConnectionStateChanged;
       _connectionController.Login += HandleLogin;
       _connectionController.MessageReceived += HandleMessageReceived;
+      _connectionController.UpdateChannel += HandleUpdateChannel;
       _connectionController.Connect(address, port, name);
     }
 
     private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs eventArgs)
     {
       _mainViewModel.Events.Add(eventArgs.EventLog);
-      string selfLogin = _connectViewModel.LoginName;
-      string comeLogin = eventArgs.ClientName;
-
-      if (selfLogin != comeLogin)
-      {
-        if (eventArgs.Connected)
-        {
-          _mainViewModel.UsersListViewModel.OnlineUsers.Add(new OnlineChannel(comeLogin));
-          OfflineChannel user = _mainViewModel.UsersListViewModel.OfflineUsers.Single(offline => offline.Name == comeLogin);
-          _mainViewModel.UsersListViewModel.OfflineUsers.Remove(user);
-        }
-        else
-        {
-          _mainViewModel.UsersListViewModel.OfflineUsers.Add(new OfflineChannel(comeLogin));
-          OnlineChannel user = _mainViewModel.UsersListViewModel.OnlineUsers.Single(online => online.Name == comeLogin);
-          _mainViewModel.UsersListViewModel.OnlineUsers.Remove(user);
-        }
-
-        return;
-      }
 
       if (eventArgs.Connected)
       {
@@ -132,6 +114,7 @@
         _connectionController.ConnectionStateChanged -= HandleConnectionStateChanged;
         _connectionController.Login -= HandleLogin;
         _connectionController.MessageReceived -= HandleMessageReceived;
+        _connectionController.UpdateChannel -= HandleUpdateChannel;
       }
     }
 
@@ -166,10 +149,35 @@
 
     private void HandleMessageReceived(object sender, MessageReceivedEventArgs eventArgs)
     {
-      //_mainViewModel.EventLogViewModel.Events.Add(eventArgs.EventLog);
+      EventLogMessage eventLog = new EventLogMessage(eventArgs.Author, true, 
+        DispatchType.Message, eventArgs.Message, eventArgs.Time);
+      _mainViewModel.Events.Add(eventLog);
       _eventAggregator.GetEvent<MessageReceivedEvent>().Publish(eventArgs);
     }
-    
+
+    private void HandleUpdateChannel(object sender, UpdateChannelEventArgs eventArgs)
+    {
+      _mainViewModel.Events.Add(eventArgs.EventLog);
+      string selfLogin = _connectViewModel.LoginName;
+      string comeLogin = eventArgs.ChannelName;
+
+      if (eventArgs.IsNewLogin)
+      {
+        _mainViewModel.UsersListViewModel.OnlineUsers.Add(new OnlineChannel(comeLogin));
+        return;
+      }
+
+      if (eventArgs.Connected) {
+        _mainViewModel.UsersListViewModel.OnlineUsers.Add(new OnlineChannel(comeLogin));
+        OfflineChannel user = _mainViewModel.UsersListViewModel.OfflineUsers.Single(offline => offline.Name == comeLogin);
+        _mainViewModel.UsersListViewModel.OfflineUsers.Remove(user);
+      } else {
+        _mainViewModel.UsersListViewModel.OfflineUsers.Add(new OfflineChannel(comeLogin));
+        OnlineChannel user = _mainViewModel.UsersListViewModel.OnlineUsers.Single(online => online.Name == comeLogin);
+        _mainViewModel.UsersListViewModel.OnlineUsers.Remove(user);
+      }
+    }
+
     private void ExecuteDisconnect()
     {
       _connectionController.Disconnect();

@@ -11,6 +11,7 @@
     event EventHandler<ConnectionStateChangedEventArgs> ConnectionStateChanged;
     event EventHandler<LoginEventArgs> Login;
     event EventHandler<MessageReceivedEventArgs> MessageReceived;
+    event EventHandler<UpdateChannelEventArgs> UpdateChannel;
 
     #endregion Events
 

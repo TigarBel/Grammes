@@ -4,7 +4,7 @@
 
   using DataBase;
 
-  public class BaseManager
+  public class DataBaseManager
   {
     #region Properties
 
@@ -16,7 +16,7 @@
 
     #region Constructors
 
-    public BaseManager()
+    public DataBaseManager()
     {
       UserOnlineList = new List<string>();
       var list = new UsersList();

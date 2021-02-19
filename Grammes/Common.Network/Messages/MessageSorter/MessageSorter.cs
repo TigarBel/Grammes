@@ -49,14 +49,15 @@
       throw new ArgumentException("Get sorted message without type!");
     }
 
-    public static ConnectionStateChangedEventArgs GetSortedChannel(JObject message)
+    public static UpdateChannelEventArgs GetSortedChannel(JObject message)
     {
       if (message.ToObject(typeof(ChannelResponseContainer)) is ChannelResponseContainer messageResponse)
       {
-        return new ConnectionStateChangedEventArgs(
+        return new UpdateChannelEventArgs(
           messageResponse.Content.Login,
           messageResponse.Content.IsConnect,
-          new EventLogMessage(@"$erver", true, DispatchType.Channel, "Update channel", DateTime.Now));
+          new EventLogMessage(@"$erver", true, DispatchType.Channel, "Update channel", DateTime.Now),
+          messageResponse.Content.IsRegistration);
       }
 
       throw new ArgumentException("Get sorted channel out of range!");

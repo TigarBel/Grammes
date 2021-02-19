@@ -30,7 +30,7 @@
 
     private readonly string _name;
 
-    private readonly BaseManager _baseManager;
+    private readonly DataBaseManager _baseManager;
 
     #endregion
 
@@ -43,7 +43,7 @@
 
     #region Constructors
 
-    public WsServer(IPEndPoint listenAddress, BaseManager baseManager)
+    public WsServer(IPEndPoint listenAddress, DataBaseManager baseManager)
     {
       _name = Resources.ServerName;
       _listenAddress = listenAddress;
@@ -118,6 +118,7 @@
           if (((JObject)container.Payload).ToObject(typeof(LoginRequestContainer)) is LoginRequestContainer loginRequest)
           {
             LoginResponseContainer loginResponse;
+            bool isEnter = true;
 
             if (_connections.Values.Any(item => item.Login == loginRequest.Content))
             {
@@ -131,7 +132,7 @@
             {
               _baseManager.UserOnlineList.Add(loginRequest.Content);
               _baseManager.UserOnlineList.Sort();
-              _baseManager.UserOfflineList.Remove(loginRequest.Content);
+              isEnter = _baseManager.UserOfflineList.Remove(loginRequest.Content);
               loginResponse = new LoginResponseContainer(
                 new Response(ResponseStatus.Ok, "Connected"),
                 _baseManager.UserOnlineList,
@@ -145,7 +146,8 @@
               new ConnectionStateChangedEventArgs(
                 connection.Login,
                 true,
-                new EventLogMessage(_name, true, DispatchType.Login, loginResponse.Content.Reason, DateTime.Now)));
+                new EventLogMessage(_name, loginResponse.Content.Result == ResponseStatus.Ok == isEnter, 
+                  DispatchType.Login, loginResponse.Content.Reason, DateTime.Now)));
           }
 
           break;
@@ -172,13 +174,13 @@
 
       _baseManager.UserOfflineList.Add(connection.Login);
       _baseManager.UserOfflineList.Sort();
-      _baseManager.UserOnlineList.Remove(connection.Login);
+      bool isExit = _baseManager.UserOnlineList.Remove(connection.Login);
       ConnectionStateChanged?.Invoke(
         this,
         new ConnectionStateChangedEventArgs(
           connection.Login,
           false,
-          new EventLogMessage(connection.Login, true, DispatchType.EventLog, "Disconnect", DateTime.Now)));
+          new EventLogMessage(connection.Login, isExit, DispatchType.EventLog, "Disconnect", DateTime.Now)));
     }
 
     #endregion

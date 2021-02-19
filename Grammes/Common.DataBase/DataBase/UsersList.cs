@@ -33,8 +33,7 @@
     public List<string> GetUsersList()
     {
       var usersList = new List<string>();
-      foreach (string user in _list)
-      {
+      foreach (string user in _list) {
         usersList.Add(user);
       }
 
