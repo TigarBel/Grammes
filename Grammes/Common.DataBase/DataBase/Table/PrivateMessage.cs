@@ -10,9 +10,11 @@
 
     [Key]
     public int Id { get; set; }
-    [Required]
+    public int SenderId { get; set; }
+    [ForeignKey("SenderId")]
     public User Sender { get; set; }
-    [Required]
+    public int TargetId { get; set; }
+    [ForeignKey("TargetId")]
     public User Target { get; set; }
     [Required]
     public string Message { get; set; }

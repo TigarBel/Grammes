@@ -1,12 +1,9 @@
 ﻿namespace Server.BusinessLogic
 {
   using System;
-  using System.Collections.Generic;
-  using System.Linq;
   using System.Net;
 
   using Common.DataBase;
-  using Common.DataBase.DataBase;
   using Common.DataBase.DataBase.Table;
   using Common.Network;
   using Common.Network.Messages;
@@ -33,7 +30,7 @@
       _dataBaseManager = new DataBaseManager();
 
       _wsServer = new WsServer(_address);
-      foreach (User user in _dataBaseManager.UserOfflineList)
+      foreach (User user in _dataBaseManager.UserList)
       {
         _wsServer.UserOfflineList.Add(user.Name);
       }
@@ -65,12 +62,11 @@
       {
         eventArgs.EventLog.IsSuccessfully = true;
         isRegistration = true;
-        _dataBaseManager.CreateAsync(
-          new User()
+        _dataBaseManager.CreateUserAsync(
+          new User
           {
             Name = eventArgs.ClientName
           });
-        _dataBaseManager.SaveAsync();
       }
 
       if (eventArgs.EventLog.IsSuccessfully)
@@ -86,9 +82,37 @@
 
     private void HandleMessageReceived(object sender, MessageReceivedEventArgs eventArgs)
     {
-      string message = $"Client '{eventArgs.Author}' send message '{eventArgs.Message}'.";
+      string messageServer = $"Client '{eventArgs.Author}' send message '{eventArgs.Message}'.";
 
-      Console.WriteLine(message);
+      switch (eventArgs.Agenda.Type)
+      {
+        case ChannelType.General:
+          var generalMessage = new GeneralMessage
+          {
+            Message = eventArgs.Message,
+            Time = eventArgs.Time,
+            UserId = _dataBaseManager.UserList.Find(user => user.Name == eventArgs.Author).Id
+          };
+          _dataBaseManager.CreateGeneralMessageAsync(generalMessage);
+          break;
+        case ChannelType.Private:
+          var privateMessage = new PrivateMessage()
+          {
+            Message = eventArgs.Message,
+            Time = eventArgs.Time,
+            SenderId = _dataBaseManager.UserList.Find(user => user.Name == eventArgs.Author).Id,
+            TargetId = _dataBaseManager.UserList
+              .Find(user => user.Name == ((PrivateAgenda)eventArgs.Agenda).Target).Id
+          };
+          _dataBaseManager.CreatePrivateMessageAsync(privateMessage);
+          break;
+        case ChannelType.Group:
+          break;
+        default:
+          throw new ArgumentOutOfRangeException();
+      }
+
+      Console.WriteLine(messageServer);
     }
 
     #endregion

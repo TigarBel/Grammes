@@ -4,7 +4,7 @@
 
   using Table;
 
-  internal class UserContext : DbContext
+  public class GrammesDbContext : DbContext
   {
     #region Properties
 
@@ -19,7 +19,7 @@
 
     #region Constructors
 
-    public UserContext()
+    public GrammesDbContext()
       : base("DbConnection")
     {
 

@@ -52,15 +52,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseManager.cs" />
-    <Compile Include="DataBase\SQLUserRepository.cs" />
+    <Compile Include="DataBase\Repository.cs" />
+    <Compile Include="DataBase\Repository\GeneralMessageRepository.cs" />
+    <Compile Include="DataBase\Repository\PrivateMessageRepository.cs" />
+    <Compile Include="DataBase\Repository\UserRepository.cs" />
     <Compile Include="DataBase\Table\Band.cs" />
     <Compile Include="DataBase\Table\GeneralMessage.cs" />
     <Compile Include="DataBase\Table\Group.cs" />
     <Compile Include="DataBase\Table\GroupMessage.cs" />
     <Compile Include="DataBase\Table\PrivateMessage.cs" />
     <Compile Include="DataBase\Table\User.cs" />
-    <Compile Include="DataBase\UserContext.cs" />
-    <Compile Include="DataBase\UsersList.cs" />
+    <Compile Include="DataBase\GrammesDbContext.cs" />
+    <Compile Include="DataBase\Unit.cs" />
     <Compile Include="DataBase\[Interface]\IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
