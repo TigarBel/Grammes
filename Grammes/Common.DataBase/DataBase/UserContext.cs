@@ -22,16 +22,19 @@
     public UserContext()
       : base("DbConnection")
     {
+
     }
 
     #endregion
 
     #region Methods
-
+    
     protected override void OnModelCreating(DbModelBuilder modelBuilder)
     {
       modelBuilder.Entity<User>().HasIndex(i => i.Name).IsUnique();
       modelBuilder.Entity<Group>().HasIndex(i => i.Name).IsUnique();
+
+      modelBuilder.Entity<User>().HasMany(t => t.PrivateMessages).WithRequired(a => a.Target).WillCascadeOnDelete(false);
     }
 
     #endregion

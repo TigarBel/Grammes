@@ -63,8 +63,3 @@ C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\Client.View.c
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\Client.View.csproj.CopyComplete
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\Client.View.exe
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\Client.View.pdb
-C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\bin\Debug\Common.DataBase.dll
-C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\bin\Debug\Common.DataBase.pdb
-C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\bin\Debug\Common.DataBase.dll.config
-C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\bin\Debug\EntityFramework.dll
-C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\bin\Debug\EntityFramework.xml

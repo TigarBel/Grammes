@@ -1,6 +1,7 @@
 ﻿namespace Server.BusinessLogic
 {
   using System;
+  using System.Collections.Generic;
   using System.Linq;
   using System.Net;
 
@@ -30,25 +31,11 @@
     {
       _address = new Config.ServerConfig().GetAddress();
       _dataBaseManager = new DataBaseManager();
-      _wsServer = new WsServer(_address, _dataBaseManager);
 
-      using (SqlUserRepository db = new SqlUserRepository()) {
-        // создаем два объекта User
-        User user1 = new User { Name = "Tom" };
-        User user2 = new User { Name = "Sam" };
-
-        // добавляем их в бд
-        db.Create(user1);
-        db.Create(user2);
-        db.Save();
-        Console.WriteLine("Объекты успешно сохранены");
-
-        // получаем объекты из бд и выводим на консоль
-        var users = db.GetItemList();
-        Console.WriteLine("Список объектов:");
-        foreach (User u in users) {
-          Console.WriteLine($"{u.Id}.{u.Name}");
-        }
+      _wsServer = new WsServer(_address);
+      foreach (User user in _dataBaseManager.UserOfflineList)
+      {
+        _wsServer.UserOfflineList.Add(user.Name);
       }
 
       _wsServer.ConnectionStateChanged += HandleConnectionStateChanged;
@@ -78,6 +65,12 @@
       {
         eventArgs.EventLog.IsSuccessfully = true;
         isRegistration = true;
+        _dataBaseManager.CreateAsync(
+          new User()
+          {
+            Name = eventArgs.ClientName
+          });
+        _dataBaseManager.SaveAsync();
       }
 
       if (eventArgs.EventLog.IsSuccessfully)

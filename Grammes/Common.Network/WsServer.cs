@@ -29,8 +29,10 @@
     private WebSocketServer _server;
 
     private readonly string _name;
+    
+    public List<string> UserOnlineList { get; set; }
 
-    private readonly DataBaseManager _baseManager;
+    public List<string> UserOfflineList { get; set; }
 
     #endregion
 
@@ -43,12 +45,14 @@
 
     #region Constructors
 
-    public WsServer(IPEndPoint listenAddress, DataBaseManager baseManager)
+    public WsServer(IPEndPoint listenAddress)
     {
       _name = Resources.ServerName;
       _listenAddress = listenAddress;
-      _baseManager = baseManager;
       _connections = new ConcurrentDictionary<Guid, WsConnection>();
+
+      UserOfflineList = new List<string>();
+      UserOnlineList = new List<string>();
     }
 
     #endregion
@@ -130,13 +134,11 @@
             }
             else
             {
-              _baseManager.UserOnlineList.Add(loginRequest.Content);
-              _baseManager.UserOnlineList.Sort();
-              isEnter = _baseManager.UserOfflineList.Remove(loginRequest.Content);
-              loginResponse = new LoginResponseContainer(
-                new Response(ResponseStatus.Ok, "Connected"),
-                _baseManager.UserOnlineList,
-                _baseManager.UserOfflineList);
+              UserOnlineList.Add(loginRequest.Content);
+              UserOnlineList.Sort();
+              isEnter = UserOfflineList.Remove(loginRequest.Content);
+              loginResponse = new LoginResponseContainer(new Response(ResponseStatus.Ok, "Connected"), 
+                UserOnlineList, UserOfflineList);
               connection.Login = loginRequest.Content;
             }
 
@@ -172,9 +174,9 @@
         return;
       }
 
-      _baseManager.UserOfflineList.Add(connection.Login);
-      _baseManager.UserOfflineList.Sort();
-      bool isExit = _baseManager.UserOnlineList.Remove(connection.Login);
+      UserOfflineList.Add(connection.Login);
+      UserOfflineList.Sort();
+      bool isExit = UserOnlineList.Remove(connection.Login);
       ConnectionStateChanged?.Invoke(
         this,
         new ConnectionStateChangedEventArgs(
