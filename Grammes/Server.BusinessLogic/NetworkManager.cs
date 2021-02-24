@@ -58,7 +58,8 @@
     {
       string client = eventArgs.ClientName;
       bool isRegistration = false;
-      if (eventArgs.EventLog.Type == DispatchType.Login && !eventArgs.EventLog.IsSuccessfully)
+      if (eventArgs.EventLog.Type == DispatchType.Login && 
+          !eventArgs.EventLog.IsSuccessfully)
       {
         eventArgs.EventLog.IsSuccessfully = true;
         isRegistration = true;
@@ -71,7 +72,9 @@
 
       if (eventArgs.EventLog.IsSuccessfully)
       {
-        _wsServer.Send(new ChannelResponseContainer(new UpdateChannel(eventArgs.Connected, client, isRegistration), client), new GeneralAgenda());
+        _wsServer.Send(new ChannelResponseContainer(
+          new UpdateChannel(eventArgs.Connected, client, isRegistration), 
+          client), new GeneralAgenda());
       }
 
       string clientState = eventArgs.Connected ? "connect" : "disconnect";

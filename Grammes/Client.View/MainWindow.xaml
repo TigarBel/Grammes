@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:userControls="clr-namespace:Client.View.UserControls"
         mc:Ignorable="d"
-        Title="Grammes" Height="450" Width="800">
+        Title="Grammes" Height="450" Width="800"
+        MinWidth="450" MinHeight="350">
     <Grid>
         <userControls:TotalView/>
     </Grid>

@@ -9,6 +9,8 @@
             <Setter Property="IsReadOnly" Value="True"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="AcceptsReturn" Value="True"/>
         </Style>
 
         <Style TargetType="{x:Type Rectangle}" x:Key="RectangleStyle">
@@ -38,8 +40,7 @@
         </Grid.RowDefinitions>
 
         <Rectangle Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource RectangleStyle}"/>
-        <TextBox Grid.Row="0" Text="{Binding Model.Message}" 
-                 TextWrapping="Wrap" AcceptsReturn="True" HorizontalAlignment="Left" VerticalAlignment="Top" 
+        <TextBox Grid.Row="0" Text="{Binding Model.Message}" HorizontalAlignment="Left" VerticalAlignment="Top" 
                  Style="{StaticResource StyleTextBox}"/>
         <TextBox Grid.Row="1" Text="{Binding Model.Time}" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                  Style="{StaticResource StyleTextBox}"/>

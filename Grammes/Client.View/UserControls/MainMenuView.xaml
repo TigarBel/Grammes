@@ -8,7 +8,7 @@
              mc:Ignorable="d">
     <UserControl.Resources>
         <Style TargetType="Border" x:Key="BorderStyle">
-            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderBrush" Value="LightGray"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
 
@@ -20,11 +20,11 @@
         <Style TargetType="Button" x:Key="ButtonStyle">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderBrush" Value="LightGray"/>
             <Setter Property="Width" Value="50"/>
         </Style>
     </UserControl.Resources>
-    <Grid Background="LightGray">
+    <Grid Background="WhiteSmoke">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="Auto"/>

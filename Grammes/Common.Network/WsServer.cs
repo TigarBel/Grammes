@@ -123,6 +123,7 @@
           {
             LoginResponseContainer loginResponse;
             bool isEnter = true;
+            DispatchType stage;
 
             if (_connections.Values.Any(item => item.Login == loginRequest.Content))
             {
@@ -131,6 +132,7 @@
                 null,
                 null);
               connection.Login = $"pseudo-{loginRequest.Content}";
+              stage = DispatchType.Connection;
             }
             else
             {
@@ -140,6 +142,7 @@
               loginResponse = new LoginResponseContainer(new Response(ResponseStatus.Ok, "Connected"), 
                 UserOnlineList, UserOfflineList);
               connection.Login = loginRequest.Content;
+              stage = DispatchType.Login;
             }
 
             connection.Send(loginResponse.GetContainer());
@@ -148,8 +151,8 @@
               new ConnectionStateChangedEventArgs(
                 connection.Login,
                 true,
-                new EventLogMessage(_name, loginResponse.Content.Result == ResponseStatus.Ok == isEnter, 
-                  DispatchType.Login, loginResponse.Content.Reason, DateTime.Now)));
+                new EventLogMessage(_name, loginResponse.Content.Result == ResponseStatus.Ok == isEnter,
+                  stage, loginResponse.Content.Reason, DateTime.Now)));
           }
 
           break;

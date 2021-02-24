@@ -35,8 +35,14 @@
             </Setter>
         </Style>
 
+        <Style TargetType="Grid" x:Key="GridStyle">
+            <Setter Property="MaxWidth" 
+                    Value="{Binding ElementName=MessageListBox,
+                Path=ActualWidth}"/>
+        </Style>
+
         <DataTemplate x:Key="IncomingMessage">
-            <Grid>
+            <Grid Style="{StaticResource GridStyle}">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -49,12 +55,12 @@
         </DataTemplate>
 
         <DataTemplate x:Key="OutgoingMessage">
-            <Grid>
+            <Grid Style="{StaticResource GridStyle}">
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <messagesViews:MessageUserView Grid.ColumnSpan="2" Grid.Column="1"/>
 
@@ -75,7 +81,8 @@
             </Style.Triggers>
 
             <Setter Property="IsSelected" 
-                    Value="{Binding Content.IsSelected, Mode=TwoWay, RelativeSource={RelativeSource Self}}"/>
+                    Value="{Binding Content.IsSelected, Mode=TwoWay, 
+                RelativeSource={RelativeSource Self}}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListBoxItem">
@@ -98,8 +105,9 @@
         <Label Content="{Binding Channel}" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
         <ListBox Grid.Row="1"
-            ItemContainerStyle="{StaticResource ContainerStyle}"
-            ItemsSource="{Binding MessagesUserList}"/>
+                 x:Name="MessageListBox"
+                 ItemContainerStyle="{StaticResource ContainerStyle}"
+                 ItemsSource="{Binding MessagesUserList}"/>
 
         <GridSplitter Grid.Row="2" HorizontalAlignment="Stretch" Height="5"/>
 
