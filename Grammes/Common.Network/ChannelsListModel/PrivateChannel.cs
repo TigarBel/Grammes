@@ -2,7 +2,7 @@
 {
   using Messages.MessageReceived;
 
-  public abstract class PrivateChannel : BaseChannel
+  public class PrivateChannel : BaseChannel
   {
     #region Fields
 
@@ -12,7 +12,7 @@
 
     #region Constructors
 
-    protected PrivateChannel(string name, bool isOnline)
+    public PrivateChannel(string name, bool isOnline = false)
       : base(name, ChannelType.Private)
     {
       IsOnline = isOnline;

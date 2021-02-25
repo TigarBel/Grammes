@@ -3,32 +3,25 @@
   using System.Collections.Generic;
 
   using ChannelsListModel;
-  using ChannelsListModel.BaseUserChannel;
-
-  using DataBase;
 
   public class LoginResponseContainer : BaseContainer<Response>
   {
-    private Response response;
-    private GeneralChannel general;
-    private List<OnlineChannel> onlineList;
-    private List<OfflineChannel> offlineList;
     #region Properties
 
-    public GeneralChannel General { get; }
+    public GeneralChannel General { get; private set; }
 
-    public List<OnlineChannel> OnlineList { get; }
+    public List<PrivateChannel> OnlineList { get; private set; }
 
-    public List<OfflineChannel> OfflineList { get; }
+    public List<PrivateChannel> OfflineList { get; private set; }
 
     #endregion
 
     #region Constructors
 
-    public LoginResponseContainer(Response response,
-                                  GeneralChannel general,
-                                  List<OnlineChannel> onlineList, 
-                                  List<OfflineChannel> offlineList)
+    public LoginResponseContainer(Response response, 
+                                  GeneralChannel general, 
+                                  List<PrivateChannel> onlineList, 
+                                  List<PrivateChannel> offlineList)
       : base(DispatchType.Login, response)
     {
       General = general;

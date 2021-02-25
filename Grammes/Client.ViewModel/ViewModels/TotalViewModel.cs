@@ -140,14 +140,14 @@
 
       _mainViewModel.UsersListViewModel.General.MessageList = eventArgs.General.MessageList;
 
-      foreach (OnlineChannel online in eventArgs.OnlineList)
+      foreach (var privateChannel in eventArgs.OnlineList)
       {
-        _mainViewModel.UsersListViewModel.OnlineUsers.Add(online);
+        _mainViewModel.UsersListViewModel.OnlineUsers.Add(privateChannel);
       }
 
-      foreach (OfflineChannel offline in eventArgs.OfflineList)
+      foreach (var privateChannel in eventArgs.OfflineList)
       {
-        _mainViewModel.UsersListViewModel.OfflineUsers.Add(offline);
+        _mainViewModel.UsersListViewModel.OfflineUsers.Add(privateChannel);
       }
     }
 
@@ -172,8 +172,8 @@
 
       if (eventArgs.Connected)
       {
-        OfflineChannel offlineChannel = _mainViewModel.UsersListViewModel.OfflineUsers.Single(u => u.Name == comeLogin);
-        var onlineChannel = new OnlineChannel(comeLogin)
+        PrivateChannel offlineChannel = _mainViewModel.UsersListViewModel.OfflineUsers.Single(u => u.Name == comeLogin);
+        var onlineChannel = new PrivateChannel(comeLogin,true)
         {
           MessageList = offlineChannel.MessageList
         };
@@ -182,8 +182,8 @@
       }
       else
       {
-        OnlineChannel onlineChannel = _mainViewModel.UsersListViewModel.OnlineUsers.Single(u => u.Name == comeLogin);
-        var offlineChannel = new OfflineChannel(comeLogin)
+        PrivateChannel onlineChannel = _mainViewModel.UsersListViewModel.OnlineUsers.Single(u => u.Name == comeLogin);
+        var offlineChannel = new PrivateChannel(comeLogin)
         {
           MessageList = onlineChannel.MessageList
         };
@@ -191,6 +191,19 @@
         _mainViewModel.UsersListViewModel.OnlineUsers.Remove(onlineChannel);
         SwitchChannel(comeLogin);
       }
+    }
+
+    private void ChangeChannel(string comeLogin, 
+                               AsyncObservableCollection<PrivateChannel> channelsOf,
+                               AsyncObservableCollection<PrivateChannel> channelsIn)
+    {
+      PrivateChannel oldChannel = channelsOf.Single(u => u.Name == comeLogin);
+      var newChannel = new PrivateChannel(comeLogin)
+      {
+        MessageList = oldChannel.MessageList
+      };
+      channelsIn.Add(newChannel);
+      channelsOf.Remove(oldChannel);
     }
 
     private void SwitchChannel(string comeLogin)

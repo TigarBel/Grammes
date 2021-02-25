@@ -23,9 +23,9 @@
 
     private GeneralChannel _general;
 
-    private AsyncObservableCollection<OnlineChannel> _onlineUsers;
+    private AsyncObservableCollection<PrivateChannel> _onlineUsers;
 
-    private AsyncObservableCollection<OfflineChannel> _offlineUsers;
+    private AsyncObservableCollection<PrivateChannel> _offlineUsers;
 
     private AsyncObservableCollection<GroupChannel> _groups;
 
@@ -49,13 +49,13 @@
       set => SetProperty(ref _general, value);
     }
 
-    public AsyncObservableCollection<OnlineChannel> OnlineUsers
+    public AsyncObservableCollection<PrivateChannel> OnlineUsers
     {
       get => _onlineUsers;
       set => SetProperty(ref _onlineUsers, value);
     }
 
-    public AsyncObservableCollection<OfflineChannel> OfflineUsers
+    public AsyncObservableCollection<PrivateChannel> OfflineUsers
     {
       get => _offlineUsers;
       set => SetProperty(ref _offlineUsers, value);
@@ -105,8 +105,8 @@
       eventAggregator.GetEvent<MessageReceivedEvent>().Subscribe(AddMessageOnChannel);
 
       General = new GeneralChannel();
-      OnlineUsers = new AsyncObservableCollection<OnlineChannel>();
-      OfflineUsers = new AsyncObservableCollection<OfflineChannel>();
+      OnlineUsers = new AsyncObservableCollection<PrivateChannel>();
+      OfflineUsers = new AsyncObservableCollection<PrivateChannel>();
       Groups = new AsyncObservableCollection<GroupChannel>();
 
       SelectChat = General;

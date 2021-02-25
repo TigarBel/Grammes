@@ -11,11 +11,11 @@
   {
     #region Properties
 
-    public GeneralChannel General { get; }
+    public GeneralChannel General { get; private set; }
 
-    public List<OnlineChannel> OnlineList { get; }
+    public List<PrivateChannel> OnlineList { get; private set; }
 
-    public List<OfflineChannel> OfflineList { get; }
+    public List<PrivateChannel> OfflineList { get; private set; }
 
     #endregion
 
@@ -25,8 +25,8 @@
                           bool connected, 
                           EventLogMessage eventLog, 
                           GeneralChannel general,
-                          List<OnlineChannel> onlineList, 
-                          List<OfflineChannel> offlineList)
+                          List<PrivateChannel> onlineList, 
+                          List<PrivateChannel> offlineList)
       : base(clientName, connected, eventLog)
     {
       General = general;
