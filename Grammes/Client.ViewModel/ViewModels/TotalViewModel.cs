@@ -172,23 +172,13 @@
 
       if (eventArgs.Connected)
       {
-        PrivateChannel offlineChannel = _mainViewModel.UsersListViewModel.OfflineUsers.Single(u => u.Name == comeLogin);
-        var onlineChannel = new PrivateChannel(comeLogin,true)
-        {
-          MessageList = offlineChannel.MessageList
-        };
-        _mainViewModel.UsersListViewModel.OnlineUsers.Add(onlineChannel);
-        _mainViewModel.UsersListViewModel.OfflineUsers.Remove(offlineChannel);
+        ChangeChannel(comeLogin, _mainViewModel.UsersListViewModel.OfflineUsers, 
+          _mainViewModel.UsersListViewModel.OnlineUsers);
       }
       else
       {
-        PrivateChannel onlineChannel = _mainViewModel.UsersListViewModel.OnlineUsers.Single(u => u.Name == comeLogin);
-        var offlineChannel = new PrivateChannel(comeLogin)
-        {
-          MessageList = onlineChannel.MessageList
-        };
-        _mainViewModel.UsersListViewModel.OfflineUsers.Add(offlineChannel);
-        _mainViewModel.UsersListViewModel.OnlineUsers.Remove(onlineChannel);
+        ChangeChannel(comeLogin, _mainViewModel.UsersListViewModel.OnlineUsers, 
+          _mainViewModel.UsersListViewModel.OfflineUsers);
         SwitchChannel(comeLogin);
       }
     }

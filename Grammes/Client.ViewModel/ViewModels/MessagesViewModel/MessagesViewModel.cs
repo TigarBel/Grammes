@@ -129,8 +129,13 @@
       if(IsNotThisChannel(eventArgs)) return;
       
       bool IsOut = _loginName != eventArgs.Author;
-      string content = $"{eventArgs.Author}: {eventArgs.Message}";
-      MessageViewModel message = new MessageViewModel(content, eventArgs.Time, IsOut, true);
+      string content = eventArgs.Message;
+      if (Channel.Type == ChannelType.General)
+      {
+        content = $"{eventArgs.Author}: {content}";
+      }
+
+      var message = new MessageViewModel(content, eventArgs.Time, IsOut, true);
       MessagesUserList.Add(message);
     }
 

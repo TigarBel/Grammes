@@ -4,7 +4,6 @@
   using System.Linq;
 
   using ChannelsListModel;
-  using ChannelsListModel.BaseUserChannel;
 
   using DataBase.DataBase.Table;
 
@@ -18,10 +17,8 @@
       foreach (GeneralMessage message in generalMessages)
       {
         bool isOut = userId != message.User_Id;
-        channel.MessageList.Add(
-          isOut
-            ? new MessageModel($"{message.User.Name}:{message.Message}", message.Time, isOut, true)
-            : new MessageModel(message.Message, message.Time, isOut, true));
+        if (isOut) message.Message = $"{message.User.Name}:{message.Message}";
+        channel.MessageList.Add(new MessageModel(message.Message, message.Time, isOut, true));
       }
 
       return channel;
@@ -39,34 +36,24 @@
 
     private static List<PrivateChannel> CollectChannel(User user, List<string> userList, List<PrivateMessage> privateMessages, bool isOnline)
     {
-      List<PrivateMessage> localPrivateMessages = SortPrivateMessage(userList, privateMessages)
-        .Where(u => u.SenderId == user.Id || u.TargetId == user.Id).ToList();
-            
-      List<PrivateChannel> channelList = userList
-        .Where(uName => uName != user.Name)
-        .Select(channel => new PrivateChannel(channel, isOnline))
-        .ToList();
+      List<PrivateMessage> localPrivateMessages =
+        SortPrivateMessage(userList, privateMessages).Where(u => u.SenderId == user.Id || u.TargetId == user.Id).ToList();
 
-      if (channelList.Count == 0) {
+      List<PrivateChannel> channelList =
+        userList.Where(uName => uName != user.Name).Select(channel => new PrivateChannel(channel, isOnline)).ToList();
+
+      if (channelList.Count == 0)
+      {
         return channelList;
       }
 
-      foreach (PrivateMessage message in localPrivateMessages) {
-        bool isOut = user.Id == message.TargetId;
-        User target = GetTargetUser(user.Id, message);
-
-        PrivateChannel channel = channelList.Find(u => u.Name == target.Name);
-        channel.MessageList.Add(new MessageModel(message.Message, message.Time, isOut, true));
-        localPrivateMessages.Remove(message);
-        List<PrivateMessage> localOpm = localPrivateMessages.Where(t => t.SenderId == target.Id || t.TargetId == target.Id).ToList();
-        foreach (PrivateMessage channelMessage in localOpm) {
-          isOut = user.Id == channelMessage.TargetId;
-          channel.MessageList.Add(new MessageModel(channelMessage.Message, channelMessage.Time, isOut, true));
-          localOpm.Remove(channelMessage);
-          localPrivateMessages.Remove(message);
-          if (localOpm.Count == 0) {
-            return channelList;
-          }
+      foreach (PrivateChannel channel in channelList)
+      {
+        foreach (PrivateMessage message in localPrivateMessages
+          .Where(t => t.Sender.Name == channel.Name || t.Target.Name == channel.Name))
+        {
+          bool isOut = user.Id == message.TargetId;
+          channel.MessageList.Add(new MessageModel(message.Message, message.Time, isOut, true));
         }
       }
 

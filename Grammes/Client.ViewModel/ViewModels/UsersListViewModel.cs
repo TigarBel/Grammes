@@ -123,18 +123,18 @@
 
     private void AddMessageOnChannel(MessageReceivedEventArgs eventArgs)
     {
-      string content = $"{eventArgs.Author}: {eventArgs.Message}";
-      var message = new MessageModel(content, eventArgs.Time, true, true);
+      var message = new MessageModel(eventArgs.Message, eventArgs.Time, true, true);
 
       switch (eventArgs.Agenda.Type)
       {
         case ChannelType.General:
+          message.Message = $"{eventArgs.Author}: {message.Message}";
           General.MessageList.Add(message);
           break;
         case ChannelType.Private:
-          foreach (OnlineChannel online in OnlineUsers.Where(user => user.Name == eventArgs.Author))
+          foreach (PrivateChannel channel in OnlineUsers.Where(user => user.Name == eventArgs.Author))
           {
-            online.MessageList.Add(message);
+            channel.MessageList.Add(message);
           }
 
           break;
