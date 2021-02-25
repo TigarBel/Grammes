@@ -4,6 +4,9 @@
 
   using BusinessLogic.Model;
 
+  using global::Common.DataBase;
+  using global::Common.Network.ChannelsListModel;
+
   using Prism.Mvvm;
 
   public class MessageViewModel : BindableBase

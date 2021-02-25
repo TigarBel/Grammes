@@ -35,7 +35,9 @@
 
         <common:LeafView Grid.ColumnSpan="5" Grid.RowSpan="6"/>
 
-        <Label Name="WarningLabel" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource StyleText}"
+        <Label Name="WarningLabel" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" 
+               VerticalAlignment="Bottom"
+               Style="{StaticResource StyleText}"
                Content="{Binding Warning}" Foreground="Red"/>
 
         <Label Content="IP-address:" Grid.Column="1" Grid.Row="1" Style="{StaticResource StyleText}"/>

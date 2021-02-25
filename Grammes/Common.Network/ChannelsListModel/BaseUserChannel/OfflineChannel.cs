@@ -1,4 +1,4 @@
-﻿namespace Client.BusinessLogic.Model.ChannelsListModel.BaseUserChannel
+﻿namespace Common.Network.ChannelsListModel.BaseUserChannel
 {
   public class OfflineChannel : PrivateChannel
   {

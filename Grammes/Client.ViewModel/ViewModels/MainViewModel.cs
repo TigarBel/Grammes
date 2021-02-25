@@ -1,10 +1,10 @@
 ﻿namespace Client.ViewModel.ViewModels
 {
+  using Extension;
+
   using global::Common.Network.Messages.EventLog;
 
   using Prism.Mvvm;
-
-  using ViewModel.Common;
 
   public class MainViewModel : BindableBase
   {

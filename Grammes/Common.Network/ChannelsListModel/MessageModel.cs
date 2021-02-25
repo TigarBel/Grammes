@@ -1,4 +1,4 @@
-﻿namespace Client.BusinessLogic.Model
+﻿namespace Common.Network.ChannelsListModel
 {
   using System;
 

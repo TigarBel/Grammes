@@ -6,8 +6,6 @@
   using System.Linq;
   using System.Linq.Expressions;
 
-  using Table;
-
   public class Repository<TEntity> : IRepository<TEntity>
     where TEntity : class
   {
@@ -75,23 +73,13 @@
       _context.SaveChanges();
     }
 
-    public virtual void Dispose(bool disposing)
+    public void Dispose()
     {
-      if (!_disposed)
-      {
-        if (disposing)
-        {
-          _context.Dispose();
-        }
+      if (!_disposed) {
+        _context.Dispose();
       }
 
       _disposed = true;
-    }
-
-    public void Dispose()
-    {
-      Dispose(true);
-      GC.SuppressFinalize(this);
     }
 
     #endregion

@@ -20,7 +20,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Label Background="MediumSeaGreen" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0"
+        <Label HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0"
                Content="{Binding UsersName}"/>
 
         <extendedTreeView:ExtendedTreeView Grid.Row="1" SelectedItemEx="{Binding SelectChat}">

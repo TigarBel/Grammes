@@ -1,6 +1,6 @@
-﻿namespace Client.BusinessLogic.Model.ChannelsListModel
+﻿namespace Common.Network.ChannelsListModel
 {
-  using global::Common.Network.Messages.MessageReceived;
+  using Messages.MessageReceived;
 
   public abstract class PrivateChannel : BaseChannel
   {

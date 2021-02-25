@@ -1,24 +1,19 @@
 ﻿namespace Client.ViewModel.ViewModels
 {
-  using System.Collections.Generic;
   using System.Linq;
   using System.Windows.Controls;
 
-  using BusinessLogic.Model;
-  using BusinessLogic.Model.ChannelsListModel;
-  using BusinessLogic.Model.ChannelsListModel.BaseUserChannel;
+  using Common.Network.ChannelsListModel;
+  using Common.Network.ChannelsListModel.BaseUserChannel;
+  using Common.Network.Messages;
+  using Common.Network.Messages.MessageReceived;
 
   using EventAggregator;
 
-  using global::Common.Network.Messages;
-  using global::Common.Network.Messages.MessageReceived;
-
-  using MessagesViewModel;
+  using Extension;
 
   using Prism.Events;
   using Prism.Mvvm;
-
-  using ViewModel.Common;
 
   public class UsersListViewModel : BindableBase
   {
@@ -129,7 +124,7 @@
     private void AddMessageOnChannel(MessageReceivedEventArgs eventArgs)
     {
       string content = $"{eventArgs.Author}: {eventArgs.Message}";
-      MessageModel message = new MessageModel(content, eventArgs.Time, true, true);
+      var message = new MessageModel(content, eventArgs.Time, true, true);
 
       switch (eventArgs.Agenda.Type)
       {

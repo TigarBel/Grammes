@@ -4,19 +4,20 @@
   using System.Linq;
 
   using BusinessLogic.Model;
-  using BusinessLogic.Model.ChannelsListModel;
   using BusinessLogic.Model.Network;
 
   using EventAggregator;
 
+  using Extension;
+
+  using global::Common.DataBase;
+  using global::Common.Network.ChannelsListModel;
   using global::Common.Network.Messages;
   using global::Common.Network.Messages.MessageReceived;
 
   using Prism.Commands;
   using Prism.Events;
   using Prism.Mvvm;
-
-  using ViewModel.Common;
 
   public class MessagesViewModel : BindableBase
   {

@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.Console", "Server.Co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{FADC5A1C-84DA-429F-94A3-E21C9E69D6FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Network", "Common.Network\Common.Network.csproj", "{42847006-D2DD-4A7D-864C-947C41CFE41D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Network", "Common.Network\Common.Network.csproj", "{42847006-D2DD-4A7D-864C-947C41CFE41D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.DataBase", "Common.DataBase\Common.DataBase.csproj", "{869071E2-902E-4457-9BC2-70E587DD315F}"
 EndProject

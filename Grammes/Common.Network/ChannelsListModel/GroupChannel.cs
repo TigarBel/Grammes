@@ -1,9 +1,9 @@
-﻿namespace Client.BusinessLogic.Model.ChannelsListModel
+﻿namespace Common.Network.ChannelsListModel
 {
   using System;
   using System.Collections.Generic;
 
-  using global::Common.Network.Messages.MessageReceived;
+  using Messages.MessageReceived;
 
   public class GroupChannel : BaseChannel
   {

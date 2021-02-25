@@ -16,3 +16,4 @@ C:\Users\belyaevee\Desktop\Intership\Grammes\Client.BusinessLogic\bin\Debug\Comm
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.BusinessLogic\bin\Debug\Common.DataBase.dll.config
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.BusinessLogic\bin\Debug\EntityFramework.dll
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.BusinessLogic\bin\Debug\EntityFramework.xml
+C:\Users\belyaevee\Desktop\Intership\Grammes\Client.BusinessLogic\bin\Debug\Client.BusinessLogic.dll.config

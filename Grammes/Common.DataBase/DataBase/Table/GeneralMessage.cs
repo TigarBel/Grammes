@@ -14,8 +14,8 @@
     public string Message { get; set; }
     [Required]
     public DateTime Time { get; set; }
-    public int UserId { get; set; }
-    [ForeignKey("UserId")]
+    public int User_Id { get; set; }
+    [ForeignKey("User_Id")]
     public User User { get; set; }
 
     #endregion

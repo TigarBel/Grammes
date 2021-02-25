@@ -1,4 +1,4 @@
-﻿namespace Client.ViewModel.Common
+﻿namespace Client.ViewModel.Extension
 {
   public enum ViewSelect
   {

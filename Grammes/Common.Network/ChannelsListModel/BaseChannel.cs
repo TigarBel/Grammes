@@ -1,19 +1,23 @@
-﻿namespace Client.BusinessLogic.Model.ChannelsListModel
+﻿namespace Common.Network.ChannelsListModel
 {
   using System;
   using System.Collections.Generic;
 
-  using global::Common.Network.Messages.MessageReceived;
+  using Messages.MessageReceived;
 
   public abstract class BaseChannel
   {
-    #region Properties
-
-    public string Name { get; private set; }
-
-    public ChannelType Type { get; private set; }
+    #region Fields
 
     public List<MessageModel> MessageList = new List<MessageModel>();
+
+    #endregion
+
+    #region Properties
+
+    public string Name { get; }
+
+    public ChannelType Type { get; }
 
     #endregion
 
@@ -25,6 +29,7 @@
       {
         throw new ArgumentNullException("User name don't might be null or empty!");
       }
+
       Name = name;
       Type = type;
     }

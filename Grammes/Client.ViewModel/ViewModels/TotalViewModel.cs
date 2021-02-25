@@ -1,22 +1,23 @@
 ﻿namespace Client.ViewModel.ViewModels
 {
   using System;
-  using System.Collections.Generic;
   using System.Linq;
+  using System.Windows.Controls;
 
-  using BusinessLogic.Model.ChannelsListModel.BaseUserChannel;
   using BusinessLogic.Model.Network;
+
+  using Common.Network.ChannelsListModel;
+  using Common.Network.ChannelsListModel.BaseUserChannel;
+  using Common.Network.Messages;
+  using Common.Network.Messages.EventLog;
 
   using EventAggregator;
 
-  using global::Common.Network.Messages;
-  using global::Common.Network.Messages.EventLog;
+  using Extension;
 
   using Prism.Commands;
   using Prism.Events;
   using Prism.Mvvm;
-
-  using ViewModel.Common;
 
   public class TotalViewModel : BindableBase
   {
@@ -136,21 +137,23 @@
       _mainViewModel.UsersListViewModel.OnlineUsers.Clear();
       _mainViewModel.UsersListViewModel.OfflineUsers.Clear();
       _mainViewModel.UsersListViewModel.Groups.Clear();
-      
-      foreach (string online in eventArgs.OnlineList.Where(online => _connectViewModel.LoginName != online))
+
+      _mainViewModel.UsersListViewModel.General.MessageList = eventArgs.General.MessageList;
+
+      foreach (OnlineChannel online in eventArgs.OnlineList)
       {
-        _mainViewModel.UsersListViewModel.OnlineUsers.Add(new OnlineChannel(online));
+        _mainViewModel.UsersListViewModel.OnlineUsers.Add(online);
       }
-      
-      foreach (string offline in eventArgs.OfflineList) {
-        _mainViewModel.UsersListViewModel.OfflineUsers.Add(new OfflineChannel(offline));
+
+      foreach (OfflineChannel offline in eventArgs.OfflineList)
+      {
+        _mainViewModel.UsersListViewModel.OfflineUsers.Add(offline);
       }
     }
 
     private void HandleMessageReceived(object sender, MessageReceivedEventArgs eventArgs)
     {
-      EventLogMessage eventLog = new EventLogMessage(eventArgs.Author, true, 
-        DispatchType.Message, eventArgs.Message, eventArgs.Time);
+      var eventLog = new EventLogMessage(eventArgs.Author, true, DispatchType.Message, eventArgs.Message, eventArgs.Time);
       _mainViewModel.Events.Add(eventLog);
       _eventAggregator.GetEvent<MessageReceivedEvent>().Publish(eventArgs);
     }
@@ -167,15 +170,33 @@
         return;
       }
 
-      if (eventArgs.Connected) {
-        _mainViewModel.UsersListViewModel.OnlineUsers.Add(new OnlineChannel(comeLogin));
-        OfflineChannel user = _mainViewModel.UsersListViewModel.OfflineUsers.Single(offline => offline.Name == comeLogin);
-        _mainViewModel.UsersListViewModel.OfflineUsers.Remove(user);
-      } else {
-        _mainViewModel.UsersListViewModel.OfflineUsers.Add(new OfflineChannel(comeLogin));
-        OnlineChannel user = _mainViewModel.UsersListViewModel.OnlineUsers.Single(online => online.Name == comeLogin);
-        _mainViewModel.UsersListViewModel.OnlineUsers.Remove(user);
+      if (eventArgs.Connected)
+      {
+        OfflineChannel offlineChannel = _mainViewModel.UsersListViewModel.OfflineUsers.Single(u => u.Name == comeLogin);
+        var onlineChannel = new OnlineChannel(comeLogin)
+        {
+          MessageList = offlineChannel.MessageList
+        };
+        _mainViewModel.UsersListViewModel.OnlineUsers.Add(onlineChannel);
+        _mainViewModel.UsersListViewModel.OfflineUsers.Remove(offlineChannel);
       }
+      else
+      {
+        OnlineChannel onlineChannel = _mainViewModel.UsersListViewModel.OnlineUsers.Single(u => u.Name == comeLogin);
+        var offlineChannel = new OfflineChannel(comeLogin)
+        {
+          MessageList = onlineChannel.MessageList
+        };
+        _mainViewModel.UsersListViewModel.OfflineUsers.Add(offlineChannel);
+        _mainViewModel.UsersListViewModel.OnlineUsers.Remove(onlineChannel);
+        SwitchChannel(comeLogin);
+      }
+    }
+
+    private void SwitchChannel(string comeLogin)
+    {
+      if (_mainViewModel.MessagesViewModel.Channel.Name == comeLogin)
+        _mainViewModel.UsersListViewModel.SelectChat = _mainViewModel.UsersListViewModel.General;
     }
 
     private void ExecuteDisconnect()

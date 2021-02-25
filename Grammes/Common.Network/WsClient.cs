@@ -183,7 +183,7 @@
             }
 
             LoginEvent?.Invoke(this, new LoginEventArgs(_login, eventLog.IsSuccessfully, eventLog, 
-              loginResponse.OnlineList, loginResponse.OfflineList));
+              loginResponse.General,loginResponse.OnlineList, loginResponse.OfflineList));
           }
 
           break;

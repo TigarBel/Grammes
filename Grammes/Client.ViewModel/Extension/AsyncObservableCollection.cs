@@ -1,4 +1,4 @@
-﻿namespace Client.ViewModel.Common
+﻿namespace Client.ViewModel.Extension
 {
   using System.Collections.Generic;
   using System.Collections.ObjectModel;

@@ -1,8 +1,8 @@
-﻿namespace Client.ViewModel.ViewModels.Common
+﻿namespace Client.ViewModel.ViewModels.Leaf
 {
-  using Prism.Commands;
+  using Extension;
 
-  using ViewModel.Common;
+  using Prism.Commands;
 
   public abstract class LeafViewModel : ViewModelBase
   {

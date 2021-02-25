@@ -1,6 +1,6 @@
 ﻿namespace Client.ViewModel.ViewModels.EventAggregator
 {
-  using BusinessLogic.Model.ChannelsListModel;
+  using global::Common.Network.ChannelsListModel;
 
   using Prism.Events;
 

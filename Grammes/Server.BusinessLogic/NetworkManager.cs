@@ -1,11 +1,16 @@
 ﻿namespace Server.BusinessLogic
 {
   using System;
+  using System.Collections.Generic;
   using System.Net;
+  using System.Threading.Tasks;
 
   using Common.DataBase;
+  using Common.DataBase.DataBase;
   using Common.DataBase.DataBase.Table;
   using Common.Network;
+  using Common.Network.ChannelsListModel;
+  using Common.Network.Collector;
   using Common.Network.Messages;
   using Common.Network.Messages.Channels;
   using Common.Network.Messages.MessageReceived;
@@ -33,6 +38,7 @@
       foreach (User user in _dataBaseManager.UserList)
       {
         _wsServer.UserOfflineList.Add(user.Name);
+        List<GeneralMessage> ds = user.GeneralMessages;
       }
 
       _wsServer.ConnectionStateChanged += HandleConnectionStateChanged;
@@ -70,6 +76,11 @@
           });
       }
 
+      if (eventArgs.Connected)
+      {
+        SendLoginInitAsync(eventArgs);
+      }
+
       if (eventArgs.EventLog.IsSuccessfully)
       {
         _wsServer.Send(new ChannelResponseContainer(
@@ -90,11 +101,12 @@
       switch (eventArgs.Agenda.Type)
       {
         case ChannelType.General:
+          User user = _dataBaseManager.UserList.Find(u => u.Name == eventArgs.Author);
           var generalMessage = new GeneralMessage
           {
             Message = eventArgs.Message,
             Time = eventArgs.Time,
-            UserId = _dataBaseManager.UserList.Find(user => user.Name == eventArgs.Author).Id
+            User_Id = user.Id
           };
           _dataBaseManager.CreateGeneralMessageAsync(generalMessage);
           break;
@@ -103,9 +115,8 @@
           {
             Message = eventArgs.Message,
             Time = eventArgs.Time,
-            SenderId = _dataBaseManager.UserList.Find(user => user.Name == eventArgs.Author).Id,
-            TargetId = _dataBaseManager.UserList
-              .Find(user => user.Name == ((PrivateAgenda)eventArgs.Agenda).Target).Id
+            SenderId = _dataBaseManager.UserList.Find(u => u.Name == eventArgs.Author).Id,
+            TargetId = _dataBaseManager.UserList.Find(u => u.Name == ((PrivateAgenda)eventArgs.Agenda).Target).Id
           };
           _dataBaseManager.CreatePrivateMessageAsync(privateMessage);
           break;
@@ -116,6 +127,25 @@
       }
 
       Console.WriteLine(messageServer);
+    }
+
+    private async void SendLoginInitAsync(ConnectionStateChangedEventArgs eventArgs)
+    {
+      await Task.Delay(TimeSpan.FromSeconds(1.5));
+      List<GeneralMessage> generalMessage = await _dataBaseManager.GetGeneralMessageAsync();
+      List<PrivateMessage> privateMessages = await _dataBaseManager.GetPrivateMessageAsync();
+      await Task.Run(
+        () =>
+        {
+          User user = _dataBaseManager.UserList.Find(u => u.Name == eventArgs.ClientName);
+          _wsServer.Send(
+            new LoginResponseContainer(
+              new Response(ResponseStatus.Ok, eventArgs.EventLog.Text),
+              Collector.CollectGeneralChannel(user.Id, generalMessage),
+              Collector.CollectOnlineChannel(user, _wsServer.UserOnlineList, privateMessages),
+              Collector.CollectOfflineChannel(user, _wsServer.UserOfflineList, privateMessages)),
+            new PrivateAgenda(eventArgs.ClientName));
+        });
     }
 
     #endregion

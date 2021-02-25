@@ -4,6 +4,12 @@
 
   public class PrivateMessageRepository : Repository<PrivateMessage>
   {
+    #region Properties
+
+    public GrammesDbContext GrammesDbContext => _context as GrammesDbContext;
+
+    #endregion
+
     #region Constructors
 
     public PrivateMessageRepository(GrammesDbContext context)

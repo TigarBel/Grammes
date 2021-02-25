@@ -6,8 +6,6 @@
   using System.Linq;
   using System.Net;
 
-  using DataBase;
-
   using Messages;
   using Messages.EventLog;
   using Messages.MessageReceived;
@@ -29,7 +27,11 @@
     private WebSocketServer _server;
 
     private readonly string _name;
-    
+
+    #endregion
+
+    #region Properties
+
     public List<string> UserOnlineList { get; set; }
 
     public List<string> UserOfflineList { get; set; }
@@ -92,9 +94,7 @@
       {
         case ChannelType.General:
         {
-          foreach (KeyValuePair<Guid, WsConnection> connection in _connections.Where(
-            author => author.Value.Login != message.Author)
-          )
+          foreach (KeyValuePair<Guid, WsConnection> connection in _connections.Where(author => author.Value.Login != message.Author))
           {
             connection.Value.Send(messageRequest);
           }
@@ -129,8 +129,7 @@
             {
               loginResponse = new LoginResponseContainer(
                 new Response(ResponseStatus.Failure, $"Client with name '{loginRequest.Content}' yet connect."),
-                null,
-                null);
+                null, null, null);
               connection.Login = $"pseudo-{loginRequest.Content}";
               stage = DispatchType.Connection;
             }
@@ -139,20 +138,23 @@
               UserOnlineList.Add(loginRequest.Content);
               UserOnlineList.Sort();
               isEnter = UserOfflineList.Remove(loginRequest.Content);
-              loginResponse = new LoginResponseContainer(new Response(ResponseStatus.Ok, "Connected"), 
-                UserOnlineList, UserOfflineList);
+              loginResponse = new LoginResponseContainer(
+                new Response(ResponseStatus.Ok, "Connected"),null,null, null);
               connection.Login = loginRequest.Content;
               stage = DispatchType.Login;
             }
 
-            connection.Send(loginResponse.GetContainer());
             ConnectionStateChanged?.Invoke(
               this,
               new ConnectionStateChangedEventArgs(
                 connection.Login,
                 true,
-                new EventLogMessage(_name, loginResponse.Content.Result == ResponseStatus.Ok == isEnter,
-                  stage, loginResponse.Content.Reason, DateTime.Now)));
+                new EventLogMessage(
+                  _name,
+                  loginResponse.Content.Result == ResponseStatus.Ok == isEnter,
+                  stage,
+                  loginResponse.Content.Reason,
+                  DateTime.Now)));
           }
 
           break;
