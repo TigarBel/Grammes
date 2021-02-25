@@ -4,7 +4,6 @@
   using System.Windows.Controls;
 
   using Common.Network.ChannelsListModel;
-  using Common.Network.ChannelsListModel.BaseUserChannel;
   using Common.Network.Messages;
   using Common.Network.Messages.MessageReceived;
 
@@ -108,13 +107,19 @@
       OnlineUsers = new AsyncObservableCollection<PrivateChannel>();
       OfflineUsers = new AsyncObservableCollection<PrivateChannel>();
       Groups = new AsyncObservableCollection<GroupChannel>();
-
-      SelectChat = General;
     }
 
     #endregion
 
     #region Methods
+
+    public void OnInit()
+    {
+      OnlineUsers.Clear();
+      OfflineUsers.Clear();
+      Groups.Clear();
+      SelectChat = General;
+    }
 
     private void SetUserName(string userName)
     {

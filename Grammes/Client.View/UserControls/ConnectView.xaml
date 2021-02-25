@@ -35,6 +35,10 @@
 
         <common:LeafView Grid.ColumnSpan="5" Grid.RowSpan="6"/>
 
+        <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"
+               Content="Connection parameters" HorizontalAlignment="Center" 
+               Style="{StaticResource StyleText}"/>
+
         <Label Name="WarningLabel" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" 
                VerticalAlignment="Bottom"
                Style="{StaticResource StyleText}"
@@ -46,14 +50,32 @@
         <Label Content="User name:" Grid.Column="1" Grid.Row="4" Style="{StaticResource StyleText}"/>
 
         <TextBox Grid.Column="2" Grid.Row="1" Style="{StaticResource StyleText}"
-                 Text="{Binding IpAddress, UpdateSourceTrigger=PropertyChanged}"/>
+                 Text="{Binding IpAddress, UpdateSourceTrigger=PropertyChanged}">
+            <TextBox.ToolTip>
+                <ToolTip Content="{Binding IpTollTip}">
+                </ToolTip>
+            </TextBox.ToolTip>
+        </TextBox>
+
         <TextBox Grid.Column="2" Grid.Row="2" Style="{StaticResource StyleText}"
-                 Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}"/>
+                 Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}">
+            <TextBox.ToolTip>
+                <ToolTip Content="{Binding AddressTollTip}">
+                </ToolTip>
+            </TextBox.ToolTip>
+        </TextBox>
+
         <ComboBox Grid.Column="2" Grid.Row="3" Style="{StaticResource StyleText}" 
                   ItemsSource="{Binding TypeInterfaceList}"
                   SelectedItem="{Binding SelectTypeInterface}">
         </ComboBox>
+
         <TextBox Grid.Column="2" Grid.Row="4" Style="{StaticResource StyleText}"
-                 Text="{Binding LoginName, UpdateSourceTrigger=PropertyChanged}"/>
+                 Text="{Binding LoginName, UpdateSourceTrigger=PropertyChanged}">
+            <TextBox.ToolTip>
+                <ToolTip Content="{Binding UserTollTip}">
+                </ToolTip>
+            </TextBox.ToolTip>
+        </TextBox>
     </Grid>
 </UserControl>

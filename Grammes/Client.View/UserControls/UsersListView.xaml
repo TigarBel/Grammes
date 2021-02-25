@@ -29,7 +29,7 @@
                 <TreeViewItem Header="Online" ItemsSource="{Binding OnlineUsers}"/>
                 <TreeViewItem Header="Offline" ItemsSource="{Binding OfflineUsers}"
                               ItemContainerStyle="{StaticResource OfflineStyle}"/>
-                <TreeViewItem Header="Group" ItemsSource="{Binding Groups}"/>
+                <TreeViewItem Header="Group" ItemsSource="{Binding Groups}" IsEnabled="False" Visibility="Hidden"/>
             </extendedTreeView:ExtendedTreeView.Items>
         </extendedTreeView:ExtendedTreeView>
 

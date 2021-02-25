@@ -51,16 +51,17 @@
 
     public static UpdateChannelEventArgs GetSortedChannel(JObject message)
     {
-      if (message.ToObject(typeof(ChannelResponseContainer)) is ChannelResponseContainer messageResponse)
+      if (!(message.ToObject(typeof(ChannelResponseContainer)) is ChannelResponseContainer messageResponse))
       {
-        return new UpdateChannelEventArgs(
-          messageResponse.Content.Login,
-          messageResponse.Content.IsConnect,
-          new EventLogMessage(@"$erver", true, DispatchType.Channel, "Update channel", DateTime.Now),
-          messageResponse.Content.IsRegistration);
+        throw new ArgumentException("Get sorted channel out of range!");
       }
 
-      throw new ArgumentException("Get sorted channel out of range!");
+      string text = messageResponse.Content.IsConnect ? $"{messageResponse.Author} connect" : $"{messageResponse.Author} disconnect";
+      return new UpdateChannelEventArgs(
+        messageResponse.Content.Login,
+        messageResponse.Content.IsConnect,
+        new EventLogMessage(messageResponse.Author, true, DispatchType.Channel, text, DateTime.Now),
+        messageResponse.Content.IsRegistration);
     }
 
     #endregion

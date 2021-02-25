@@ -76,16 +76,16 @@
           });
       }
 
-      if (eventArgs.Connected)
+      if (eventArgs.EventLog.Type == DispatchType.Login && eventArgs.EventLog.IsSuccessfully)
       {
         SendLoginInitAsync(eventArgs);
       }
 
-      if (eventArgs.EventLog.IsSuccessfully)
+      if (eventArgs.EventLog.IsSuccessfully) 
       {
         _wsServer.Send(new ChannelResponseContainer(
-          new UpdateChannel(eventArgs.Connected, client, isRegistration), 
-          client), new GeneralAgenda());
+          new UpdateChannel(eventArgs.Connected, client, isRegistration), client), 
+          new GeneralAgenda());
       }
 
       string clientState = eventArgs.Connected ? "connect" : "disconnect";

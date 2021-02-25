@@ -130,6 +130,7 @@
               loginResponse = new LoginResponseContainer(
                 new Response(ResponseStatus.Failure, $"Client with name '{loginRequest.Content}' yet connect."),
                 null, null, null);
+              connection.Send(loginResponse.GetContainer());
               connection.Login = $"pseudo-{loginRequest.Content}";
               stage = DispatchType.Connection;
             }
@@ -143,7 +144,7 @@
               connection.Login = loginRequest.Content;
               stage = DispatchType.Login;
             }
-
+            
             ConnectionStateChanged?.Invoke(
               this,
               new ConnectionStateChangedEventArgs(
@@ -179,9 +180,13 @@
         return;
       }
 
-      UserOfflineList.Add(connection.Login);
-      UserOfflineList.Sort();
       bool isExit = UserOnlineList.Remove(connection.Login);
+      if (isExit)
+      {
+        UserOfflineList.Add(connection.Login);
+        UserOfflineList.Sort();
+      }
+
       ConnectionStateChanged?.Invoke(
         this,
         new ConnectionStateChangedEventArgs(

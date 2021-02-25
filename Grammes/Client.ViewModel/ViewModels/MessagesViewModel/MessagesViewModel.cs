@@ -2,18 +2,18 @@
 {
   using System;
   using System.Linq;
+  using System.Windows;
+  using System.Windows.Controls;
 
-  using BusinessLogic.Model;
   using BusinessLogic.Model.Network;
+
+  using Common.Network.ChannelsListModel;
+  using Common.Network.Messages;
+  using Common.Network.Messages.MessageReceived;
 
   using EventAggregator;
 
   using Extension;
-
-  using global::Common.DataBase;
-  using global::Common.Network.ChannelsListModel;
-  using global::Common.Network.Messages;
-  using global::Common.Network.Messages.MessageReceived;
 
   using Prism.Commands;
   using Prism.Events;
@@ -50,7 +50,7 @@
         MessagesUserList.Clear();
         foreach (MessageModel message in value.MessageList)
         {
-          MessagesUserList.Add(new MessageViewModel(message));//TODO List = List
+          MessagesUserList.Add(new MessageViewModel(message)); //TODO List = List
         }
       }
     }
@@ -78,13 +78,11 @@
       get => _isAvailable;
       set => SetProperty(ref _isAvailable, value);
     }
-
     #endregion
 
     #region Constructors
 
-    public MessagesViewModel(IEventAggregator eventAggregator,
-                             IConnectionController connectionController)
+    public MessagesViewModel(IEventAggregator eventAggregator, IConnectionController connectionController)
     {
       MessagesUserList = new AsyncObservableCollection<MessageViewModel>();
       eventAggregator.GetEvent<ChannelNameEvent>().Subscribe(SetChannel);
@@ -98,6 +96,24 @@
 
     #region Methods
 
+    public void AddMessage(MessageReceivedEventArgs eventArgs)
+    {
+      if (IsNotThisChannel(eventArgs))
+      {
+        return;
+      }
+
+      bool IsOut = _loginName != eventArgs.Author;
+      string content = eventArgs.Message;
+      if (Channel.Type == ChannelType.General)
+      {
+        content = $"{eventArgs.Author}: {content}";
+      }
+
+      var message = new MessageViewModel(content, eventArgs.Time, IsOut, true);
+      MessagesUserList.Add(message);
+    }
+    
     private void Validate()
     {
       if (string.IsNullOrEmpty(TextMessage))
@@ -124,35 +140,32 @@
       _loginName = client;
     }
 
-    public void AddMessage(MessageReceivedEventArgs eventArgs)
-    {
-      if(IsNotThisChannel(eventArgs)) return;
-      
-      bool IsOut = _loginName != eventArgs.Author;
-      string content = eventArgs.Message;
-      if (Channel.Type == ChannelType.General)
-      {
-        content = $"{eventArgs.Author}: {content}";
-      }
-
-      var message = new MessageViewModel(content, eventArgs.Time, IsOut, true);
-      MessagesUserList.Add(message);
-    }
-
     private bool IsNotThisChannel(MessageReceivedEventArgs eventArgs)
     {
-      if (Channel.Type != eventArgs.Agenda.Type) return true;
+      if (Channel.Type != eventArgs.Agenda.Type)
+      {
+        return true;
+      }
 
       switch (eventArgs.Agenda.Type)
       {
         case ChannelType.General: return false;
         case ChannelType.Private:
-          if (eventArgs.Author == Channel.Name) return false;
+          if (eventArgs.Author == Channel.Name)
+          {
+            return false;
+          }
+
           break;
         case ChannelType.Group:
-          if (((GroupAgenda)eventArgs.Agenda).GroupName == Channel.Name) return false;
+          if (((GroupAgenda)eventArgs.Agenda).GroupName == Channel.Name)
+          {
+            return false;
+          }
+
           break;
       }
+
       return true;
     }
 

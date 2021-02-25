@@ -2,6 +2,7 @@
 {
   using System;
   using System.Collections.Generic;
+  using System.Linq;
   using System.Net;
   using System.Text.RegularExpressions;
 
@@ -36,9 +37,13 @@
 
     private string _loginName;
 
-    private readonly Regex _regexLogin = new Regex(@"^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$");
-
     private readonly IEventAggregator _userNameEa;
+
+    private string _ipTollTip;
+
+    private string _addressTollTip;
+
+    private string _userTollTip;
 
     #endregion
 
@@ -93,6 +98,24 @@
       }
     }
 
+    public string IpTollTip
+    {
+      get => _ipTollTip;
+      set => SetProperty(ref _ipTollTip, value);
+    }
+
+    public string AddressTollTip
+    {
+      get => _addressTollTip;
+      set => SetProperty(ref _addressTollTip, value);
+    }
+
+    public string UserTollTip
+    {
+      get => _userTollTip;
+      set => SetProperty(ref _userTollTip, value);
+    }
+
     #endregion
 
     #region Constructors
@@ -114,15 +137,14 @@
 
     public override void Check()
     {
+      IpTollTip = "Accepted";
+      AddressTollTip = "Accepted";
+      UserTollTip = "Accepted";
+
       _errorsContainer.ClearErrors(() => IpAddress);
 
-      try
-      {
-        IPAddress.Parse(IpAddress);
-      }
-      catch (FormatException)
-      {
-        _errorsContainer.SetErrors(() => IpAddress, new[] { "IP address not is parsing" });
+      if (!new Regex(Resources.IpAddressUnacceptableSymbols, RegexOptions.IgnoreCase).IsMatch(IpAddress ?? string.Empty)) {
+        _errorsContainer.SetErrors(() => IpAddress, new[] { "IP address not is parsing [127.0.0.1]" });
       }
 
       _errorsContainer.ClearErrors(() => Port);
@@ -133,12 +155,7 @@
       }
 
       _errorsContainer.ClearErrors(() => LoginName);
-
-      if (LoginName?.Length == 0)
-      {
-        _errorsContainer.SetErrors(() => LoginName, new[] { "User not entered" });
-      }
-
+      
       if (LoginName?.Length > 16)
       {
         _errorsContainer.SetErrors(() => LoginName, new[] { "Username up to 16 characters" });
@@ -146,7 +163,22 @@
 
       if (!new Regex(Resources.UserNameUnacceptableSymbols, RegexOptions.IgnoreCase).IsMatch(LoginName ?? string.Empty))
       {
-        _errorsContainer.SetErrors(() => LoginName, new[] { "Username unmasked" });
+        _errorsContainer.SetErrors(() => LoginName, new[] { "Username unmasked [User1]" });
+      }
+
+      if (_errorsContainer.GetErrors().Any(k => k.Key == "IpAddress"))
+      {
+        IpTollTip = _errorsContainer.GetErrors().FirstOrDefault(k => k.Key == "IpAddress").Value[0];
+      }
+
+      if (_errorsContainer.GetErrors().Any(k => k.Key == "Port"))
+      {
+        AddressTollTip = _errorsContainer.GetErrors().FirstOrDefault(k => k.Key == "Port").Value[0];
+      }
+
+      if (_errorsContainer.GetErrors().Any(k => k.Key == "LoginName"))
+      {
+        UserTollTip = _errorsContainer.GetErrors().FirstOrDefault(k => k.Key == "LoginName").Value[0];
       }
 
       IsAvailableButton = _errorsContainer.GetErrors().Count == 0;

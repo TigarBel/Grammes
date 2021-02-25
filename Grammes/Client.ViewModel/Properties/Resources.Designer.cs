@@ -61,6 +61,15 @@ namespace Client.ViewModel.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$.
+        /// </summary>
+        internal static string IpAddressUnacceptableSymbols {
+            get {
+                return ResourceManager.GetString("IpAddressUnacceptableSymbols", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$.
         /// </summary>
         internal static string UserNameUnacceptableSymbols {

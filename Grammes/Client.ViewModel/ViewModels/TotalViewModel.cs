@@ -134,11 +134,8 @@
         return;
       }
 
-      _mainViewModel.UsersListViewModel.OnlineUsers.Clear();
-      _mainViewModel.UsersListViewModel.OfflineUsers.Clear();
-      _mainViewModel.UsersListViewModel.Groups.Clear();
-
       _mainViewModel.UsersListViewModel.General.MessageList = eventArgs.General.MessageList;
+      _mainViewModel.UsersListViewModel.OnInit();
 
       foreach (var privateChannel in eventArgs.OnlineList)
       {
@@ -153,7 +150,8 @@
 
     private void HandleMessageReceived(object sender, MessageReceivedEventArgs eventArgs)
     {
-      var eventLog = new EventLogMessage(eventArgs.Author, true, DispatchType.Message, eventArgs.Message, eventArgs.Time);
+       var eventLog = new EventLogMessage(eventArgs.Author, true, DispatchType.Message, 
+        $"{eventArgs.Agenda.Type}:{eventArgs.Message}", eventArgs.Time);
       _mainViewModel.Events.Add(eventLog);
       _eventAggregator.GetEvent<MessageReceivedEvent>().Publish(eventArgs);
     }
