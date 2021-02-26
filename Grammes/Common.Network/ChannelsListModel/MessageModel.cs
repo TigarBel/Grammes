@@ -21,7 +21,7 @@
     public MessageModel(string message, DateTime time, bool isOutgoingMessage, bool isReadingMessage)
     {
       Message = message;
-      Time = time.ToString("hh:mm:ss");
+      Time = time.ToString("hh:mm");
       IsOutgoingMessage = isOutgoingMessage;
       IsReadingMessage = isReadingMessage;
     }

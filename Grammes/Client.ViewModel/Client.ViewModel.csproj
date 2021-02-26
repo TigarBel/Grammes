@@ -83,6 +83,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="TemplateSelectorViewModel.cs" />
+    <Compile Include="ViewModels\EventAggregator\LogEvent.cs" />
     <Compile Include="ViewModels\Leaf\LeafViewModel.cs" />
     <Compile Include="ViewModels\ConnectViewModel.cs" />
     <Compile Include="ViewModels\EventAggregator\ChannelNameEvent.cs" />

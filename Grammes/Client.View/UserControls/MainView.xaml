@@ -40,7 +40,19 @@
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="MaxHeight" Value="30"/>
-            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Width" Value="128"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=ExpanderEventLog, Path=IsExpanded}" 
+                             Value="False">
+                    <Setter Property="Visibility" Value="Hidden" />
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding ElementName=ExpanderEventLog, Path=IsExpanded}" 
+                             Value="True">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
     </UserControl.Resources>
     <Grid>
@@ -84,8 +96,11 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Expander>
+
         <ComboBox Grid.Row="2" Style="{StaticResource ComboBoxStyle}"
-                  ItemsSource="{Binding Events}"/>
+                  ItemsSource="{Binding NameFilter}"
+                  SelectedItem="{Binding SelectName}"/>
+
         <Border Grid.Row="2" Style="{StaticResource BorderStyle}"/>
 
     </Grid>

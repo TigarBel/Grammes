@@ -94,7 +94,7 @@
 
     private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs eventArgs)
     {
-      _mainViewModel.Events.Add(eventArgs.EventLog);
+      _eventAggregator.GetEvent<LogEvent>().Publish(eventArgs.EventLog);
 
       if (eventArgs.Connected)
       {
@@ -121,7 +121,7 @@
 
     private void HandleLogin(object sender, LoginEventArgs eventArgs)
     {
-      _mainViewModel.Events.Add(eventArgs.EventLog);
+      _eventAggregator.GetEvent<LogEvent>().Publish(eventArgs.EventLog);
 
       if (eventArgs.Connected)
       {
@@ -152,13 +152,13 @@
     {
        var eventLog = new EventLogMessage(eventArgs.Author, true, DispatchType.Message, 
         $"{eventArgs.Agenda.Type}:{eventArgs.Message}", eventArgs.Time);
-      _mainViewModel.Events.Add(eventLog);
+       _eventAggregator.GetEvent<LogEvent>().Publish(eventLog);
       _eventAggregator.GetEvent<MessageReceivedEvent>().Publish(eventArgs);
     }
 
     private void HandleUpdateChannel(object sender, UpdateChannelEventArgs eventArgs)
     {
-      _mainViewModel.Events.Add(eventArgs.EventLog);
+      _eventAggregator.GetEvent<LogEvent>().Publish(eventArgs.EventLog);
       string selfLogin = _connectViewModel.LoginName;
       string comeLogin = eventArgs.ChannelName;
 

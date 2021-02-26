@@ -80,9 +80,6 @@
                 </DataTrigger>
             </Style.Triggers>
 
-            <!--<Setter Property="IsSelected" 
-                    Value="{Binding Content.IsSelected, Mode=TwoWay, 
-                RelativeSource={RelativeSource Self}}"/>-->
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListBoxItem">
@@ -92,6 +89,12 @@
             </Setter>
 
             <Setter Property="Margin" Value="3"/>
+        </Style>
+
+        <Style TargetType="ListBox" x:Key="ListBoxStyle">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
         </Style>
     </UserControl.Resources>
 
@@ -103,15 +106,14 @@
             <RowDefinition Height="*" MinHeight="36"/>
         </Grid.RowDefinitions>
 
-        <Label Content="{Binding Channel}" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label Content="{Binding Channel}" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
-        <ScrollViewer Grid.Row="1" messagesViews:ScrollViewerExtensions.AlwaysScrollToEnd="True">
-            <ListBox x:Name="MessageListBox"
+
+        <!--<ScrollViewer messagesViews:ScrollViewerExtensions.AlwaysScrollToEnd="True"/>-->
+        <ListBox Grid.Row="1" x:Name="MessageListBox"
                      ItemContainerStyle="{StaticResource ContainerStyle}"
                      ItemsSource="{Binding MessagesUserList}"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-            </ListBox>
-        </ScrollViewer>
+                     Style="{StaticResource ListBoxStyle}"/>
 
         <GridSplitter Grid.Row="2" HorizontalAlignment="Stretch" Height="5"/>
 

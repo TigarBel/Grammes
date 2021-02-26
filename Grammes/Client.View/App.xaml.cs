@@ -9,6 +9,7 @@
   using Prism.Unity;
 
   using UserControls;
+  using UserControls.MessagesViews;
 
   using ViewModel.ViewModels;
   using ViewModel.ViewModels.MessagesViewModel;
@@ -44,6 +45,7 @@
       BindViewModelToView<MainViewModel, MainView>();
       BindViewModelToView<MainMenuViewModel, MainMenuView>();
       BindViewModelToView<MessagesViewModel, MessagesView>();
+      BindViewModelToView<MessageViewModel, MessageUserView>();
       BindViewModelToView<UsersListViewModel, UsersListView>();
     }
 
