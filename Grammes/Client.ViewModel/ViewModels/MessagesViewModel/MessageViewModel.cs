@@ -2,10 +2,7 @@
 {
   using System;
 
-  using BusinessLogic.Model;
-
-  using global::Common.DataBase;
-  using global::Common.Network.ChannelsListModel;
+  using Common.Network.ChannelsListModel;
 
   using Prism.Mvvm;
 
@@ -18,7 +15,7 @@
     #endregion
 
     #region Properties
-    
+
     public MessageModel Model
     {
       get => _model;

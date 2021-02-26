@@ -2,8 +2,6 @@
 {
   using System;
   using System.Linq;
-  using System.Windows;
-  using System.Windows.Controls;
 
   using BusinessLogic.Model.Network;
 
@@ -78,6 +76,7 @@
       get => _isAvailable;
       set => SetProperty(ref _isAvailable, value);
     }
+
     #endregion
 
     #region Constructors
@@ -113,7 +112,7 @@
       var message = new MessageViewModel(content, eventArgs.Time, IsOut, true);
       MessagesUserList.Add(message);
     }
-    
+
     private void Validate()
     {
       if (string.IsNullOrEmpty(TextMessage))

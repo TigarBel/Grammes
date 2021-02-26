@@ -93,6 +93,7 @@
     <Compile Include="UserControls\MessagesViews\MessageUserView.xaml.cs">
       <DependentUpon>MessageUserView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\MessagesViews\ScrollViewerExtensions.cs" />
     <Compile Include="UserControls\TotalView.xaml.cs">
       <DependentUpon>TotalView.xaml</DependentUpon>
     </Compile>
