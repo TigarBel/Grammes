@@ -1,6 +1,6 @@
 ﻿namespace Client.ViewModel.ViewModels.EventAggregator
 {
-  using Common.Network.Messages.EventLog;
+  using Common.DataBaseAndNetwork.EventLog;
 
   using Prism.Events;
 

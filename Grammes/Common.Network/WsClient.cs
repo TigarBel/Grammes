@@ -5,8 +5,9 @@
   using System.Threading;
   using System.Threading.Tasks;
 
+  using DataBaseAndNetwork.EventLog;
+
   using Messages;
-  using Messages.EventLog;
   using Messages.MessageSorter;
 
   using Newtonsoft.Json;
@@ -45,7 +46,7 @@
     public event EventHandler<LoginEventArgs> LoginEvent;
     public event EventHandler<MessageReceivedEventArgs> MessageReceived;
     public event EventHandler<UpdateChannelEventArgs> UpdateChannel;
-    public event EventHandler<LogEventArgs> LogEvent; 
+    public event EventHandler<LogEventArgs> LogEvent;
 
     #endregion
 
@@ -183,8 +184,15 @@
               eventLog.Text = loginResponse.Content.Reason;
             }
 
-            LoginEvent?.Invoke(this, new LoginEventArgs(_login, eventLog.IsSuccessfully, eventLog, 
-              loginResponse.General,loginResponse.OnlineList, loginResponse.OfflineList));
+            LoginEvent?.Invoke(
+              this,
+              new LoginEventArgs(
+                _login,
+                eventLog.IsSuccessfully,
+                eventLog,
+                loginResponse.General,
+                loginResponse.OnlineList,
+                loginResponse.OfflineList));
           }
 
           break;

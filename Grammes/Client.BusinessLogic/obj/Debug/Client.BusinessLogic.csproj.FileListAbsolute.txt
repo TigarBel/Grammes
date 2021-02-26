@@ -17,3 +17,5 @@ C:\Users\belyaevee\Desktop\Intership\Grammes\Client.BusinessLogic\obj\Debug\Clie
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.BusinessLogic\obj\Debug\Client.BusinessLogic.csproj.CopyComplete
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.BusinessLogic\obj\Debug\Client.BusinessLogic.dll
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.BusinessLogic\obj\Debug\Client.BusinessLogic.pdb
+C:\Users\belyaevee\Desktop\Intership\Grammes\Client.BusinessLogic\bin\Debug\Common.DataBaseAndNetwork.dll
+C:\Users\belyaevee\Desktop\Intership\Grammes\Client.BusinessLogic\bin\Debug\Common.DataBaseAndNetwork.pdb

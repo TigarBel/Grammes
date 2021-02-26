@@ -18,6 +18,8 @@
 
     public PrivateMessageRepository PrivateMessage { get; }
 
+    public EventRepository Event { get; }
+
     #endregion
 
     #region Constructors
@@ -28,6 +30,7 @@
       User = new UserRepository(context);
       GeneralMessage = new GeneralMessageRepository(context);
       PrivateMessage = new PrivateMessageRepository(context);
+      Event = new EventRepository(context);
     }
 
     #endregion

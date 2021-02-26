@@ -1,6 +1,6 @@
 ﻿namespace Common.Network.Messages
 {
-  using System;
+  using DataBaseAndNetwork.EventLog;
 
   public class LoginRequestContainer : BaseContainer<string>
   {

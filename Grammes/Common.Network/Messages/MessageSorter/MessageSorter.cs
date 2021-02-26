@@ -2,11 +2,10 @@
 {
   using System;
 
-  using EventLog;
+  using DataBaseAndNetwork.EventLog;
 
   using MessageReceived;
 
-  using Newtonsoft.Json;
   using Newtonsoft.Json.Linq;
 
   public class MessageSorter
@@ -15,12 +14,13 @@
 
     public static MessageReceivedEventArgs GetSortedMessage(JObject message)
     {
-      if (message.ToObject(typeof(PrivateMessageContainer)) is PrivateMessageContainer )
+      if (message.ToObject(typeof(PrivateMessageContainer)) is PrivateMessageContainer)
       {
         var messageRequest = (PrivateMessageContainer)message.ToObject(typeof(PrivateMessageContainer));
         if (messageRequest?.Target != null)
-          return new MessageReceivedEventArgs(messageRequest.Author, messageRequest.Content, 
-            new PrivateAgenda(messageRequest.Target), DateTime.Now);
+        {
+          return new MessageReceivedEventArgs(messageRequest.Author, messageRequest.Content, new PrivateAgenda(messageRequest.Target), DateTime.Now);
+        }
       }
 
       if (message.ToObject(typeof(GeneralMessageContainer)) is GeneralMessageContainer)

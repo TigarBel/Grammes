@@ -1,4 +1,4 @@
-﻿namespace Common.Network.Messages.EventLog
+﻿namespace Common.DataBaseAndNetwork.EventLog
 {
   using System;
 

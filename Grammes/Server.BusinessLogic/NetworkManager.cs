@@ -7,11 +7,11 @@
 
   using Common.DataBase;
   using Common.DataBase.DataBase.Table;
+  using Common.DataBaseAndNetwork.EventLog;
   using Common.Network;
   using Common.Network.Collector;
   using Common.Network.Messages;
   using Common.Network.Messages.Channels;
-  using Common.Network.Messages.EventLog;
   using Common.Network.Messages.MessageReceived;
 
   public class NetworkManager
@@ -37,7 +37,6 @@
       foreach (User user in _dataBaseManager.UserList)
       {
         _wsServer.UserOfflineList.Add(user.Name);
-        List<GeneralMessage> ds = user.GeneralMessages;
       }
 
       _wsServer.ConnectionStateChanged += HandleConnectionStateChanged;
@@ -86,9 +85,8 @@
 
       string clientState = eventArgs.Connected ? "connect" : "disconnect";
       string message = $"Client '{client}' {clientState}.";
-      _wsServer.Send(
-        new MessageEventLogContainer(new EventLogMessage(client, 
-          eventArgs.EventLog.IsSuccessfully, DispatchType.Connection, message, DateTime.Now)),
+      EventActionAsync(
+        new MessageEventLogContainer(new EventLogMessage(client, eventArgs.EventLog.IsSuccessfully, DispatchType.Connection, message, DateTime.Now)),
         new GeneralAgenda());
 
       Console.WriteLine(message);
@@ -109,9 +107,9 @@
             User_Id = user.Id
           };
           _dataBaseManager.CreateGeneralMessageAsync(generalMessage);
-          _wsServer.Send(
-            new MessageEventLogContainer(new EventLogMessage(eventArgs.Author, true, 
-              DispatchType.Message, messageServer, DateTime.Now)), eventArgs.Agenda);
+          EventActionAsync(
+            new MessageEventLogContainer(new EventLogMessage(eventArgs.Author, true, DispatchType.Message, messageServer, DateTime.Now)),
+            eventArgs.Agenda);
           break;
         case ChannelType.Private:
           var privateMessage = new PrivateMessage
@@ -122,9 +120,9 @@
             TargetId = _dataBaseManager.UserList.Find(u => u.Name == ((PrivateAgenda)eventArgs.Agenda).Target).Id
           };
           _dataBaseManager.CreatePrivateMessageAsync(privateMessage);
-          _wsServer.Send(
-            new MessageEventLogContainer(new EventLogMessage(eventArgs.Author, true,
-              DispatchType.Message, messageServer, DateTime.Now)), eventArgs.Agenda);
+          EventActionAsync(
+            new MessageEventLogContainer(new EventLogMessage(eventArgs.Author, true, DispatchType.Message, messageServer, DateTime.Now)),
+            eventArgs.Agenda);
           break;
         case ChannelType.Group:
           break;
@@ -133,6 +131,25 @@
       }
 
       Console.WriteLine(messageServer);
+    }
+
+    private async void EventActionAsync(MessageEventLogContainer messageEvent, BaseAgenda agenda)
+    {
+      await Task.Delay(1000);
+      await Task.Run(
+        () =>
+        {
+          _wsServer.Send(messageEvent, agenda);
+          _dataBaseManager.CreateEventAsync(
+            new Event()
+            {
+              IsSuccessfully = true,
+              Message = messageEvent.Content.Text,
+              Time = DateTime.Now,
+              User_Id = _dataBaseManager.UserList.Find(u => u.Name == messageEvent.Content.SenderName).Id,
+              Type = DispatchType.Connection
+            });
+        });
     }
 
     private async void SendLoginInitAsync(ConnectionStateChangedEventArgs eventArgs)

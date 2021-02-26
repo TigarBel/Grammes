@@ -2,14 +2,12 @@
 {
   using System;
   using System.Linq;
-  using System.Windows.Controls;
 
   using BusinessLogic.Model.Network;
 
   using Common.Network.ChannelsListModel;
   using Common.Network.ChannelsListModel.BaseUserChannel;
   using Common.Network.Messages;
-  using Common.Network.Messages.EventLog;
 
   using EventAggregator;
 
@@ -135,12 +133,12 @@
       _mainViewModel.UsersListViewModel.General.MessageList = eventArgs.General.MessageList;
       _mainViewModel.UsersListViewModel.OnInit();
 
-      foreach (var privateChannel in eventArgs.OnlineList)
+      foreach (PrivateChannel privateChannel in eventArgs.OnlineList)
       {
         _mainViewModel.UsersListViewModel.OnlineUsers.Add(privateChannel);
       }
 
-      foreach (var privateChannel in eventArgs.OfflineList)
+      foreach (PrivateChannel privateChannel in eventArgs.OfflineList)
       {
         _mainViewModel.UsersListViewModel.OfflineUsers.Add(privateChannel);
       }
@@ -163,20 +161,19 @@
 
       if (eventArgs.Connected)
       {
-        ChangeChannel(comeLogin, _mainViewModel.UsersListViewModel.OfflineUsers, 
-          _mainViewModel.UsersListViewModel.OnlineUsers);
+        ChangeChannel(comeLogin, _mainViewModel.UsersListViewModel.OfflineUsers, _mainViewModel.UsersListViewModel.OnlineUsers);
       }
       else
       {
-        ChangeChannel(comeLogin, _mainViewModel.UsersListViewModel.OnlineUsers, 
-          _mainViewModel.UsersListViewModel.OfflineUsers);
+        ChangeChannel(comeLogin, _mainViewModel.UsersListViewModel.OnlineUsers, _mainViewModel.UsersListViewModel.OfflineUsers);
         SwitchChannel(comeLogin);
       }
     }
 
-    private void ChangeChannel(string comeLogin, 
-                               AsyncObservableCollection<PrivateChannel> channelsOf,
-                               AsyncObservableCollection<PrivateChannel> channelsIn)
+    private void ChangeChannel(
+      string comeLogin,
+      AsyncObservableCollection<PrivateChannel> channelsOf,
+      AsyncObservableCollection<PrivateChannel> channelsIn)
     {
       PrivateChannel oldChannel = channelsOf.Single(u => u.Name == comeLogin);
       var newChannel = new PrivateChannel(comeLogin)
@@ -190,7 +187,9 @@
     private void SwitchChannel(string comeLogin)
     {
       if (_mainViewModel.MessagesViewModel.Channel.Name == comeLogin)
+      {
         _mainViewModel.UsersListViewModel.SelectChat = _mainViewModel.UsersListViewModel.General;
+      }
     }
 
     private void HandleLogEvent(object sender, LogEventArgs eventArgs)

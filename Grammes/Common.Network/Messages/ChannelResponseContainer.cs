@@ -2,6 +2,8 @@
 {
   using Channels;
 
+  using DataBaseAndNetwork.EventLog;
+
   public class ChannelResponseContainer : BaseContainer<UpdateChannel>
   {
     #region Constructors

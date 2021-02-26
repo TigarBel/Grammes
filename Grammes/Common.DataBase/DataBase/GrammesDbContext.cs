@@ -16,6 +16,8 @@
     public System.Data.Entity.DbSet<Group> Groups { get; set; }
     public System.Data.Entity.DbSet<Band> Bands { get; set; }
     public System.Data.Entity.DbSet<GroupMessage> GroupMessages { get; set; }
+    public System.Data.Entity.DbSet<Event> Events { get; set; }
+    
 
     #endregion
 

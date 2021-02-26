@@ -1,6 +1,6 @@
 ﻿namespace Common.Network.Messages
 {
-  using EventLog;
+  using DataBaseAndNetwork.EventLog;
 
   public class LogEventArgs
   {

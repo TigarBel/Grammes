@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Common.DataBaseAndNetwork\Common.DataBaseAndNetwork.csproj" />
     <ProjectReference Include="..\Common.DataBase\Common.DataBase.csproj" />
   </ItemGroup>
 

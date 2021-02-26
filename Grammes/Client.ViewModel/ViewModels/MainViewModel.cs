@@ -2,7 +2,7 @@
 {
   using System.Linq;
 
-  using Common.Network.Messages.EventLog;
+  using Common.DataBaseAndNetwork.EventLog;
 
   using EventAggregator;
 
@@ -13,13 +13,17 @@
 
   public class MainViewModel : BindableBase
   {
+    #region Constants
+
+    private const string ALL = "A||";
+
+    #endregion
+
     #region Fields
 
     private AsyncObservableCollection<EventLogMessage> _events;
 
     private readonly AsyncObservableCollection<EventLogMessage> _allEvents;
-
-    private const string ALL = "A||";
 
     private AsyncObservableCollection<string> _nameFilter;
 
@@ -55,8 +59,8 @@
       set
       {
         SetProperty(ref _selectName, value);
-        Events = value == ALL 
-                   ? _allEvents 
+        Events = value == ALL
+                   ? _allEvents
                    : new AsyncObservableCollection<EventLogMessage>(_allEvents.Where(log => log.SenderName == value).ToList());
       }
     }
@@ -97,7 +101,10 @@
     private void SetEventLog(EventLogMessage eventLog)
     {
       _allEvents.Add(eventLog);
-      if (NameFilter.All(name => name != eventLog.SenderName)) NameFilter.Add(eventLog.SenderName);
+      if (NameFilter.All(name => name != eventLog.SenderName))
+      {
+        NameFilter.Add(eventLog.SenderName);
+      }
     }
 
     #endregion

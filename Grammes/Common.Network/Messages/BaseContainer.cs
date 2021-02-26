@@ -1,16 +1,17 @@
 ﻿namespace Common.Network.Messages
 {
-  using System;
+  using DataBaseAndNetwork.EventLog;
 
   public abstract class BaseContainer<TClassContent>
   {
     #region Properties
 
-    public DispatchType Request { get; private set; }
+    public DispatchType Request { get; }
 
     public string Author { get; protected set; }
 
     public TClassContent Content { get; set; }
+
     #endregion
 
     #region Constructors

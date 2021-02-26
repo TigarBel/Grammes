@@ -106,6 +106,10 @@
       <Project>{a6d3ae06-67c0-43d0-a854-96e6215407d7}</Project>
       <Name>Client.BusinessLogic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Common.DataBaseAndNetwork\Common.DataBaseAndNetwork.csproj">
+      <Project>{8f842fc6-2cc1-4a3e-bd89-37677550a28c}</Project>
+      <Name>Common.DataBaseAndNetwork</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common.DataBase\Common.DataBase.csproj">
       <Project>{869071e2-902e-4457-9bc2-70e587dd315f}</Project>
       <Name>Common.DataBase</Name>

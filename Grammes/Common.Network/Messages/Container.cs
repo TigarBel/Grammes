@@ -1,5 +1,7 @@
 ﻿namespace Common.Network.Messages
 {
+  using DataBaseAndNetwork.EventLog;
+
   public class Container
   {
     #region Properties

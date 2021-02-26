@@ -1,4 +1,4 @@
-﻿namespace Common.Network.Messages
+﻿namespace Common.DataBaseAndNetwork.EventLog
 {
   public enum DispatchType
   {

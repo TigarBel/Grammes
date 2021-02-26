@@ -1,8 +1,6 @@
 ﻿namespace Common.Network.Messages
 {
-  using System;
-
-  using EventLog;
+  using DataBaseAndNetwork.EventLog;
 
   public class MessageEventLogContainer : BaseContainer<EventLogMessage>
   {

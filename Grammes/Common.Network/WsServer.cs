@@ -6,8 +6,9 @@
   using System.Linq;
   using System.Net;
 
+  using DataBaseAndNetwork.EventLog;
+
   using Messages;
-  using Messages.EventLog;
   using Messages.MessageReceived;
   using Messages.MessageSorter;
 
@@ -94,8 +95,7 @@
       {
         case ChannelType.General:
         {
-          foreach (KeyValuePair<Guid, WsConnection> connection in _connections
-            .Where(author => author.Value.Login != message.Author))
+          foreach (KeyValuePair<Guid, WsConnection> connection in _connections.Where(author => author.Value.Login != message.Author))
           {
             connection.Value.Send(messageRequest);
           }
@@ -104,8 +104,7 @@
         }
         case ChannelType.Private:
         {
-          _connections.Values.First(item => item.Login == ((PrivateAgenda)agenda).Target)
-            .Send(messageRequest);
+          _connections.Values.First(item => item.Login == ((PrivateAgenda)agenda).Target).Send(messageRequest);
           break;
         }
       }
@@ -131,7 +130,9 @@
             {
               loginResponse = new LoginResponseContainer(
                 new Response(ResponseStatus.Failure, $"Client with name '{loginRequest.Content}' yet connect."),
-                null, null, null);
+                null,
+                null,
+                null);
               connection.Send(loginResponse.GetContainer());
               connection.Login = $"pseudo-{loginRequest.Content}";
               stage = DispatchType.Connection;
@@ -141,12 +142,11 @@
               UserOnlineList.Add(loginRequest.Content);
               UserOnlineList.Sort();
               isEnter = UserOfflineList.Remove(loginRequest.Content);
-              loginResponse = new LoginResponseContainer(
-                new Response(ResponseStatus.Ok, "Connected"),null,null, null);
+              loginResponse = new LoginResponseContainer(new Response(ResponseStatus.Ok, "Connected"), null, null, null);
               connection.Login = loginRequest.Content;
               stage = DispatchType.Login;
             }
-            
+
             ConnectionStateChanged?.Invoke(
               this,
               new ConnectionStateChangedEventArgs(

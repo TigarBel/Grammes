@@ -8,6 +8,8 @@
   using DataBase.Repository;
   using DataBase.Table;
 
+  using DataBaseAndNetwork.EventLog;
+
   public class DataBaseManager
   {
     #region Properties
@@ -63,6 +65,19 @@
           () =>
           {
             db.Add(privateMessage);
+            db.Save();
+          });
+      }
+    }
+
+
+    public async void CreateEventAsync(Event localEvent)
+    {
+      using (EventRepository db = new Unit().Event) {
+        await Task.Run(
+          () =>
+          {
+            db.Add(localEvent);
             db.Save();
           });
       }

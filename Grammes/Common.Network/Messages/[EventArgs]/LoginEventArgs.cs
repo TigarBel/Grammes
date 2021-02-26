@@ -3,30 +3,30 @@
   using System.Collections.Generic;
 
   using ChannelsListModel;
-  using ChannelsListModel.BaseUserChannel;
 
-  using EventLog;
+  using DataBaseAndNetwork.EventLog;
 
   public class LoginEventArgs : ConnectionStateChangedEventArgs
   {
     #region Properties
 
-    public GeneralChannel General { get; private set; }
+    public GeneralChannel General { get; }
 
-    public List<PrivateChannel> OnlineList { get; private set; }
+    public List<PrivateChannel> OnlineList { get; }
 
-    public List<PrivateChannel> OfflineList { get; private set; }
+    public List<PrivateChannel> OfflineList { get; }
 
     #endregion
 
     #region Constructors
 
-    public LoginEventArgs(string clientName, 
-                          bool connected, 
-                          EventLogMessage eventLog, 
-                          GeneralChannel general,
-                          List<PrivateChannel> onlineList, 
-                          List<PrivateChannel> offlineList)
+    public LoginEventArgs(
+      string clientName,
+      bool connected,
+      EventLogMessage eventLog,
+      GeneralChannel general,
+      List<PrivateChannel> onlineList,
+      List<PrivateChannel> offlineList)
       : base(clientName, connected, eventLog)
     {
       General = general;
