@@ -6,13 +6,12 @@
   using System.Threading.Tasks;
 
   using Common.DataBase;
-  using Common.DataBase.DataBase;
   using Common.DataBase.DataBase.Table;
   using Common.Network;
-  using Common.Network.ChannelsListModel;
   using Common.Network.Collector;
   using Common.Network.Messages;
   using Common.Network.Messages.Channels;
+  using Common.Network.Messages.EventLog;
   using Common.Network.Messages.MessageReceived;
 
   public class NetworkManager
@@ -29,9 +28,9 @@
 
     #region Constructors
 
-    public NetworkManager()
+    public NetworkManager(IPEndPoint address)
     {
-      _address = new Config.ServerConfig().GetAddress();
+      _address = address;
       _dataBaseManager = new DataBaseManager();
 
       _wsServer = new WsServer(_address);
@@ -64,8 +63,7 @@
     {
       string client = eventArgs.ClientName;
       bool isRegistration = false;
-      if (eventArgs.EventLog.Type == DispatchType.Login && 
-          !eventArgs.EventLog.IsSuccessfully)
+      if (eventArgs.EventLog.Type == DispatchType.Login && !eventArgs.EventLog.IsSuccessfully)
       {
         eventArgs.EventLog.IsSuccessfully = true;
         isRegistration = true;
@@ -81,22 +79,24 @@
         SendLoginInitAsync(eventArgs);
       }
 
-      if (eventArgs.EventLog.IsSuccessfully) 
+      if (eventArgs.EventLog.IsSuccessfully)
       {
-        _wsServer.Send(new ChannelResponseContainer(
-          new UpdateChannel(eventArgs.Connected, client, isRegistration), client), 
-          new GeneralAgenda());
+        _wsServer.Send(new ChannelResponseContainer(new UpdateChannel(eventArgs.Connected, client, isRegistration), client), new GeneralAgenda());
       }
 
       string clientState = eventArgs.Connected ? "connect" : "disconnect";
       string message = $"Client '{client}' {clientState}.";
+      _wsServer.Send(
+        new MessageEventLogContainer(new EventLogMessage(client, 
+          eventArgs.EventLog.IsSuccessfully, DispatchType.Connection, message, DateTime.Now)),
+        new GeneralAgenda());
 
       Console.WriteLine(message);
     }
 
     private void HandleMessageReceived(object sender, MessageReceivedEventArgs eventArgs)
     {
-      string messageServer = $"Client '{eventArgs.Author}' send message '{eventArgs.Message}'.";
+      string messageServer = $"{eventArgs.Agenda.Type}:{eventArgs.Author}:{eventArgs.Message}";
 
       switch (eventArgs.Agenda.Type)
       {
@@ -109,9 +109,12 @@
             User_Id = user.Id
           };
           _dataBaseManager.CreateGeneralMessageAsync(generalMessage);
+          _wsServer.Send(
+            new MessageEventLogContainer(new EventLogMessage(eventArgs.Author, true, 
+              DispatchType.Message, messageServer, DateTime.Now)), eventArgs.Agenda);
           break;
         case ChannelType.Private:
-          var privateMessage = new PrivateMessage()
+          var privateMessage = new PrivateMessage
           {
             Message = eventArgs.Message,
             Time = eventArgs.Time,
@@ -119,6 +122,9 @@
             TargetId = _dataBaseManager.UserList.Find(u => u.Name == ((PrivateAgenda)eventArgs.Agenda).Target).Id
           };
           _dataBaseManager.CreatePrivateMessageAsync(privateMessage);
+          _wsServer.Send(
+            new MessageEventLogContainer(new EventLogMessage(eventArgs.Author, true,
+              DispatchType.Message, messageServer, DateTime.Now)), eventArgs.Agenda);
           break;
         case ChannelType.Group:
           break;

@@ -29,6 +29,10 @@
             <Setter Property="HorizontalGridLinesBrush" Value="DarkGray"/>
             <Setter Property="RowBackground" Value="LightGray"/>
             <Setter Property="AlternatingRowBackground" Value="White"/>
+            <Setter Property="CanUserResizeRows" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
         </Style>
 
         <Style x:Key="BorderStyle" TargetType="Border">
@@ -87,7 +91,8 @@
                   eventLog:ExpanderRowHeightBehavior.TargetRow="{Binding ElementName=ExpanderRow}"
                   IsExpanded="False">
             <DataGrid Name="logGrid" Style="{StaticResource DataGridStyle}"
-                      ItemsSource="{Binding Events}" ItemContainerStyle="{StaticResource ContainerStyle}">
+                      ItemsSource="{Binding Events}" 
+                      ItemContainerStyle="{StaticResource ContainerStyle}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Path=SenderName}"/>
                     <DataGridTextColumn Binding="{Binding Path=Type}"/>

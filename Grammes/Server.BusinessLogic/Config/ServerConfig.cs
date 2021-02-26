@@ -8,15 +8,16 @@
 
   using Newtonsoft.Json;
 
-  public class ServerConfig
+  public static class ServerConfig
   {
     #region Methods
 
-    public void SetAddress(IPEndPoint address)
+    public static void SetConfig(IPEndPoint address, uint timeOut)
     {
       try
       {
-        File.WriteAllText("server.conf.json", JsonConvert.SerializeObject(address, GetSettings()));
+        Config config = new Config(address, timeOut);
+        File.WriteAllText("server.conf.json", JsonConvert.SerializeObject(config, GetSettings()));
       }
       catch (Exception e)
       {
@@ -25,11 +26,11 @@
       }
     }
 
-    public IPEndPoint GetAddress()
+    public static Config GetConfig()
     {
       try
       {
-        return JsonConvert.DeserializeObject<IPEndPoint>(File.ReadAllText("server.conf.json"), GetSettings());
+        return JsonConvert.DeserializeObject<Config>(File.ReadAllText("server.conf.json"), GetSettings());
       }
       catch (Exception e)
       {
@@ -38,7 +39,7 @@
       }
     }
 
-    private JsonSerializerSettings GetSettings()
+    private static JsonSerializerSettings GetSettings()
     {
       var settings = new JsonSerializerSettings();
       settings.Converters.Add(new IPAddressConverter());

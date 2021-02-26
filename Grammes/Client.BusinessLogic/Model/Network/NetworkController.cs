@@ -19,6 +19,7 @@
     public event EventHandler<LoginEventArgs> Login;
     public event EventHandler<MessageReceivedEventArgs> MessageReceived;
     public event EventHandler<UpdateChannelEventArgs> UpdateChannel;
+    public event EventHandler<LogEventArgs> LogEvent;
 
     #endregion
 
@@ -32,6 +33,7 @@
         _client.LoginEvent -= HandleLogin;
         _client.MessageReceived -= HandleMessageReceived;
         _client.UpdateChannel -= HandleUpdateChannel;
+        _client.LogEvent -= HandleLog;
       }
 
       _client = new WsClient(name);
@@ -39,6 +41,8 @@
       _client.LoginEvent += HandleLogin;
       _client.MessageReceived += HandleMessageReceived;
       _client.UpdateChannel += HandleUpdateChannel;
+      _client.LogEvent += HandleLog;
+
       _client.ConnectAsync(address, port);
     }
 
@@ -70,6 +74,11 @@
     private void HandleUpdateChannel(object sender, UpdateChannelEventArgs eventArgs)
     {
       UpdateChannel?.Invoke(sender, eventArgs);
+    }
+
+    private void HandleLog(object sender, LogEventArgs eventArgs)
+    {
+      LogEvent?.Invoke(sender, eventArgs);
     }
 
     #endregion

@@ -12,6 +12,7 @@
     event EventHandler<LoginEventArgs> Login;
     event EventHandler<MessageReceivedEventArgs> MessageReceived;
     event EventHandler<UpdateChannelEventArgs> UpdateChannel;
+    event EventHandler<LogEventArgs> LogEvent;
 
     #endregion Events
 

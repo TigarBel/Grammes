@@ -45,6 +45,7 @@
     public event EventHandler<LoginEventArgs> LoginEvent;
     public event EventHandler<MessageReceivedEventArgs> MessageReceived;
     public event EventHandler<UpdateChannelEventArgs> UpdateChannel;
+    public event EventHandler<LogEventArgs> LogEvent; 
 
     #endregion
 
@@ -188,10 +189,13 @@
 
           break;
         case DispatchType.Message:
-          MessageReceived?.Invoke(this, MessageSorter.GetSortedEventMessage((JObject)container.Payload));
+          MessageReceived?.Invoke(this, MessageSorter.GetSortedMessage((JObject)container.Payload));
           break;
         case DispatchType.Channel:
           UpdateChannel?.Invoke(this, MessageSorter.GetSortedChannel((JObject)container.Payload));
+          break;
+        case DispatchType.EventLog:
+          LogEvent?.Invoke(this, MessageSorter.GetSortedEventMessage((JObject)container.Payload));
           break;
         default:
           throw new ArgumentOutOfRangeException();
@@ -205,7 +209,7 @@
 
     private void Close()
     {
-      var eventLog = new EventLogMessage(_login, true, DispatchType.Connection, "Close", DateTime.Now);
+      var eventLog = new EventLogMessage(_login, true, DispatchType.Connection, "", DateTime.Now);
       ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, false, eventLog));
     }
 

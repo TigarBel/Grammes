@@ -94,7 +94,8 @@
       {
         case ChannelType.General:
         {
-          foreach (KeyValuePair<Guid, WsConnection> connection in _connections.Where(author => author.Value.Login != message.Author))
+          foreach (KeyValuePair<Guid, WsConnection> connection in _connections
+            .Where(author => author.Value.Login != message.Author))
           {
             connection.Value.Send(messageRequest);
           }
@@ -103,7 +104,8 @@
         }
         case ChannelType.Private:
         {
-          _connections.Values.First(item => item.Login == ((PrivateAgenda)agenda).Target).Send(messageRequest);
+          _connections.Values.First(item => item.Login == ((PrivateAgenda)agenda).Target)
+            .Send(messageRequest);
           break;
         }
       }
@@ -161,7 +163,7 @@
           break;
 
         case DispatchType.Message:
-          MessageReceivedEventArgs message = MessageSorter.GetSortedEventMessage((JObject)container.Payload);
+          MessageReceivedEventArgs message = MessageSorter.GetSortedMessage((JObject)container.Payload);
           MessageReceived?.Invoke(this, message);
           Send(MessageSorter.GetSortedMessage(message.Author, message.Message, message.Agenda), message.Agenda);
           break;

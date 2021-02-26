@@ -109,11 +109,12 @@
         <Label Content="{Binding Channel}" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
 
-        <!--<ScrollViewer messagesViews:ScrollViewerExtensions.AlwaysScrollToEnd="True"/>-->
-        <ListBox Grid.Row="1" x:Name="MessageListBox"
+        <ScrollViewer Grid.Row="1" messagesViews:ScrollViewerExtensions.AlwaysScrollToEnd="True">
+            <ListBox  x:Name="MessageListBox"
                      ItemContainerStyle="{StaticResource ContainerStyle}"
                      ItemsSource="{Binding MessagesUserList}"
                      Style="{StaticResource ListBoxStyle}"/>
+        </ScrollViewer>
 
         <GridSplitter Grid.Row="2" HorizontalAlignment="Stretch" Height="5"/>
 

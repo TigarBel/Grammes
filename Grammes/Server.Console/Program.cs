@@ -1,8 +1,10 @@
 ﻿namespace Server.Console
 {
   using System;
+  using System.Net;
 
   using BusinessLogic;
+  using BusinessLogic.Config;
 
   internal class Program
   {
@@ -12,7 +14,8 @@
     {
       try
       {
-        var networkManager = new NetworkManager();
+        ServerConfig.SetConfig(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 64500), 1000);
+        var networkManager = new NetworkManager(ServerConfig.GetConfig().Address);
         networkManager.Start();
 
         Console.ReadKey(true);

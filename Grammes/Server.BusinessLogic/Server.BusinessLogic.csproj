@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Config\Address\IPAddressConverter.cs" />
     <Compile Include="Config\Address\IPEndPointConverter.cs" />
+    <Compile Include="Config\Config.cs" />
     <Compile Include="NetworkManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Config\ServerConfig.cs" />

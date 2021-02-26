@@ -89,13 +89,12 @@
       _connectionController.Login += HandleLogin;
       _connectionController.MessageReceived += HandleMessageReceived;
       _connectionController.UpdateChannel += HandleUpdateChannel;
+      _connectionController.LogEvent += HandleLogEvent;
       _connectionController.Connect(address, port, name);
     }
 
     private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs eventArgs)
     {
-      _eventAggregator.GetEvent<LogEvent>().Publish(eventArgs.EventLog);
-
       if (eventArgs.Connected)
       {
         _connectViewModel.IsAvailableButton = false;
@@ -116,13 +115,12 @@
         _connectionController.Login -= HandleLogin;
         _connectionController.MessageReceived -= HandleMessageReceived;
         _connectionController.UpdateChannel -= HandleUpdateChannel;
+        _connectionController.LogEvent -= HandleLogEvent;
       }
     }
 
     private void HandleLogin(object sender, LoginEventArgs eventArgs)
     {
-      _eventAggregator.GetEvent<LogEvent>().Publish(eventArgs.EventLog);
-
       if (eventArgs.Connected)
       {
         ContentPresenter = (int)ViewSelect.MainView;
@@ -150,16 +148,11 @@
 
     private void HandleMessageReceived(object sender, MessageReceivedEventArgs eventArgs)
     {
-       var eventLog = new EventLogMessage(eventArgs.Author, true, DispatchType.Message, 
-        $"{eventArgs.Agenda.Type}:{eventArgs.Message}", eventArgs.Time);
-       _eventAggregator.GetEvent<LogEvent>().Publish(eventLog);
       _eventAggregator.GetEvent<MessageReceivedEvent>().Publish(eventArgs);
     }
 
     private void HandleUpdateChannel(object sender, UpdateChannelEventArgs eventArgs)
     {
-      _eventAggregator.GetEvent<LogEvent>().Publish(eventArgs.EventLog);
-      string selfLogin = _connectViewModel.LoginName;
       string comeLogin = eventArgs.ChannelName;
 
       if (eventArgs.IsNewLogin)
@@ -198,6 +191,11 @@
     {
       if (_mainViewModel.MessagesViewModel.Channel.Name == comeLogin)
         _mainViewModel.UsersListViewModel.SelectChat = _mainViewModel.UsersListViewModel.General;
+    }
+
+    private void HandleLogEvent(object sender, LogEventArgs eventArgs)
+    {
+      _eventAggregator.GetEvent<LogEvent>().Publish(eventArgs.EventLog);
     }
 
     private void ExecuteDisconnect()
