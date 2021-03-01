@@ -56,6 +56,7 @@
         int ind = Keys.ToList().IndexOf(guid);
         _counterTime[Keys.ToList().IndexOf(guid)]--;
         await Task.Delay(1000);
+        if (!Keys.ToList().Contains(guid)) return;
       }
 
       _counterTime.RemoveAt(_counterTime[Keys.ToList().IndexOf(guid)]);
