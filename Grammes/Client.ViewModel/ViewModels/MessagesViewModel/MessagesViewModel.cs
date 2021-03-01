@@ -5,6 +5,7 @@
 
   using BusinessLogic.Model.Network;
 
+  using Common.DataBaseAndNetwork.EventLog;
   using Common.Network.ChannelsListModel;
   using Common.Network.Messages;
   using Common.Network.Messages.MessageReceived;
@@ -50,6 +51,8 @@
         {
           MessagesUserList.Add(new MessageViewModel(message)); //TODO List = List
         }
+
+        AutomaticAlert();
       }
     }
 
@@ -115,6 +118,7 @@
 
     private void Validate()
     {
+      AutomaticAlert();
       if (string.IsNullOrEmpty(TextMessage))
       {
         IsAvailable = false;
@@ -183,14 +187,18 @@
         case ChannelType.Private:
           _connectionController.Send(new PrivateMessageContainer(author, Channel.Name, message));
           break;
-        case ChannelType.Group:
-
-          break;
       }
 
       Channel.MessageList.Add(model);
       MessagesUserList.Add(new MessageViewModel(model));
       TextMessage = "";
+    }
+
+    private void AutomaticAlert()
+    {
+      const string ALERT = "Alert";
+      var message = new EventLogMessage(_loginName, true, DispatchType.EventLog, ALERT, DateTime.Now);
+      _connectionController.Send(new MessageEventLogContainer(message));
     }
 
     #endregion

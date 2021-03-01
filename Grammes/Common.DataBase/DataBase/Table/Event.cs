@@ -25,11 +25,9 @@
     [Required]
     public DateTime Time { get; set; }
 
-    public int User_Id { get; set; }
-
-    [ForeignKey("User_Id")]
-    public User User { get; set; }
-
+    [Required]
+    public string UserName { get; set; }
+    
     #endregion
   }
 }

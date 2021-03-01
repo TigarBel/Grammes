@@ -39,17 +39,21 @@
 
     public new bool TryAdd(TGuid guid, TWsConnection connection)
     {
+      if (!base.TryAdd(guid, connection))
+      {
+        return false;
+      }
+
+      _counterTime.Add(_timeLife);
       LifeStartAsync(guid, connection);
-      return base.TryAdd(guid, connection);
+      return true;
     }
 
     private async void LifeStartAsync(TGuid guid, TWsConnection connection)
     {
-      _counterTime.Add(_timeLife);
-      await Task.Delay(1000);
-
       while (_counterTime[Keys.ToList().IndexOf(guid)] != 0)
       {
+        int ind = Keys.ToList().IndexOf(guid);
         _counterTime[Keys.ToList().IndexOf(guid)]--;
         await Task.Delay(1000);
       }

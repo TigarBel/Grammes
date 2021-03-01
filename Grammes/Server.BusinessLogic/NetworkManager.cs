@@ -151,7 +151,7 @@
               IsSuccessfully = true,
               Message = messageEvent.Content.Text,
               Time = DateTime.Now,
-              User_Id = _dataBaseManager.UserList.Find(u => u.Name == messageEvent.Content.SenderName).Id,
+              UserName = messageEvent.Content.SenderName,
               Type = DispatchType.Connection
             });
         });
@@ -159,7 +159,7 @@
 
     private async void SendLoginInitAsync(ConnectionStateChangedEventArgs eventArgs)
     {
-      await Task.Delay(TimeSpan.FromSeconds(1.5));
+      await Task.Delay(1000);
       List<GeneralMessage> generalMessage = await _dataBaseManager.GetGeneralMessageAsync();
       List<PrivateMessage> privateMessages = await _dataBaseManager.GetPrivateMessageAsync();
       await Task.Run(
