@@ -15,7 +15,7 @@
       try
       {
         ServerConfig.SetConfig(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 64500), 1000);
-        var networkManager = new NetworkManager(ServerConfig.GetConfig().Address);
+        var networkManager = new NetworkManager(ServerConfig.GetConfig().Address, 25);
         networkManager.Start();
 
         Console.ReadKey(true);

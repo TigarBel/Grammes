@@ -1,10 +1,11 @@
 ﻿namespace Common.Network
 {
   using System;
-  using System.Collections.Concurrent;
   using System.Collections.Generic;
   using System.Linq;
   using System.Net;
+
+  using Client;
 
   using DataBaseAndNetwork.EventLog;
 
@@ -23,7 +24,7 @@
     #region Fields
 
     private readonly IPEndPoint _listenAddress;
-    private readonly ConcurrentDictionary<Guid, WsConnection> _connections;
+    private readonly Clients<Guid, WsConnection> _connections;
 
     private WebSocketServer _server;
 
@@ -48,11 +49,16 @@
 
     #region Constructors
 
-    public WsServer(IPEndPoint listenAddress)
+    /// <summary>
+    /// Server
+    /// </summary>
+    /// <param name="listenAddress">IP and Port</param>
+    /// <param name="timeout">Seconds</param>
+    public WsServer(IPEndPoint listenAddress, int timeout)
     {
       _name = Resources.ServerName;
       _listenAddress = listenAddress;
-      _connections = new ConcurrentDictionary<Guid, WsConnection>();
+      _connections = new Clients<Guid, WsConnection>(timeout);
 
       UserOfflineList = new List<string>();
       UserOnlineList = new List<string>();
@@ -117,6 +123,7 @@
         return;
       }
 
+      _connections.RefreshLifeClient(clientId);
       switch (container.Identifier)
       {
         case DispatchType.Login:

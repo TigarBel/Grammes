@@ -32,7 +32,8 @@
       {
         SetConfig();
         _startButton.Enabled = false;
-        _networkManager = new NetworkManager(ServerConfig.GetConfig().Address);
+        Config config = ServerConfig.GetConfig();
+        _networkManager = new NetworkManager(config.Address, Convert.ToInt32(config.Timeout));
         _networkManager.Start();
         _stopButton.Enabled = true;
       }

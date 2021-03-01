@@ -28,12 +28,17 @@
 
     #region Constructors
 
-    public NetworkManager(IPEndPoint address)
+    /// <summary>
+    /// Manager of server
+    /// </summary>
+    /// <param name="address">IP and Port</param>
+    /// <param name="timeout">Seconds life of client</param>
+    public NetworkManager(IPEndPoint address, int timeout)
     {
       _address = address;
       _dataBaseManager = new DataBaseManager();
 
-      _wsServer = new WsServer(_address);
+      _wsServer = new WsServer(_address, timeout);
       foreach (User user in _dataBaseManager.UserList)
       {
         _wsServer.UserOfflineList.Add(user.Name);
