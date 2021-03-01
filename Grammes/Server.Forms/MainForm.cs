@@ -1,11 +1,15 @@
 ﻿namespace Server.Forms
 {
   using System;
+  using System.Drawing;
   using System.Net;
+  using System.Text.RegularExpressions;
   using System.Windows.Forms;
 
   using BusinessLogic;
   using BusinessLogic.Config;
+
+  using Properties;
 
   public partial class MainForm : Form
   {
@@ -30,6 +34,10 @@
     {
       try
       {
+        _ipTextBox.Enabled = false;
+        _portTextBox.Enabled = false;
+        _timeoutTextBox.Enabled = false;
+
         SetConfig();
         _startButton.Enabled = false;
         Config config = ServerConfig.GetConfig();
@@ -46,6 +54,10 @@
     private void _stopButton_Click(object sender, EventArgs e)
     {
       try {
+        _ipTextBox.Enabled = true;
+        _portTextBox.Enabled = true;
+        _timeoutTextBox.Enabled = true;
+
         _startButton.Enabled = true;
         ((Button)sender).Enabled = false;
         _networkManager.Stop();
@@ -61,17 +73,49 @@
 
     private void _ipTextBox_TextChanged(object sender, EventArgs e)
     {
-
+      string text = ((TextBox)sender).Text;
+      CheckValue(new Regex(Resources.IpAddressUnacceptableSymbols, RegexOptions.IgnoreCase)
+        .IsMatch(text ?? string.Empty), (TextBox)sender);
     }
 
     private void _portTextBox_TextChanged(object sender, EventArgs e)
     {
-
+      try
+      {
+        int port = Convert.ToInt32(((TextBox)sender).Text);
+        CheckValue(port >= 0 && port < 65000, (TextBox)sender);
+      }
+      catch
+      {
+        ((TextBox)sender).BackColor = Color.PaleVioletRed;
+        _startButton.Enabled = false;
+      }
     }
 
     private void _timeoutTextBox_TextChanged(object sender, EventArgs e)
     {
+      try
+      {
+        int timeout = Convert.ToInt32(((TextBox)sender).Text);
+        CheckValue(timeout >= 1 && timeout < 900, (TextBox)sender);
+      }
+      catch
+      {
+        ((TextBox)sender).BackColor = Color.PaleVioletRed;
+        _startButton.Enabled = false;
+      }
+    }
 
+
+    private void CheckValue(bool rule, TextBox textBox)
+    {
+      if (rule) {
+        textBox.BackColor = Color.White;
+        _startButton.Enabled = true;
+      } else {
+        textBox.BackColor = Color.PaleVioletRed;
+        _startButton.Enabled = false;
+      }
     }
 
     private void SetConfig()
