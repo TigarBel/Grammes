@@ -10,14 +10,20 @@
 
     public uint Timeout { get; }
 
+    public string DataSource { get; }
+
+    public string Catalog { get; }
+
     #endregion
 
     #region Constructors
 
-    public Config(IPEndPoint address, uint timeOut)
+    public Config(IPEndPoint address, uint timeOut, string dataSource = @"(localdb)\MSSQLLocalDB", string catalog = "GrammesDb")
     {
       Address = address;
       Timeout = timeOut;
+      DataSource = dataSource;
+      Catalog = catalog;
     }
 
     #endregion

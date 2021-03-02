@@ -6,17 +6,19 @@
 
   using BusinessLogic.ServerConfig.Address;
 
+  using Common.DataBase;
+
   using Newtonsoft.Json;
 
   public static class ServerConfig
   {
     #region Methods
 
-    public static void SetConfig(IPEndPoint address, uint timeOut)
+    public static void SetConfig(IPEndPoint address, uint timeOut, string dataSource, string catalog)
     {
       try
       {
-        Config config = new Config(address, timeOut);
+        Config config = new Config(address, timeOut, dataSource, catalog);
         File.WriteAllText("server.conf.json", JsonConvert.SerializeObject(config, GetSettings()));
       }
       catch (Exception e)

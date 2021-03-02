@@ -8,10 +8,16 @@
   using DataBase.Repository;
   using DataBase.Table;
 
-  using DataBaseAndNetwork.EventLog;
-
   public class DataBaseManager
   {
+    #region Fields
+
+    private readonly string _dataSource;
+
+    private readonly string _catalog;
+
+    #endregion
+
     #region Properties
 
     public List<User> UserList { get; private set; }
@@ -20,8 +26,10 @@
 
     #region Constructors
 
-    public DataBaseManager()
+    public DataBaseManager(string dataSource, string catalog)
     {
+      _dataSource = dataSource;
+      _catalog = catalog;
       UserList = new List<User>();
       GetUserList();
     }
@@ -30,9 +38,14 @@
 
     #region Methods
 
+    private Unit GetUnit()
+    {
+      return new Unit(_dataSource, _catalog);
+    }
+
     public async void CreateUserAsync(User user)
     {
-      using (UserRepository db = new Unit().User)
+      using (UserRepository db = GetUnit().User)
       {
         await Task.Run(
           () =>
@@ -46,7 +59,7 @@
 
     public async void CreateGeneralMessageAsync(GeneralMessage generalMessage)
     {
-      using (GeneralMessageRepository db = new Unit().GeneralMessage)
+      using (GeneralMessageRepository db = GetUnit().GeneralMessage)
       {
         await Task.Run(
           () =>
@@ -59,7 +72,7 @@
 
     public async void CreatePrivateMessageAsync(PrivateMessage privateMessage)
     {
-      using (PrivateMessageRepository db = new Unit().PrivateMessage)
+      using (PrivateMessageRepository db = GetUnit().PrivateMessage)
       {
         await Task.Run(
           () =>
@@ -70,10 +83,10 @@
       }
     }
 
-
     public async void CreateEventAsync(Event localEvent)
     {
-      using (EventRepository db = new Unit().Event) {
+      using (EventRepository db = GetUnit().Event)
+      {
         await Task.Run(
           () =>
           {
@@ -86,7 +99,7 @@
     public async Task<User> GetUserAsync(int id)
     {
       User returnUser = null;
-      using (UserRepository db = new Unit().User)
+      using (UserRepository db = GetUnit().User)
       {
         await Task.Run(
           () =>
@@ -102,14 +115,15 @@
 
     public async Task<List<GeneralMessage>> GetGeneralMessageAsync()
     {
-      List<GeneralMessage> returnGeneralMessage = new List<GeneralMessage>();
-      using (var db = new Unit().GeneralMessage) {
+      var returnGeneralMessage = new List<GeneralMessage>();
+      using (GeneralMessageRepository db = GetUnit().GeneralMessage)
+      {
         await Task.Run(
           () =>
           {
-            foreach (var message in db.GetAll())
+            foreach (GeneralMessage message in db.GetAll())
             {
-              db.GrammesDbContext.Entry(message).Reference(u=>u.User).Load();
+              db.GrammesDbContext.Entry(message).Reference(u => u.User).Load();
               returnGeneralMessage.Add(message);
             }
           });
@@ -120,12 +134,14 @@
 
     public async Task<List<PrivateMessage>> GetPrivateMessageAsync()
     {
-      List<PrivateMessage> returnPrivateMessage = new List<PrivateMessage>();
-      using (var db = new Unit().PrivateMessage) {
+      var returnPrivateMessage = new List<PrivateMessage>();
+      using (PrivateMessageRepository db = GetUnit().PrivateMessage)
+      {
         await Task.Run(
           () =>
           {
-            foreach (var message in db.GetAll()) {
+            foreach (PrivateMessage message in db.GetAll())
+            {
               db.GrammesDbContext.Entry(message).Reference(u => u.Sender).Load();
               db.GrammesDbContext.Entry(message).Reference(u => u.Target).Load();
               returnPrivateMessage.Add(message);
@@ -138,7 +154,7 @@
 
     private void GetUserList()
     {
-      using (UserRepository db = new Unit().User)
+      using (UserRepository db = GetUnit().User)
       {
         UserList = db.GetAll().ToList();
       }

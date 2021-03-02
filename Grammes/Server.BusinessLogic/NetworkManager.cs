@@ -31,9 +31,10 @@
     /// </summary>
     /// <param name = "address">IP and Port</param>
     /// <param name = "timeout">Seconds life of client</param>
-    public NetworkManager(IPEndPoint address, int timeout)
+    /// <param name = "dataBaseManager">Base manager</param>
+    public NetworkManager(IPEndPoint address, int timeout, DataBaseManager dataBaseManager)
     {
-      _dataBaseManager = new DataBaseManager();
+      _dataBaseManager = dataBaseManager;
 
       _wsServer = new WsServer(address, timeout);
       foreach (User user in _dataBaseManager.UserList)

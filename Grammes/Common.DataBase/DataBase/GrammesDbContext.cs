@@ -17,9 +17,10 @@
 
     #region Constructors
 
-    public GrammesDbContext(string context)
-      : base(context)
+    public GrammesDbContext(string connectionString)
+      : base(connectionString)
     {
+
     }
 
     #endregion
@@ -31,8 +32,7 @@
       modelBuilder.Entity<User>().HasIndex(i => i.Name).IsUnique();
       modelBuilder.Entity<Group>().HasIndex(i => i.Name).IsUnique();
 
-      modelBuilder.Entity<User>().HasMany(t => t.PrivateMessages)
-        .WithRequired(a => a.Target).WillCascadeOnDelete(false);
+      modelBuilder.Entity<User>().HasMany(t => t.PrivateMessages).WithRequired(a => a.Target).WillCascadeOnDelete(false);
     }
 
     #endregion
