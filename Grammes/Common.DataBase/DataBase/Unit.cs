@@ -26,7 +26,7 @@
 
     public Unit()
     {
-      var context = new GrammesDbContext();
+      var context = new GrammesDbContext("DbConnection");
       User = new UserRepository(context);
       GeneralMessage = new GeneralMessageRepository(context);
       PrivateMessage = new PrivateMessageRepository(context);

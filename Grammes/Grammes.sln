@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.Forms", "Server.Form
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.DataBaseAndNetwork", "Common.DataBaseAndNetwork\Common.DataBaseAndNetwork.csproj", "{8F842FC6-2CC1-4A3E-BD89-37677550A28C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.Service", "Server.Service\Server.Service.csproj", "{3A982BC8-52A4-4454-A4D0-D5595D9D2180}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{8F842FC6-2CC1-4A3E-BD89-37677550A28C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F842FC6-2CC1-4A3E-BD89-37677550A28C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F842FC6-2CC1-4A3E-BD89-37677550A28C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A982BC8-52A4-4454-A4D0-D5595D9D2180}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A982BC8-52A4-4454-A4D0-D5595D9D2180}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A982BC8-52A4-4454-A4D0-D5595D9D2180}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A982BC8-52A4-4454-A4D0-D5595D9D2180}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,6 +89,7 @@ Global
 		{869071E2-902E-4457-9BC2-70E587DD315F} = {FADC5A1C-84DA-429F-94A3-E21C9E69D6FE}
 		{53F6B56B-92C1-498F-B575-C27197AD1C19} = {9842CD36-EF68-4542-B7BE-8C429CDFD949}
 		{8F842FC6-2CC1-4A3E-BD89-37677550A28C} = {FADC5A1C-84DA-429F-94A3-E21C9E69D6FE}
+		{3A982BC8-52A4-4454-A4D0-D5595D9D2180} = {9842CD36-EF68-4542-B7BE-8C429CDFD949}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1E51019C-67AD-4606-B9DA-E4472C1456F4}

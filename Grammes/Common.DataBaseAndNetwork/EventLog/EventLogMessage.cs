@@ -20,9 +20,9 @@
 
     #region Constructors
 
-    public EventLogMessage(string sender, bool isSuccessfully, DispatchType type, string text, DateTime time)
+    public EventLogMessage(string senderName, bool isSuccessfully, DispatchType type, string text, DateTime time)
     {
-      SenderName = sender;
+      SenderName = senderName;
       IsSuccessfully = isSuccessfully;
       Type = type;
       Text = text;

@@ -18,8 +18,6 @@
   {
     #region Fields
 
-    private readonly IPEndPoint _address;
-
     private readonly WsServer _wsServer;
 
     private readonly DataBaseManager _dataBaseManager;
@@ -35,10 +33,9 @@
     /// <param name="timeout">Seconds life of client</param>
     public NetworkManager(IPEndPoint address, int timeout)
     {
-      _address = address;
       _dataBaseManager = new DataBaseManager();
 
-      _wsServer = new WsServer(_address, timeout);
+      _wsServer = new WsServer(address, timeout);
       foreach (User user in _dataBaseManager.UserList)
       {
         _wsServer.UserOfflineList.Add(user.Name);
@@ -54,7 +51,6 @@
 
     public void Start()
     {
-      Console.WriteLine($"WebSocketServer: {_address.Address}:{_address.Port}");
       _wsServer.Start();
     }
 
@@ -93,8 +89,6 @@
       EventActionAsync(
         new MessageEventLogContainer(new EventLogMessage(client, eventArgs.EventLog.IsSuccessfully, DispatchType.Connection, message, DateTime.Now)),
         new GeneralAgenda());
-
-      Console.WriteLine(message);
     }
 
     private void HandleMessageReceived(object sender, MessageReceivedEventArgs eventArgs)
@@ -134,8 +128,6 @@
         default:
           throw new ArgumentOutOfRangeException();
       }
-
-      Console.WriteLine(messageServer);
     }
 
     private async void EventActionAsync(MessageEventLogContainer messageEvent, BaseAgenda agenda)

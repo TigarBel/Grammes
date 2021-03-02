@@ -1,6 +1,5 @@
 ﻿namespace Client.ViewModel.ViewModels
 {
-  using System;
   using System.Collections.Generic;
   using System.Linq;
   using System.Net;
@@ -12,7 +11,6 @@
 
   using Leaf;
 
-  using Prism.Commands;
   using Prism.Events;
 
   using Properties;
@@ -143,7 +141,8 @@
 
       _errorsContainer.ClearErrors(() => IpAddress);
 
-      if (!new Regex(Resources.IpAddressUnacceptableSymbols, RegexOptions.IgnoreCase).IsMatch(IpAddress ?? string.Empty)) {
+      if (!new Regex(Resources.IpAddressUnacceptableSymbols, RegexOptions.IgnoreCase).IsMatch(IpAddress ?? string.Empty))
+      {
         _errorsContainer.SetErrors(() => IpAddress, new[] { "IP address not is parsing [127.0.0.1]" });
       }
 
@@ -155,7 +154,7 @@
       }
 
       _errorsContainer.ClearErrors(() => LoginName);
-      
+
       if (LoginName?.Length > 16)
       {
         _errorsContainer.SetErrors(() => LoginName, new[] { "Username up to 16 characters" });

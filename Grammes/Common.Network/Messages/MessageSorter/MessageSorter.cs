@@ -69,11 +69,11 @@
         throw new ArgumentException("Event log message don't sorted!");
       }
 
-      string sender = message.Last.First.First.First.Value<string>();
+      //string sender = message.Last.First.First.First.Value<string>();
 
       return new LogEventArgs(
         new EventLogMessage(
-          sender,
+          messageResponse.Content.SenderName,
           messageResponse.Content.IsSuccessfully,
           messageResponse.Content.Type,
           messageResponse.Content.Text,
@@ -83,15 +83,3 @@
     #endregion
   }
 }
-/*
-      if (message.ToObject(typeof(MessageEventLogContainer)) is MessageEventLogContainer messageResponse) {
-        string sender = message.Last.First.First.First.Value<string>();
-
-        return new LogEventArgs(
-          new EventLogMessage(
-            sender,
-            messageResponse.Content.IsSuccessfully,
-            messageResponse.Content.Type,
-            messageResponse.Content.Text,
-            messageResponse.Content.Time));
-      }*/
