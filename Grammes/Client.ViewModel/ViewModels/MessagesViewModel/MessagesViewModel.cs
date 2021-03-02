@@ -197,8 +197,15 @@
     private void AutomaticAlert()
     {
       const string ALERT = "Alert";
-      var message = new EventLogMessage(_loginName, true, DispatchType.EventLog, ALERT, DateTime.Now);
-      _connectionController.Send(new MessageEventLogContainer(message));
+      var eventLogMessage = new EventLogMessage
+      {
+        IsSuccessfully = true,
+        SenderName = _loginName,
+        Text = ALERT,
+        Time = DateTime.Now,
+        Type = DispatchType.EventLog
+      };
+      _connectionController.Send(new MessageEventLogContainer(eventLogMessage));
     }
 
     #endregion

@@ -153,18 +153,16 @@
               connection.Login = loginRequest.Content;
               stage = DispatchType.Login;
             }
+            var eventLogMessage = new EventLogMessage
+            {
+              IsSuccessfully = loginResponse.Content.Result == ResponseStatus.Ok == isEnter,
+              SenderName = _name,
+              Text = loginResponse.Content.Reason,
+              Time = DateTime.Now,
+              Type = stage
+            };
 
-            ConnectionStateChanged?.Invoke(
-              this,
-              new ConnectionStateChangedEventArgs(
-                connection.Login,
-                true,
-                new EventLogMessage(
-                  _name,
-                  loginResponse.Content.Result == ResponseStatus.Ok == isEnter,
-                  stage,
-                  loginResponse.Content.Reason,
-                  DateTime.Now)));
+            ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(connection.Login, true, eventLogMessage));
           }
 
           break;
@@ -195,13 +193,16 @@
         UserOfflineList.Add(connection.Login);
         UserOfflineList.Sort();
       }
+      var eventLogMessage = new EventLogMessage
+      {
+        IsSuccessfully = isExit,
+        SenderName = connection.Login,
+        Text = "Disconnect",
+        Time = DateTime.Now,
+        Type = DispatchType.EventLog
+      };
 
-      ConnectionStateChanged?.Invoke(
-        this,
-        new ConnectionStateChangedEventArgs(
-          connection.Login,
-          false,
-          new EventLogMessage(connection.Login, isExit, DispatchType.EventLog, "Disconnect", DateTime.Now)));
+      ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(connection.Login, false, eventLogMessage));
     }
 
     #endregion

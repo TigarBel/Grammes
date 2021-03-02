@@ -55,10 +55,19 @@
       }
 
       string text = messageResponse.Content.IsConnect ? $"{messageResponse.Author} connect" : $"{messageResponse.Author} disconnect";
+      var eventLogMessage = new EventLogMessage
+      {
+        IsSuccessfully = true,
+        SenderName = messageResponse.Author,
+        Text = text,
+        Time = DateTime.Now,
+        Type = DispatchType.Channel
+      };
+
       return new UpdateChannelEventArgs(
         messageResponse.Content.Login,
         messageResponse.Content.IsConnect,
-        new EventLogMessage(messageResponse.Author, true, DispatchType.Channel, text, DateTime.Now),
+        eventLogMessage,
         messageResponse.Content.IsRegistration);
     }
 
@@ -69,15 +78,16 @@
         throw new ArgumentException("Event log message don't sorted!");
       }
 
-      //string sender = message.Last.First.First.First.Value<string>();
+      var eventLogMessage = new EventLogMessage
+      {
+        IsSuccessfully = messageResponse.Content.IsSuccessfully,
+        SenderName = messageResponse.Content.SenderName,
+        Text = messageResponse.Content.Text,
+        Time = messageResponse.Content.Time,
+        Type = messageResponse.Content.Type
+      };
 
-      return new LogEventArgs(
-        new EventLogMessage(
-          messageResponse.Content.SenderName,
-          messageResponse.Content.IsSuccessfully,
-          messageResponse.Content.Type,
-          messageResponse.Content.Text,
-          messageResponse.Content.Time));
+      return new LogEventArgs(eventLogMessage);
     }
 
     #endregion

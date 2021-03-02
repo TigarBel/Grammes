@@ -4,30 +4,17 @@
 
   public class EventLogMessage
   {
-    #region Properties
+    #region Fields
 
-    public string SenderName { get; }
+    public string SenderName;
 
-    public bool IsSuccessfully { get; set; }
+    public bool IsSuccessfully;
 
-    public DispatchType Type { get; }
+    public DispatchType Type;
 
-    public string Text { get; set; }
+    public string Text;
 
-    public DateTime Time { get; }
-
-    #endregion
-
-    #region Constructors
-
-    public EventLogMessage(string senderName, bool isSuccessfully, DispatchType type, string text, DateTime time)
-    {
-      SenderName = senderName;
-      IsSuccessfully = isSuccessfully;
-      Type = type;
-      Text = text;
-      Time = time;
-    }
+    public DateTime Time;
 
     #endregion
   }

@@ -114,7 +114,14 @@
       Thread.Sleep(CONNECT_WAIT_TIME);
       if (!IsConnected)
       {
-        var eventLog = new EventLogMessage(_login, false, DispatchType.Connection, "No connection", DateTime.Now);
+        var eventLog = new EventLogMessage()
+        {
+          IsSuccessfully = false,
+          SenderName = _login,
+          Text = "No connection",
+          Time = DateTime.Now,
+          Type = DispatchType.Connection
+        };
         ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, false, eventLog));
       }
     }
@@ -135,7 +142,14 @@
       if (!completed)
       {
         Disconnect();
-        var eventLog = new EventLogMessage(_login, false, DispatchType.Message, "Doesn't completed", DateTime.Now);
+        var eventLog = new EventLogMessage()
+        {
+          IsSuccessfully = false,
+          SenderName = _login,
+          Text = "Doesn't completed",
+          Time = DateTime.Now,
+          Type = DispatchType.Message
+        };
         ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, false, eventLog));
         return;
       }
@@ -177,7 +191,14 @@
         case DispatchType.Login:
           if (((JObject)container.Payload).ToObject(typeof(LoginResponseContainer)) is LoginResponseContainer loginResponse)
           {
-            var eventLog = new EventLogMessage(_login, true, DispatchType.Login, "Login", DateTime.Now);
+            var eventLog = new EventLogMessage()
+            {
+              IsSuccessfully = true,
+              SenderName = _login,
+              Text = "Login",
+              Time = DateTime.Now,
+              Type = DispatchType.Login
+            };
             if (loginResponse.Content.Result == ResponseStatus.Failure)
             {
               eventLog.IsSuccessfully = false;
@@ -217,13 +238,27 @@
 
     private void Close()
     {
-      var eventLog = new EventLogMessage(_login, true, DispatchType.Connection, "", DateTime.Now);
+      var eventLog = new EventLogMessage()
+      {
+        IsSuccessfully = true,
+        SenderName = _login,
+        Text = "",
+        Time = DateTime.Now,
+        Type = DispatchType.Connection
+      };
       ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, false, eventLog));
     }
 
     private void OnOpen(object sender, EventArgs e)
     {
-      var eventLog = new EventLogMessage(_login, true, DispatchType.Connection, "Open", DateTime.Now);
+      var eventLog = new EventLogMessage()
+      {
+        IsSuccessfully = true,
+        SenderName = _login,
+        Text = "Open",
+        Time = DateTime.Now,
+        Type = DispatchType.Connection
+      };
       ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, true, eventLog));
       Login();
     }

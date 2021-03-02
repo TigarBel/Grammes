@@ -29,8 +29,8 @@
     /// <summary>
     /// Manager of server
     /// </summary>
-    /// <param name="address">IP and Port</param>
-    /// <param name="timeout">Seconds life of client</param>
+    /// <param name = "address">IP and Port</param>
+    /// <param name = "timeout">Seconds life of client</param>
     public NetworkManager(IPEndPoint address, int timeout)
     {
       _dataBaseManager = new DataBaseManager();
@@ -86,14 +86,28 @@
 
       string clientState = eventArgs.Connected ? "connect" : "disconnect";
       string message = $"Client '{client}' {clientState}.";
-      EventActionAsync(
-        new MessageEventLogContainer(new EventLogMessage(client, eventArgs.EventLog.IsSuccessfully, DispatchType.Connection, message, DateTime.Now)),
-        new GeneralAgenda());
+      var eventLogMessage = new EventLogMessage
+      {
+        IsSuccessfully = eventArgs.EventLog.IsSuccessfully,
+        SenderName = client,
+        Text = message,
+        Time = DateTime.Now,
+        Type = DispatchType.Connection
+      };
+      EventActionAsync(new MessageEventLogContainer(eventLogMessage), new GeneralAgenda());
     }
 
     private void HandleMessageReceived(object sender, MessageReceivedEventArgs eventArgs)
     {
       string messageServer = $"{eventArgs.Agenda.Type}:{eventArgs.Author}:{eventArgs.Message}";
+      var eventLogMessage = new EventLogMessage
+      {
+        IsSuccessfully = true,
+        SenderName = eventArgs.Author,
+        Text = messageServer,
+        Time = DateTime.Now,
+        Type = DispatchType.Message
+      };
 
       switch (eventArgs.Agenda.Type)
       {
@@ -106,9 +120,7 @@
             User_Id = user.Id
           };
           _dataBaseManager.CreateGeneralMessageAsync(generalMessage);
-          EventActionAsync(
-            new MessageEventLogContainer(new EventLogMessage(eventArgs.Author, true, DispatchType.Message, messageServer, DateTime.Now)),
-            eventArgs.Agenda);
+          EventActionAsync(new MessageEventLogContainer(eventLogMessage), eventArgs.Agenda);
           break;
         case ChannelType.Private:
           var privateMessage = new PrivateMessage
@@ -119,9 +131,7 @@
             TargetId = _dataBaseManager.UserList.Find(u => u.Name == ((PrivateAgenda)eventArgs.Agenda).Target).Id
           };
           _dataBaseManager.CreatePrivateMessageAsync(privateMessage);
-          EventActionAsync(
-            new MessageEventLogContainer(new EventLogMessage(eventArgs.Author, true, DispatchType.Message, messageServer, DateTime.Now)),
-            eventArgs.Agenda);
+          EventActionAsync(new MessageEventLogContainer(eventLogMessage), eventArgs.Agenda);
           break;
         case ChannelType.Group:
           break;
@@ -138,7 +148,7 @@
         {
           _wsServer.Send(messageEvent, agenda);
           _dataBaseManager.CreateEventAsync(
-            new Event()
+            new Event
             {
               IsSuccessfully = true,
               Message = messageEvent.Content.Text,
