@@ -33,7 +33,7 @@
       containerRegistry.RegisterSingleton<MessagesViewModel>();
       containerRegistry.RegisterSingleton<UsersListViewModel>();
 
-      containerRegistry.RegisterSingleton<IConnectionController, NetworkController>();
+      containerRegistry.RegisterSingleton<ICurrentConnection, NetworkController>();
     }
 
     protected override void ConfigureViewModelLocator()

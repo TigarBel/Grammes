@@ -136,7 +136,7 @@
             if (_connections.Values.Any(item => item.Login == loginRequest.Content))
             {
               loginResponse = new LoginResponseContainer(
-                new Response(ResponseStatus.Failure, $"Client with name '{loginRequest.Content}' yet connect."),
+                new Response(ResponseType.Failure, $"Client with name '{loginRequest.Content}' yet connect."),
                 null,
                 null,
                 null);
@@ -149,13 +149,13 @@
               UserOnlineList.Add(loginRequest.Content);
               UserOnlineList.Sort();
               isEnter = UserOfflineList.Remove(loginRequest.Content);
-              loginResponse = new LoginResponseContainer(new Response(ResponseStatus.Ok, "Connected"), null, null, null);
+              loginResponse = new LoginResponseContainer(new Response(ResponseType.Ok, "Connected"), null, null, null);
               connection.Login = loginRequest.Content;
               stage = DispatchType.Login;
             }
             var eventLogMessage = new EventLogMessage
             {
-              IsSuccessfully = loginResponse.Content.Result == ResponseStatus.Ok == isEnter,
+              IsSuccessfully = loginResponse.Content.Result == ResponseType.Ok == isEnter,
               SenderName = _name,
               Text = loginResponse.Content.Reason,
               Time = DateTime.Now,

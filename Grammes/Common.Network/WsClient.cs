@@ -19,7 +19,7 @@
   {
     #region Constants
 
-    private const int CONNECT_WAIT_TIME = 2000;
+    private const int CONNECT_WAIT_TIME = 1100;
 
     #endregion
 
@@ -199,7 +199,7 @@
               Time = DateTime.Now,
               Type = DispatchType.Login
             };
-            if (loginResponse.Content.Result == ResponseStatus.Failure)
+            if (loginResponse.Content.Result == ResponseType.Failure)
             {
               eventLog.IsSuccessfully = false;
               eventLog.Text = loginResponse.Content.Reason;

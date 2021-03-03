@@ -18,7 +18,7 @@
 
     #region Constructors
 
-    public Config(IPEndPoint address, uint timeOut, string dataSource = @"(localdb)\MSSQLLocalDB", string catalog = "GrammesDb")
+    public Config(IPEndPoint address, uint timeOut, string dataSource, string catalog)
     {
       Address = address;
       Timeout = timeOut;

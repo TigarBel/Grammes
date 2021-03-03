@@ -6,6 +6,7 @@
   using BusinessLogic.Model.Network;
 
   using Common.DataBaseAndNetwork.EventLog;
+  using Common.Network;
   using Common.Network.ChannelsListModel;
   using Common.Network.Messages;
   using Common.Network.Messages.MessageReceived;
@@ -34,7 +35,7 @@
 
     private bool _isAvailable;
 
-    private readonly IConnectionController _connectionController;
+    private readonly ICurrentConnection _currentConnection;
 
     #endregion
 
@@ -84,13 +85,13 @@
 
     #region Constructors
 
-    public MessagesViewModel(IEventAggregator eventAggregator, IConnectionController connectionController)
+    public MessagesViewModel(IEventAggregator eventAggregator, ICurrentConnection currentConnection)
     {
       MessagesUserList = new AsyncObservableCollection<MessageViewModel>();
       eventAggregator.GetEvent<ChannelNameEvent>().Subscribe(SetChannel);
       eventAggregator.GetEvent<LoginNameEvent>().Subscribe(SetClient);
       eventAggregator.GetEvent<MessageReceivedEvent>().Subscribe(AddMessage);
-      _connectionController = connectionController;
+      _currentConnection = currentConnection;
       CommandSendMessage = new DelegateCommand(Send);
     }
 
@@ -182,10 +183,10 @@
       switch (Channel.Type)
       {
         case ChannelType.General:
-          _connectionController.Send(new GeneralMessageContainer(author, message));
+          _currentConnection.Send(new GeneralMessageContainer(author, message));
           break;
         case ChannelType.Private:
-          _connectionController.Send(new PrivateMessageContainer(author, Channel.Name, message));
+          _currentConnection.Send(new PrivateMessageContainer(author, Channel.Name, message));
           break;
       }
 
@@ -205,7 +206,7 @@
         Time = DateTime.Now,
         Type = DispatchType.EventLog
       };
-      _connectionController.Send(new MessageEventLogContainer(eventLogMessage));
+      _currentConnection.Send(new MessageEventLogContainer(eventLogMessage));
     }
 
     #endregion

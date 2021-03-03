@@ -5,11 +5,11 @@
   using Common.Network;
   using Common.Network.Messages;
 
-  public class NetworkController : ICurrentConnection
+  public class WsNetworkController : Controller, IConnectionController
   {
-    #region Properties
+    #region Fields
 
-    public IConnectionController ConnectionController { get; private set; }
+    private WsClient _client;
 
     #endregion
 
@@ -23,38 +23,46 @@
 
     #endregion
 
+    #region Constructors
+
+    public WsNetworkController()
+      : base(InterfaceType.WebSocket)
+    {
+    }
+
+    #endregion
+
     #region Methods
 
-    public void Connect(string address, int port, string login, InterfaceType interfaceType)
+    public void Connect(string address, int port, string name)
     {
-      ConnectionController = null;
-      switch (interfaceType)
+      if (_client != null)
       {
-        case InterfaceType.WebSocket:
-          ConnectionController = new WsNetworkController();
-          break;
-        case InterfaceType.TcpSocket:
-          break;
-        default:
-          throw new ArgumentOutOfRangeException(nameof(interfaceType), interfaceType, null);
+        _client.ConnectionStateChanged -= HandleConnectionStateChanged;
+        _client.LoginEvent -= HandleLogin;
+        _client.MessageReceived -= HandleMessageReceived;
+        _client.UpdateChannel -= HandleUpdateChannel;
+        _client.LogEvent -= HandleLog;
       }
 
-      ConnectionController.Connect(address, port, login);
-      ConnectionController.ConnectionStateChanged += HandleConnectionStateChanged;
-      ConnectionController.Login += HandleLogin;
-      ConnectionController.MessageReceived += HandleMessageReceived;
-      ConnectionController.UpdateChannel += HandleUpdateChannel;
-      ConnectionController.LogEvent += HandleLog;
+      _client = new WsClient(name);
+      _client.ConnectionStateChanged += HandleConnectionStateChanged;
+      _client.LoginEvent += HandleLogin;
+      _client.MessageReceived += HandleMessageReceived;
+      _client.UpdateChannel += HandleUpdateChannel;
+      _client.LogEvent += HandleLog;
+
+      _client.ConnectAsync(address, port);
     }
 
     public void Disconnect()
     {
-      ConnectionController.Disconnect();
+      _client.Disconnect();
     }
 
     public void Send<TClass>(BaseContainer<TClass> message)
     {
-      ConnectionController.Send(message);
+      _client.Send(message);
     }
 
     private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs eventArgs)

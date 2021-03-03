@@ -1,8 +1,8 @@
-﻿namespace Client.BusinessLogic.Model.Network
+﻿namespace Common.Network
 {
   using System;
 
-  using global::Common.Network.Messages;
+  using Messages;
 
   public interface IConnectionController
   {

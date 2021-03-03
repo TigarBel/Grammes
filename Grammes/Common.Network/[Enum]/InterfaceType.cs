@@ -1,4 +1,4 @@
-﻿namespace Client.BusinessLogic.Model.Common
+﻿namespace Common.Network
 {
   public enum InterfaceType
   {

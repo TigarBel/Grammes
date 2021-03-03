@@ -54,7 +54,7 @@ namespace Server.Forms
       // _portTextBox
       // 
       this._portTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this._portTextBox.Location = new System.Drawing.Point(142, 47);
+      this._portTextBox.Location = new System.Drawing.Point(142, 41);
       this._portTextBox.Name = "_portTextBox";
       this._portTextBox.Size = new System.Drawing.Size(174, 23);
       this._portTextBox.TabIndex = 1;
@@ -63,7 +63,7 @@ namespace Server.Forms
       // _timeoutTextBox
       // 
       this._timeoutTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this._timeoutTextBox.Location = new System.Drawing.Point(142, 82);
+      this._timeoutTextBox.Location = new System.Drawing.Point(142, 70);
       this._timeoutTextBox.Name = "_timeoutTextBox";
       this._timeoutTextBox.Size = new System.Drawing.Size(174, 23);
       this._timeoutTextBox.TabIndex = 2;
@@ -83,7 +83,7 @@ namespace Server.Forms
       // 
       this.label2.AutoSize = true;
       this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.label2.Location = new System.Drawing.Point(59, 50);
+      this.label2.Location = new System.Drawing.Point(59, 44);
       this.label2.Name = "label2";
       this.label2.Size = new System.Drawing.Size(34, 17);
       this.label2.TabIndex = 4;
@@ -93,7 +93,7 @@ namespace Server.Forms
       // 
       this.label3.AutoSize = true;
       this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.label3.Location = new System.Drawing.Point(59, 87);
+      this.label3.Location = new System.Drawing.Point(59, 75);
       this.label3.Name = "label3";
       this.label3.Size = new System.Drawing.Size(59, 17);
       this.label3.TabIndex = 5;
@@ -126,17 +126,18 @@ namespace Server.Forms
       // 
       this.label4.AutoSize = true;
       this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.label4.Location = new System.Drawing.Point(59, 157);
+      this.label4.Location = new System.Drawing.Point(59, 133);
       this.label4.Name = "label4";
       this.label4.Size = new System.Drawing.Size(77, 17);
       this.label4.TabIndex = 11;
       this.label4.Text = "DB catalog";
+      this.label4.Click += new System.EventHandler(this.label4_Click);
       // 
       // label5
       // 
       this.label5.AutoSize = true;
       this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.label5.Location = new System.Drawing.Point(59, 120);
+      this.label5.Location = new System.Drawing.Point(59, 102);
       this.label5.Name = "label5";
       this.label5.Size = new System.Drawing.Size(74, 17);
       this.label5.TabIndex = 10;
@@ -145,7 +146,7 @@ namespace Server.Forms
       // _dbCatalogTextBox
       // 
       this._dbCatalogTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this._dbCatalogTextBox.Location = new System.Drawing.Point(142, 152);
+      this._dbCatalogTextBox.Location = new System.Drawing.Point(142, 128);
       this._dbCatalogTextBox.Name = "_dbCatalogTextBox";
       this._dbCatalogTextBox.Size = new System.Drawing.Size(174, 23);
       this._dbCatalogTextBox.TabIndex = 9;
@@ -154,7 +155,7 @@ namespace Server.Forms
       // _dbSourceTextBox
       // 
       this._dbSourceTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this._dbSourceTextBox.Location = new System.Drawing.Point(142, 117);
+      this._dbSourceTextBox.Location = new System.Drawing.Point(142, 99);
       this._dbSourceTextBox.Name = "_dbSourceTextBox";
       this._dbSourceTextBox.Size = new System.Drawing.Size(174, 23);
       this._dbSourceTextBox.TabIndex = 8;

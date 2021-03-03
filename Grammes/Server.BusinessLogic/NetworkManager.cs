@@ -171,7 +171,7 @@
           User user = _dataBaseManager.UserList.Find(u => u.Name == eventArgs.ClientName);
           _wsServer.Send(
             new LoginResponseContainer(
-              new Response(ResponseStatus.Ok, eventArgs.EventLog.Text),
+              new Response(ResponseType.Ok, eventArgs.EventLog.Text),
               Collector.CollectGeneralChannel(user.Id, generalMessage),
               Collector.CollectOnlineChannel(user, _wsServer.UserOnlineList, privateMessages),
               Collector.CollectOfflineChannel(user, _wsServer.UserOfflineList, privateMessages)),

@@ -1,10 +1,11 @@
 ﻿namespace Common.Network.Messages
 {
+
   public class Response
   {
     #region Properties
 
-    public ResponseStatus Result { get; }
+    public ResponseType Result { get; }
 
     public string Reason { get; }
 
@@ -12,7 +13,7 @@
 
     #region Constructors
 
-    public Response(ResponseStatus result, string reason)
+    public Response(ResponseType result, string reason)
     {
       Result = result;
       Reason = reason;

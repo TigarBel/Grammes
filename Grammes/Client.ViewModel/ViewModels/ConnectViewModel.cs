@@ -5,7 +5,7 @@
   using System.Net;
   using System.Text.RegularExpressions;
 
-  using BusinessLogic.Model.Common;
+  using Common.Network;
 
   using EventAggregator;
 
@@ -25,12 +25,12 @@
 
     private int _port;
 
-    private string _selectTypeInterface;
+    private InterfaceType _selectTypeInterface;
 
-    private List<string> _typeInterfaceList = new List<string>
+    private List<InterfaceType> _typeInterfaceList = new List<InterfaceType>
     {
-      InterfaceType.WebSocket.ToString(),
-      InterfaceType.TcpSocket.ToString()
+      InterfaceType.WebSocket,
+      InterfaceType.TcpSocket
     };
 
     private string _loginName;
@@ -53,7 +53,7 @@
       set => SetProperty(ref _warning, value);
     }
 
-    public List<string> TypeInterfaceList
+    public List<InterfaceType> TypeInterfaceList
     {
       get => _typeInterfaceList;
       set => SetProperty(ref _typeInterfaceList, value);
@@ -79,7 +79,7 @@
       }
     }
 
-    public string SelectTypeInterface
+    public InterfaceType SelectTypeInterface
     {
       get => _selectTypeInterface;
       set => SetProperty(ref _selectTypeInterface, value);
@@ -126,7 +126,7 @@
       IpAddress = "127.0.0.1";
       Port = 64500;
       LoginName = "";
-      SelectTypeInterface = InterfaceType.WebSocket.ToString();
+      SelectTypeInterface = InterfaceType.WebSocket;
     }
 
     #endregion

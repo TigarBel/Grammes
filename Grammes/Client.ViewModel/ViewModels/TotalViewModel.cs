@@ -5,6 +5,7 @@
 
   using BusinessLogic.Model.Network;
 
+  using Common.Network;
   using Common.Network.ChannelsListModel;
   using Common.Network.ChannelsListModel.BaseUserChannel;
   using Common.Network.Messages;
@@ -29,7 +30,7 @@
 
     private readonly MainViewModel _mainViewModel;
 
-    private readonly IConnectionController _connectionController;
+    private readonly ICurrentConnection _currentConnection;
 
     private readonly IEventAggregator _eventAggregator;
 
@@ -56,7 +57,7 @@
     public TotalViewModel(
       ConnectViewModel connectViewModel,
       MainViewModel mainViewModel,
-      IConnectionController connectionController,
+      ICurrentConnection currentConnection,
       IEventAggregator eventAggregator)
     {
       NameViews = new TemplateSelectorViewModel().Views;
@@ -67,7 +68,7 @@
       _mainViewModel.MainMenuViewModel.Command = new DelegateCommand(ExecuteDisconnect);
       _eventAggregator = eventAggregator;
 
-      _connectionController = connectionController ?? throw new ArgumentNullException(nameof(connectionController));
+      _currentConnection = currentConnection ?? throw new ArgumentNullException(nameof(currentConnection));
     }
 
     #endregion
@@ -83,12 +84,12 @@
       int port = _connectViewModel.Port;
       string name = _connectViewModel.LoginName;
 
-      _connectionController.ConnectionStateChanged += HandleConnectionStateChanged;
-      _connectionController.Login += HandleLogin;
-      _connectionController.MessageReceived += HandleMessageReceived;
-      _connectionController.UpdateChannel += HandleUpdateChannel;
-      _connectionController.LogEvent += HandleLogEvent;
-      _connectionController.Connect(address, port, name);
+      _currentConnection.ConnectionStateChanged += HandleConnectionStateChanged;
+      _currentConnection.Login += HandleLogin;
+      _currentConnection.MessageReceived += HandleMessageReceived;
+      _currentConnection.UpdateChannel += HandleUpdateChannel;
+      _currentConnection.LogEvent += HandleLogEvent;
+      _currentConnection.Connect(address, port, name,_connectViewModel.SelectTypeInterface);
     }
 
     private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs eventArgs)
@@ -109,11 +110,11 @@
           ContentPresenter = (int)ViewSelect.ConnectView;
         }
 
-        _connectionController.ConnectionStateChanged -= HandleConnectionStateChanged;
-        _connectionController.Login -= HandleLogin;
-        _connectionController.MessageReceived -= HandleMessageReceived;
-        _connectionController.UpdateChannel -= HandleUpdateChannel;
-        _connectionController.LogEvent -= HandleLogEvent;
+        _currentConnection.ConnectionStateChanged -= HandleConnectionStateChanged;
+        _currentConnection.Login -= HandleLogin;
+        _currentConnection.MessageReceived -= HandleMessageReceived;
+        _currentConnection.UpdateChannel -= HandleUpdateChannel;
+        _currentConnection.LogEvent -= HandleLogEvent;
       }
     }
 
@@ -125,7 +126,7 @@
       }
       else
       {
-        _connectionController.Disconnect();
+        _currentConnection.Disconnect();
         _connectViewModel.Warning = $"{eventArgs.EventLog.Text}";
         return;
       }
@@ -199,7 +200,7 @@
 
     private void ExecuteDisconnect()
     {
-      _connectionController.Disconnect();
+      _currentConnection.Disconnect();
     }
 
     #endregion
