@@ -112,7 +112,7 @@
         {
           if (_connections.Values.Count == 0)
           {
-            return; //todo delete
+            return;
           }
 
           _connections.Values.FirstOrDefault(item => item.Login == ((PrivateAgenda)agenda).Target)?.Send(messageRequest);

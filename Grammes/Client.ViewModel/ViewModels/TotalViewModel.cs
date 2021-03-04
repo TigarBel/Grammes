@@ -2,11 +2,9 @@
 {
   using System;
   using System.Linq;
-  using System.Threading.Tasks;
 
   using BusinessLogic.Model.Network;
 
-  using Common.Network;
   using Common.Network.ChannelsListModel;
   using Common.Network.ChannelsListModel.BaseUserChannel;
   using Common.Network.Messages;
@@ -86,7 +84,7 @@
       string name = _connectViewModel.LoginName;
 
       EventClear();
-      _currentConnection.Connect(address, port, name,_connectViewModel.SelectTypeInterface);
+      _currentConnection.Connect(address, port, name, _connectViewModel.SelectTypeInterface);
     }
 
     private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs eventArgs)

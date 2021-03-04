@@ -237,7 +237,6 @@
       {
         if (available < SIZE_LENGTH)
         {
-          // WE NEED MORE DATA
           break;
         }
 
@@ -245,7 +244,6 @@
         ushort length = BufferPrimitives.GetUint16(eventArgs.Buffer, ref offset);
         if (length + SIZE_LENGTH > available)
         {
-          // WE NEED MORE DATA
           break;
         }
 
@@ -258,6 +256,7 @@
         }
       }
 
+      if (!_socket.Connected) return;
       eventArgs.SetBuffer(available, BUFFER_SIZE - available);
       Receive();
     }
@@ -349,6 +348,7 @@
       }
       catch
       {
+        // ignored
       }
     }
 
