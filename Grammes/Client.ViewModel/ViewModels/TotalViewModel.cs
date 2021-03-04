@@ -2,6 +2,7 @@
 {
   using System;
   using System.Linq;
+  using System.Threading.Tasks;
 
   using BusinessLogic.Model.Network;
 
@@ -84,11 +85,7 @@
       int port = _connectViewModel.Port;
       string name = _connectViewModel.LoginName;
 
-      _currentConnection.ConnectionStateChanged += HandleConnectionStateChanged;
-      _currentConnection.Login += HandleLogin;
-      _currentConnection.MessageReceived += HandleMessageReceived;
-      _currentConnection.UpdateChannel += HandleUpdateChannel;
-      _currentConnection.LogEvent += HandleLogEvent;
+      EventClear();
       _currentConnection.Connect(address, port, name,_connectViewModel.SelectTypeInterface);
     }
 
@@ -109,12 +106,6 @@
         {
           ContentPresenter = (int)ViewSelect.ConnectView;
         }
-
-        _currentConnection.ConnectionStateChanged -= HandleConnectionStateChanged;
-        _currentConnection.Login -= HandleLogin;
-        _currentConnection.MessageReceived -= HandleMessageReceived;
-        _currentConnection.UpdateChannel -= HandleUpdateChannel;
-        _currentConnection.LogEvent -= HandleLogEvent;
       }
     }
 
@@ -153,7 +144,6 @@
     private void HandleUpdateChannel(object sender, UpdateChannelEventArgs eventArgs)
     {
       string comeLogin = eventArgs.ChannelName;
-
       if (eventArgs.IsNewLogin)
       {
         _mainViewModel.UsersListViewModel.OnlineUsers.Add(new OnlineChannel(comeLogin));
@@ -201,6 +191,21 @@
     private void ExecuteDisconnect()
     {
       _currentConnection.Disconnect();
+    }
+
+    private void EventClear()
+    {
+      _currentConnection.ConnectionStateChanged -= HandleConnectionStateChanged;
+      _currentConnection.Login -= HandleLogin;
+      _currentConnection.MessageReceived -= HandleMessageReceived;
+      _currentConnection.UpdateChannel -= HandleUpdateChannel;
+      _currentConnection.LogEvent -= HandleLogEvent;
+
+      _currentConnection.ConnectionStateChanged += HandleConnectionStateChanged;
+      _currentConnection.Login += HandleLogin;
+      _currentConnection.MessageReceived += HandleMessageReceived;
+      _currentConnection.UpdateChannel += HandleUpdateChannel;
+      _currentConnection.LogEvent += HandleLogEvent;
     }
 
     #endregion
