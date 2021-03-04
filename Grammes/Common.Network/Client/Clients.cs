@@ -6,7 +6,7 @@
   using System.Threading.Tasks;
 
   public class Clients<TGuid, TWsConnection> : ConcurrentDictionary<TGuid, TWsConnection>
-    where TWsConnection : WsConnection
+    where TWsConnection : IClosable
   {
     #region Fields
 
@@ -17,10 +17,10 @@
     #endregion
 
     #region Constructors
+
     /// <summary>
-    /// 
     /// </summary>
-    /// <param name="timeLife">Seconds</param>
+    /// <param name = "timeLife">Seconds</param>
     public Clients(int timeLife)
     {
       _timeLife = timeLife;
@@ -39,6 +39,11 @@
 
     public new bool TryAdd(TGuid guid, TWsConnection connection)
     {
+      if (guid == null)
+      {
+        return false;
+      }
+
       if (!base.TryAdd(guid, connection))
       {
         return false;
@@ -56,11 +61,14 @@
         int ind = Keys.ToList().IndexOf(guid);
         _counterTime[Keys.ToList().IndexOf(guid)]--;
         await Task.Delay(1000);
-        if (!Keys.ToList().Contains(guid)) return;
+        if (!Keys.ToList().Contains(guid))
+        {
+          return;
+        }
       }
 
       _counterTime.RemoveAt(_counterTime[Keys.ToList().IndexOf(guid)]);
-      connection.Close(); //WsConnection
+      connection.Close(); //IClosable
     }
 
     #endregion

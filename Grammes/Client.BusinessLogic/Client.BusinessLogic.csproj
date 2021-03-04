@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Model\Network\Controller.cs" />
     <Compile Include="Model\Network\NetworkController.cs" />
+    <Compile Include="Model\Network\TcpNetworkController.cs" />
     <Compile Include="Model\Network\WsNetworkController.cs" />
     <Compile Include="Model\Network\[Interface]\ICurrentConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

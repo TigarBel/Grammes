@@ -11,7 +11,7 @@
   using WebSocketSharp;
   using WebSocketSharp.Server;
 
-  public class WsConnection : WebSocketBehavior
+  public class WsConnection : WebSocketBehavior, IClosable
   {
     #region Fields
 

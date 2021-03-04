@@ -50,10 +50,10 @@
     #region Constructors
 
     /// <summary>
-    /// Server
+    /// Web Server
     /// </summary>
-    /// <param name="listenAddress">IP and Port</param>
-    /// <param name="timeout">Seconds</param>
+    /// <param name = "listenAddress">IP and Port</param>
+    /// <param name = "timeout">Seconds</param>
     public WsServer(IPEndPoint listenAddress, int timeout)
     {
       _name = Resources.ServerName;
@@ -110,7 +110,12 @@
         }
         case ChannelType.Private:
         {
-          _connections.Values.First(item => item.Login == ((PrivateAgenda)agenda).Target).Send(messageRequest);
+          if (_connections.Values.Count == 0)
+          {
+            return; //todo delete
+          }
+
+          _connections.Values.FirstOrDefault(item => item.Login == ((PrivateAgenda)agenda).Target)?.Send(messageRequest);
           break;
         }
       }
@@ -133,7 +138,7 @@
             bool isEnter = true;
             DispatchType stage;
 
-            if (_connections.Values.Any(item => item.Login == loginRequest.Content))
+            if (UserOnlineList.Contains(loginRequest.Content))
             {
               loginResponse = new LoginResponseContainer(
                 new Response(ResponseType.Failure, $"Client with name '{loginRequest.Content}' yet connect."),
@@ -146,13 +151,12 @@
             }
             else
             {
-              UserOnlineList.Add(loginRequest.Content);
-              UserOnlineList.Sort();
-              isEnter = UserOfflineList.Remove(loginRequest.Content);
+              isEnter = UserOfflineList.Contains(loginRequest.Content);
               loginResponse = new LoginResponseContainer(new Response(ResponseType.Ok, "Connected"), null, null, null);
               connection.Login = loginRequest.Content;
               stage = DispatchType.Login;
             }
+
             var eventLogMessage = new EventLogMessage
             {
               IsSuccessfully = loginResponse.Content.Result == ResponseType.Ok == isEnter,
@@ -170,7 +174,7 @@
         case DispatchType.Message:
           MessageReceivedEventArgs message = MessageSorter.GetSortedMessage((JObject)container.Payload);
           MessageReceived?.Invoke(this, message);
-          Send(MessageSorter.GetSortedMessage(message.Author, message.Message, message.Agenda), message.Agenda);
+          Send(MessageSorter.GetSortedMessage(message.Author, message.Message, InterfaceType.WebSocket, message.Agenda), message.Agenda);
           break;
       }
     }
@@ -187,15 +191,9 @@
         return;
       }
 
-      bool isExit = UserOnlineList.Remove(connection.Login);
-      if (isExit)
-      {
-        UserOfflineList.Add(connection.Login);
-        UserOfflineList.Sort();
-      }
       var eventLogMessage = new EventLogMessage
       {
-        IsSuccessfully = isExit,
+        IsSuccessfully = true,
         SenderName = connection.Login,
         Text = "Disconnect",
         Time = DateTime.Now,
@@ -203,6 +201,11 @@
       };
 
       ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(connection.Login, false, eventLogMessage));
+    }
+
+    public bool Contains(string user)
+    {
+      return UserOnlineList.Contains(user) || UserOfflineList.Contains(user);
     }
 
     #endregion

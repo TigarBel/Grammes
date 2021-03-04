@@ -6,7 +6,6 @@
   using BusinessLogic.Model.Network;
 
   using Common.DataBaseAndNetwork.EventLog;
-  using Common.Network;
   using Common.Network.ChannelsListModel;
   using Common.Network.Messages;
   using Common.Network.Messages.MessageReceived;
@@ -183,10 +182,10 @@
       switch (Channel.Type)
       {
         case ChannelType.General:
-          _currentConnection.Send(new GeneralMessageContainer(author, message));
+          _currentConnection.Send(new GeneralMessageContainer(author, message, _currentConnection.Type));
           break;
         case ChannelType.Private:
-          _currentConnection.Send(new PrivateMessageContainer(author, Channel.Name, message));
+          _currentConnection.Send(new PrivateMessageContainer(author, Channel.Name, message, _currentConnection.Type));
           break;
       }
 

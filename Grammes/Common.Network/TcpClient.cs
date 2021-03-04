@@ -4,12 +4,17 @@
   using System.Collections.Concurrent;
   using System.Net;
   using System.Net.Sockets;
+  using System.Text;
   using System.Threading;
+  using System.Threading.Tasks;
 
   using DataBaseAndNetwork.EventLog;
 
   using Messages;
-  using Messages.MessageReceived;
+  using Messages.MessageSorter;
+
+  using Newtonsoft.Json;
+  using Newtonsoft.Json.Linq;
 
   using Packets;
 
@@ -19,6 +24,8 @@
 
     private const int BUFFER_SIZE = ushort.MaxValue * 3;
     private const int SIZE_LENGTH = 2;
+
+    private const int CONNECT_WAIT_TIME = 1100;
 
     #endregion
 
@@ -42,14 +49,18 @@
     #region Events
 
     public event EventHandler<ConnectionStateChangedEventArgs> ConnectionStateChanged;
+    public event EventHandler<LoginEventArgs> LoginEvent;
     public event EventHandler<MessageReceivedEventArgs> MessageReceived;
+    public event EventHandler<UpdateChannelEventArgs> UpdateChannel;
+    public event EventHandler<LogEventArgs> LogEvent;
 
     #endregion
 
     #region Constructors
 
-    public TcpClient()
+    public TcpClient(string login)
     {
+      _login = login;
       _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
       _receiveEvent = new SocketAsyncEventArgs();
@@ -73,10 +84,16 @@
 
     #region Methods
 
-    public void Connect(string address, string port)
+    public async void ConnectAsync(string address, int port)
     {
-      _connectEvent.RemoteEndPoint = new IPEndPoint(IPAddress.Parse(address), int.Parse(port));
+      if (_socket.Connected)
+      {
+        Disconnect();
+      }
+
+      _connectEvent.RemoteEndPoint = new IPEndPoint(IPAddress.Parse(address), port);
       _socket.ConnectAsync(_connectEvent);
+      await Task.Run(CheckConnect);
     }
 
     public void Disconnect()
@@ -93,10 +110,9 @@
       _login = string.Empty;
     }
 
-    public void Login(string login)
+    public void Login()
     {
-      _login = login;
-      _sendQueue.Enqueue(new ConnectionRequest(_login).GetBytes());
+      _sendQueue.Enqueue(ConvertToBytes(new LoginRequestContainer(_login).GetContainer()));
 
       if (Interlocked.CompareExchange(ref _sending, 1, 0) == 0)
       {
@@ -104,13 +120,41 @@
       }
     }
 
-    public void Send(string message)
+    public void Send<TClass>(BaseContainer<TClass> message)
     {
-      _sendQueue.Enqueue(new MessageRequest(message).GetBytes());
+      byte[] messageBroadcast = ConvertToBytes(message.GetContainer());
+      _sendQueue.Enqueue(messageBroadcast);
 
       if (Interlocked.CompareExchange(ref _sending, 1, 0) == 0)
       {
         SendImpl();
+      }
+    }
+
+    private byte[] ConvertToBytes(Container container)
+    {
+      var settings = new JsonSerializerSettings
+      {
+        NullValueHandling = NullValueHandling.Ignore
+      };
+      string serializedMessages = JsonConvert.SerializeObject(container, settings);
+      return new MessagePacket(serializedMessages).GetBytes();
+    }
+
+    private void CheckConnect()
+    {
+      Thread.Sleep(CONNECT_WAIT_TIME);
+      if (!_socket.Connected)
+      {
+        var eventLog = new EventLogMessage
+        {
+          IsSuccessfully = false,
+          SenderName = _login,
+          Text = "No connection",
+          Time = DateTime.Now,
+          Type = DispatchType.Connection
+        };
+        ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, false, eventLog));
       }
     }
 
@@ -138,12 +182,12 @@
       }
     }
 
-    private void SendCompleted(object sender, SocketAsyncEventArgs e)
+    private void SendCompleted(object sender, SocketAsyncEventArgs eventArgs)
     {
-      if (e.BytesTransferred != e.Count || e.SocketError != SocketError.Success)
+      if (eventArgs.BytesTransferred != eventArgs.Count || eventArgs.SocketError != SocketError.Success)
       {
         Disconnect();
-        EventLogMessage eventLogMessage = new EventLogMessage()
+        var eventLogMessage = new EventLogMessage
         {
           IsSuccessfully = false,
           SenderName = _login,
@@ -171,12 +215,12 @@
       }
     }
 
-    private void ReceiveCompleted(object sender, SocketAsyncEventArgs e)
+    private void ReceiveCompleted(object sender, SocketAsyncEventArgs eventArgs)
     {
-      if (e.BytesTransferred == 0 || e.SocketError != SocketError.Success)
+      if (eventArgs.BytesTransferred == 0 || eventArgs.SocketError != SocketError.Success)
       {
         Disconnect();
-        EventLogMessage eventLogMessage = new EventLogMessage()
+        var eventLogMessage = new EventLogMessage
         {
           IsSuccessfully = false,
           SenderName = _login,
@@ -188,7 +232,7 @@
         return;
       }
 
-      int available = e.Offset + e.BytesTransferred;
+      int available = eventArgs.Offset + eventArgs.BytesTransferred;
       for (;;)
       {
         if (available < SIZE_LENGTH)
@@ -198,59 +242,85 @@
         }
 
         int offset = 0;
-        ushort length = BufferPrimitives.GetUint16(e.Buffer, ref offset);
+        ushort length = BufferPrimitives.GetUint16(eventArgs.Buffer, ref offset);
         if (length + SIZE_LENGTH > available)
         {
           // WE NEED MORE DATA
           break;
         }
 
-        HandlePacket(BufferPrimitives.GetBytes(e.Buffer, ref offset, length));
+        HandlePacket(BufferPrimitives.GetBytes(eventArgs.Buffer, ref offset, length));
 
         available = available - length - SIZE_LENGTH;
         if (available > 0)
         {
-          Array.Copy(e.Buffer, length + SIZE_LENGTH, e.Buffer, 0, available);
+          Array.Copy(eventArgs.Buffer, length + SIZE_LENGTH, eventArgs.Buffer, 0, available);
         }
       }
 
-      e.SetBuffer(available, BUFFER_SIZE - available);
+      eventArgs.SetBuffer(available, BUFFER_SIZE - available);
       Receive();
+    }
+
+    private string GetStringPacket(byte[] packet)
+    {
+      int offset = 1;
+      return Encoding.UTF8.GetString(packet, offset, packet.Length - offset);
     }
 
     private void HandlePacket(byte[] packet)
     {
-      var packetId = (PacketId)BufferPrimitives.GetUint8(packet, 0);
-      switch (packetId)
+      string serializedMessages = GetStringPacket(packet);
+      var container = JsonConvert.DeserializeObject<Container>(serializedMessages);
+
+      switch (container.Identifier)
       {
-        case PacketId.ConnectionResponse:
-          var connectionResponse = new ConnectionResponse(packet);
-          if (connectionResponse.Result == ResponseType.Failure)
+        case DispatchType.Login:
+          if (((JObject)container.Payload).ToObject(typeof(LoginResponseContainer)) is LoginResponseContainer loginResponse)
           {
-            MessageReceived?.Invoke(this, new MessageReceivedEventArgs(_login, connectionResponse.Reason, new PrivateAgenda(_login), DateTime.Now));
-            _login = string.Empty;
+            var eventLog = new EventLogMessage
+            {
+              IsSuccessfully = true,
+              SenderName = _login,
+              Text = "Login",
+              Time = DateTime.Now,
+              Type = DispatchType.Login
+            };
+            if (loginResponse.Content.Result == ResponseType.Failure)
+            {
+              eventLog.IsSuccessfully = false;
+              eventLog.Text = loginResponse.Content.Reason;
+            }
+
+            LoginEvent?.Invoke(
+              this,
+              new LoginEventArgs(
+                _login,
+                eventLog.IsSuccessfully,
+                eventLog,
+                loginResponse.General,
+                loginResponse.OnlineList,
+                loginResponse.OfflineList));
           }
 
-          EventLogMessage eventLogMessage = new EventLogMessage()
-          {
-            IsSuccessfully = true,
-            SenderName = _login,
-            Text = "Login",
-            Time = DateTime.Now,
-            Type = DispatchType.EventLog
-          };
-          ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, true, eventLogMessage));
           break;
-        case PacketId.MessageBroadcast:
-          var messageBroadcast = new MessageBroadcast(packet);
-          MessageReceived?.Invoke(this, new MessageReceivedEventArgs(_login, messageBroadcast.Message, new GeneralAgenda(), DateTime.Now));
+        case DispatchType.Message:
+          MessageReceived?.Invoke(this, MessageSorter.GetSortedMessage((JObject)container.Payload));
           break;
+        case DispatchType.Channel:
+          UpdateChannel?.Invoke(this, MessageSorter.GetSortedChannel((JObject)container.Payload));
+          break;
+        case DispatchType.EventLog:
+          LogEvent?.Invoke(this, MessageSorter.GetSortedEventMessage((JObject)container.Payload));
+          break;
+        default:
+          throw new ArgumentOutOfRangeException();
       }
     }
 
-    private void ConnectCompleted(object sender, SocketAsyncEventArgs e)
+    private void ConnectCompleted(object sender, SocketAsyncEventArgs eventArgs)
     {
-      EventLogMessage eventLogMessage = new EventLogMessage()
+      var eventLogMessage = new EventLogMessage
       {
         IsSuccessfully = true,
         SenderName = _login,
@@ -259,7 +329,7 @@
         Type = DispatchType.EventLog
       };
 
-      if (e.SocketError != SocketError.Success)
+      if (eventArgs.SocketError != SocketError.Success)
       {
         eventLogMessage.Text = "Connect don't completed";
         ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, false, eventLogMessage));
@@ -267,6 +337,7 @@
       }
 
       ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, true, eventLogMessage));
+      Login();
       Receive();
     }
 

@@ -177,14 +177,14 @@
       _socket.SendAsync(serializedMessages, SendCompleted);
     }
 
-    private void OnMessage(object sender, MessageEventArgs e)
+    private void OnMessage(object sender, MessageEventArgs eventArgs)
     {
-      if (!e.IsText)
+      if (!eventArgs.IsText)
       {
         return;
       }
 
-      var container = JsonConvert.DeserializeObject<Container>(e.Data);
+      var container = JsonConvert.DeserializeObject<Container>(eventArgs.Data);
 
       switch (container.Identifier)
       {

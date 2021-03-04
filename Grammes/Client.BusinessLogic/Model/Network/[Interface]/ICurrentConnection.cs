@@ -9,6 +9,8 @@
   {
     #region Properties
 
+    InterfaceType Type { get; }
+
     IConnectionController ConnectionController { get; }
 
     #endregion

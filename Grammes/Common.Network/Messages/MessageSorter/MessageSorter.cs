@@ -19,7 +19,12 @@
         var messageRequest = (PrivateMessageContainer)message.ToObject(typeof(PrivateMessageContainer));
         if (messageRequest?.Target != null)
         {
-          return new MessageReceivedEventArgs(messageRequest.Author, messageRequest.Content, new PrivateAgenda(messageRequest.Target), DateTime.Now);
+          return new MessageReceivedEventArgs(
+            messageRequest.Author,
+            messageRequest.Content,
+            messageRequest.Type,
+            new PrivateAgenda(messageRequest.Target),
+            DateTime.Now);
         }
       }
 
@@ -28,19 +33,33 @@
         var messageRequest = (GeneralMessageContainer)message.ToObject(typeof(GeneralMessageContainer));
         if (messageRequest != null)
         {
-          return new MessageReceivedEventArgs(messageRequest.Author, messageRequest.Content, new GeneralAgenda(), DateTime.Now);
+          return new MessageReceivedEventArgs(messageRequest.Author, messageRequest.Content, messageRequest.Type, new GeneralAgenda(), DateTime.Now);
         }
       }
 
       throw new ArgumentException("Get sorted message unknown!");
     }
+    public static BaseContainer<string> GetSortedMessage(MessageReceivedEventArgs eventArgs)
+    {
+      string author = eventArgs.Author;
+      string message = eventArgs.Message;
+      InterfaceType type = eventArgs.Type;
+      BaseAgenda agenda = eventArgs.Agenda;
+      switch (agenda.Type) {
+        case ChannelType.General: return new GeneralMessageContainer(author, message, type);
+        case ChannelType.Private: return new PrivateMessageContainer(author, ((PrivateAgenda)agenda).Target, message, type);
+        case ChannelType.Group:
+        default:
+          throw new ArgumentOutOfRangeException("Get sorted message without type!");
+      }
+    }
 
-    public static BaseContainer<string> GetSortedMessage(string author, string message, BaseAgenda agenda)
+    public static BaseContainer<string> GetSortedMessage(string author, string message, InterfaceType type, BaseAgenda agenda)
     {
       switch (agenda.Type)
       {
-        case ChannelType.General: return new GeneralMessageContainer(author, message);
-        case ChannelType.Private: return new PrivateMessageContainer(author, ((PrivateAgenda)agenda).Target, message);
+        case ChannelType.General: return new GeneralMessageContainer(author, message, type);
+        case ChannelType.Private: return new PrivateMessageContainer(author, ((PrivateAgenda)agenda).Target, message, type);
         case ChannelType.Group:
         default:
           throw new ArgumentOutOfRangeException("Get sorted message without type!");

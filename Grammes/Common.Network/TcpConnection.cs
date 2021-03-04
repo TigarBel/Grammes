@@ -8,7 +8,7 @@
 
   using Packets;
 
-  public class TcpConnection
+  public class TcpConnection : IClosable
   {
     #region Constants
 
@@ -70,6 +70,11 @@
       Receive();
     }
 
+    public void Close()
+    {
+      Stop();
+    }
+
     public void Stop()
     {
       if (Interlocked.CompareExchange(ref _disposed, 1, 0) == 1)
@@ -117,9 +122,9 @@
       }
     }
 
-    private void SendCompleted(object sender, SocketAsyncEventArgs e)
+    private void SendCompleted(object sender, SocketAsyncEventArgs eventArgs)
     {
-      if (e.BytesTransferred != e.Count || e.SocketError != SocketError.Success)
+      if (eventArgs.BytesTransferred != eventArgs.Count || eventArgs.SocketError != SocketError.Success)
       {
         Stop();
         return;
@@ -141,15 +146,15 @@
       }
     }
 
-    private void ReceiveCompleted(object sender, SocketAsyncEventArgs e)
+    private void ReceiveCompleted(object sender, SocketAsyncEventArgs eventArgs)
     {
-      if (e.BytesTransferred == 0 || e.SocketError != SocketError.Success)
+      if (eventArgs.BytesTransferred == 0 || eventArgs.SocketError != SocketError.Success)
       {
         Stop();
         return;
       }
 
-      int available = e.Offset + e.BytesTransferred;
+      int available = eventArgs.Offset + eventArgs.BytesTransferred;
       for (;;)
       {
         if (available < SIZE_LENGTH)
@@ -159,23 +164,23 @@
         }
 
         int offset = 0;
-        ushort length = BufferPrimitives.GetUint16(e.Buffer, ref offset);
+        ushort length = BufferPrimitives.GetUint16(eventArgs.Buffer, ref offset);
         if (length + SIZE_LENGTH > available)
         {
           // WE NEED MORE DATA
           break;
         }
 
-        _server.HandlePacket(_remoteEndpoint, BufferPrimitives.GetBytes(e.Buffer, ref offset, length));
+        _server.HandlePacket(_remoteEndpoint, BufferPrimitives.GetBytes(eventArgs.Buffer, ref offset, length));
 
         available = available - length - SIZE_LENGTH;
         if (available > 0)
         {
-          Array.Copy(e.Buffer, length + SIZE_LENGTH, e.Buffer, 0, available);
+          Array.Copy(eventArgs.Buffer, length + SIZE_LENGTH, eventArgs.Buffer, 0, available);
         }
       }
 
-      e.SetBuffer(available, BUFFER_SIZE - available);
+      eventArgs.SetBuffer(available, BUFFER_SIZE - available);
       Receive();
     }
 

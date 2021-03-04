@@ -11,6 +11,7 @@
     public string Author { get; }
 
     public string Message { get; }
+    public InterfaceType Type { get; }
 
     public BaseAgenda Agenda { get; }
 
@@ -20,8 +21,9 @@
 
     #region Constructors
 
-    public MessageReceivedEventArgs(string author, string message, BaseAgenda agenda, DateTime time)
+    public MessageReceivedEventArgs(string author, string message, InterfaceType type, BaseAgenda agenda, DateTime time)
     {
+      Type = type;
       Author = author;
       Message = message;
       Agenda = agenda;

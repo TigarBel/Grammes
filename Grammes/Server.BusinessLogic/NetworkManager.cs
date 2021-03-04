@@ -13,12 +13,14 @@
   using Common.Network.Messages;
   using Common.Network.Messages.Channels;
   using Common.Network.Messages.MessageReceived;
+  using Common.Network.Messages.MessageSorter;
 
   public class NetworkManager
   {
     #region Fields
 
     private readonly WsServer _wsServer;
+    private readonly TcpServer _tcpServer;
 
     private readonly DataBaseManager _dataBaseManager;
 
@@ -37,13 +39,18 @@
       _dataBaseManager = dataBaseManager;
 
       _wsServer = new WsServer(address, timeout);
+      _tcpServer = new TcpServer(new IPEndPoint(address.Address, address.Port + 1), timeout);
       foreach (User user in _dataBaseManager.UserList)
       {
         _wsServer.UserOfflineList.Add(user.Name);
+        _tcpServer.UserOfflineList.Add(user.Name);
       }
 
       _wsServer.ConnectionStateChanged += HandleConnectionStateChanged;
       _wsServer.MessageReceived += HandleMessageReceived;
+
+      _tcpServer.ConnectionStateChanged += HandleConnectionStateChanged;
+      _tcpServer.MessageReceived += HandleMessageReceived;
     }
 
     #endregion
@@ -53,11 +60,13 @@
     public void Start()
     {
       _wsServer.Start();
+      _tcpServer.Start();
     }
 
     public void Stop()
     {
       _wsServer.Stop();
+      _tcpServer.Stop();
     }
 
     private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs eventArgs)
@@ -73,6 +82,7 @@
           {
             Name = eventArgs.ClientName
           });
+        AddNewUserOnList(client);
       }
 
       if (eventArgs.EventLog.Type == DispatchType.Login && eventArgs.EventLog.IsSuccessfully)
@@ -80,13 +90,17 @@
         SendLoginInitAsync(eventArgs);
       }
 
-      if (eventArgs.EventLog.IsSuccessfully)
+      if (eventArgs.EventLog.IsSuccessfully && Contains(client))
       {
-        _wsServer.Send(new ChannelResponseContainer(new UpdateChannel(eventArgs.Connected, client, isRegistration), client), new GeneralAgenda());
+        var crc = new ChannelResponseContainer(new UpdateChannel(eventArgs.Connected, client, isRegistration), client);
+        _wsServer.Send(crc, new GeneralAgenda());
+        _tcpServer.Send(crc, new GeneralAgenda());
       }
 
       string clientState = eventArgs.Connected ? "connect" : "disconnect";
       string message = $"Client '{client}' {clientState}.";
+      AddUserOnList(eventArgs.Connected, client);
+
       var eventLogMessage = new EventLogMessage
       {
         IsSuccessfully = eventArgs.EventLog.IsSuccessfully,
@@ -95,7 +109,43 @@
         Time = DateTime.Now,
         Type = DispatchType.Connection
       };
-      EventActionAsync(new MessageEventLogContainer(eventLogMessage), new GeneralAgenda());
+      EventSaveAsync(new MessageEventLogContainer(eventLogMessage), new GeneralAgenda());
+    }
+
+    private bool Contains(string client)
+    {
+      return _wsServer.Contains(client) || _tcpServer.Contains(client);
+    }
+
+    private void AddUserOnList(bool connection, string client)
+    {
+      if (connection)
+      {
+        RearrangeUsers(_wsServer.UserOfflineList, _wsServer.UserOnlineList, client);
+        RearrangeUsers(_tcpServer.UserOfflineList, _tcpServer.UserOnlineList, client);
+      }
+      else
+      {
+        RearrangeUsers(_wsServer.UserOnlineList, _wsServer.UserOfflineList, client);
+        RearrangeUsers(_tcpServer.UserOnlineList, _tcpServer.UserOfflineList, client);
+      }
+    }
+
+    private void RearrangeUsers(List<string> fromList, List<string> inList, string user)
+    {
+      if (fromList.Remove(user))
+      {
+        inList.Add(user);
+        inList.Sort();
+      }
+    }
+
+    private void AddNewUserOnList(string client)
+    {
+      _wsServer.UserOnlineList.Add(client);
+      _wsServer.UserOnlineList.Sort();
+      _tcpServer.UserOnlineList.Add(client);
+      _tcpServer.UserOnlineList.Sort();
     }
 
     private void HandleMessageReceived(object sender, MessageReceivedEventArgs eventArgs)
@@ -113,6 +163,7 @@
       switch (eventArgs.Agenda.Type)
       {
         case ChannelType.General:
+          SendCurrentServer(eventArgs.Type, MessageSorter.GetSortedMessage(eventArgs), eventArgs.Agenda);
           User user = _dataBaseManager.UserList.Find(u => u.Name == eventArgs.Author);
           var generalMessage = new GeneralMessage
           {
@@ -121,9 +172,10 @@
             User_Id = user.Id
           };
           _dataBaseManager.CreateGeneralMessageAsync(generalMessage);
-          EventActionAsync(new MessageEventLogContainer(eventLogMessage), eventArgs.Agenda);
+          EventSaveAsync(new MessageEventLogContainer(eventLogMessage), eventArgs.Agenda);
           break;
         case ChannelType.Private:
+          SendCurrentServer(eventArgs.Type, MessageSorter.GetSortedMessage(eventArgs), eventArgs.Agenda);
           var privateMessage = new PrivateMessage
           {
             Message = eventArgs.Message,
@@ -132,7 +184,7 @@
             TargetId = _dataBaseManager.UserList.Find(u => u.Name == ((PrivateAgenda)eventArgs.Agenda).Target).Id
           };
           _dataBaseManager.CreatePrivateMessageAsync(privateMessage);
-          EventActionAsync(new MessageEventLogContainer(eventLogMessage), eventArgs.Agenda);
+          EventSaveAsync(new MessageEventLogContainer(eventLogMessage), eventArgs.Agenda);
           break;
         case ChannelType.Group:
           break;
@@ -141,13 +193,14 @@
       }
     }
 
-    private async void EventActionAsync(MessageEventLogContainer messageEvent, BaseAgenda agenda)
+    private async void EventSaveAsync(MessageEventLogContainer messageEvent, BaseAgenda agenda)
     {
       await Task.Delay(1000);
       await Task.Run(
         () =>
         {
           _wsServer.Send(messageEvent, agenda);
+          _tcpServer.Send(messageEvent, agenda);
           _dataBaseManager.CreateEventAsync(
             new Event
             {
@@ -169,14 +222,29 @@
         () =>
         {
           User user = _dataBaseManager.UserList.Find(u => u.Name == eventArgs.ClientName);
-          _wsServer.Send(
-            new LoginResponseContainer(
-              new Response(ResponseType.Ok, eventArgs.EventLog.Text),
-              Collector.CollectGeneralChannel(user.Id, generalMessage),
-              Collector.CollectOnlineChannel(user, _wsServer.UserOnlineList, privateMessages),
-              Collector.CollectOfflineChannel(user, _wsServer.UserOfflineList, privateMessages)),
-            new PrivateAgenda(eventArgs.ClientName));
+          var lrc = new LoginResponseContainer(
+            new Response(ResponseType.Ok, eventArgs.EventLog.Text),
+            Collector.CollectGeneralChannel(user.Id, generalMessage),
+            Collector.CollectOnlineChannel(user, _wsServer.UserOnlineList, privateMessages),
+            Collector.CollectOfflineChannel(user, _wsServer.UserOfflineList, privateMessages));
+          _wsServer.Send(lrc, new PrivateAgenda(eventArgs.ClientName));
+          _tcpServer.Send(lrc, new PrivateAgenda(eventArgs.ClientName));
         });
+    }
+
+    private void SendCurrentServer<TContainer>(InterfaceType type, BaseContainer<TContainer> message, BaseAgenda agenda)
+    {
+      switch (type)
+      {
+        case InterfaceType.WebSocket:
+          _tcpServer.Send(message, agenda);
+          break;
+        case InterfaceType.TcpSocket:
+          _wsServer.Send(message, agenda);
+          break;
+        default:
+          throw new ArgumentOutOfRangeException(nameof(type), type, null);
+      }
     }
 
     #endregion

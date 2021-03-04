@@ -61,7 +61,7 @@ namespace Common.Network.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /server.
+        ///   Looks up a localized string similar to /Gramm$$erver.
         /// </summary>
         internal static string ServerName {
             get {
