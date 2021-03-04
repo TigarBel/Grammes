@@ -2,6 +2,7 @@
 {
   using System;
   using System.Collections.Generic;
+  using System.Linq;
   using System.Net;
   using System.Threading.Tasks;
 
@@ -225,11 +226,21 @@
           var lrc = new LoginResponseContainer(
             new Response(ResponseType.Ok, eventArgs.EventLog.Text),
             Collector.CollectGeneralChannel(user.Id, generalMessage),
-            Collector.CollectOnlineChannel(user, _wsServer.UserOnlineList, privateMessages),
-            Collector.CollectOfflineChannel(user, _wsServer.UserOfflineList, privateMessages));
+            Collector.CollectOnlineChannel(user, CheckUserList(_wsServer.UserOnlineList, _tcpServer.UserOnlineList), privateMessages),
+            Collector.CollectOfflineChannel(user, CheckUserList(_wsServer.UserOfflineList, _tcpServer.UserOfflineList), privateMessages));
           _wsServer.Send(lrc, new PrivateAgenda(eventArgs.ClientName));
           _tcpServer.Send(lrc, new PrivateAgenda(eventArgs.ClientName));
         });
+    }
+
+    private List<string> CheckUserList(List<string> firstList, List<string> secondList)
+    {
+      if (firstList.All(secondList.Contains))
+      {
+        return new List<string>(firstList);
+      }
+
+      throw new ArgumentException("Out of sync in user lists on servers");
     }
 
     private void SendCurrentServer<TContainer>(InterfaceType type, BaseContainer<TContainer> message, BaseAgenda agenda)
