@@ -6,15 +6,15 @@
   {
     #region Fields
 
-    public string SenderName;
+    public string SenderName { get; set; }
 
-    public bool IsSuccessfully;
+    public bool IsSuccessfully { get; set; }
 
-    public DispatchType Type;
+    public DispatchType Type { get; set; }
 
-    public string Text;
+    public string Text { get; set; }
 
-    public DateTime Time;
+    public DateTime Time { get; set; }
 
     #endregion
   }

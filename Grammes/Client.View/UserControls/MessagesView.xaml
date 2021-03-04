@@ -8,6 +8,11 @@
              mvvm:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
     <UserControl.Resources>
+        <Style TargetType="Label" x:Key="LabelStyle">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        </Style>
+
         <Style x:Key="WaterMarkStyle" TargetType="{x:Type TextBox}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -106,7 +111,7 @@
             <RowDefinition Height="*" MinHeight="36"/>
         </Grid.RowDefinitions>
 
-        <Label Content="{Binding Channel}" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <Label Content="{Binding Channel}" Grid.Row="0" Style="{StaticResource LabelStyle}"/>
 
         <ScrollViewer Grid.Row="1" messagesViews:ScrollViewerExtensions.AlwaysScrollToEnd="True">
             <ListBox x:Name="MessageListBox"
