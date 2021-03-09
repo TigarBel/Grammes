@@ -7,6 +7,8 @@
 
   using DataBase.DataBase.Table;
 
+  using DataBaseAndNetwork.EventLog;
+
   public static class Collector
   {
     #region Methods
@@ -22,6 +24,20 @@
       }
 
       return channel;
+    }
+
+    public static List<EventLogMessage> CollectEventLog(User user, List<Event> events)
+    {
+      return (from unit in events
+              where unit.UserName == user.Name
+              select new EventLogMessage()
+              {
+                IsSuccessfully = unit.IsSuccessfully,
+                SenderName = unit.UserName,
+                Text = unit.Message,
+                Time = unit.Time,
+                Type = unit.Type
+              }).ToList();
     }
 
     public static List<PrivateChannel> CollectOnlineChannel(User user, List<string> onlineList, List<PrivateMessage> privateMessages)

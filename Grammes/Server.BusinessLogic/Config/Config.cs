@@ -6,7 +6,9 @@
   {
     #region Properties
 
-    public IPEndPoint Address { get; }
+    public IPEndPoint WebAddress { get; }
+
+    public IPEndPoint TcpAddress { get; }
 
     public uint Timeout { get; }
 
@@ -18,9 +20,10 @@
 
     #region Constructors
 
-    public Config(IPEndPoint address, uint timeOut, string dataSource, string catalog)
+    public Config(IPEndPoint webAddress, IPEndPoint tcpAddress, uint timeOut, string dataSource, string catalog)
     {
-      Address = address;
+      WebAddress = webAddress;
+      TcpAddress = tcpAddress;
       Timeout = timeOut;
       DataSource = dataSource;
       Catalog = catalog;

@@ -6,7 +6,8 @@
         xmlns:userControls="clr-namespace:Client.View.UserControls"
         mc:Ignorable="d"
         Title="Grammes" Height="450" Width="800"
-        MinWidth="450" MinHeight="350">
+        MinWidth="450" MinHeight="350"
+        Icon="UserControls/Resource/GrammesIco.ico">
     <Grid>
         <userControls:TotalView/>
     </Grid>

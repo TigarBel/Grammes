@@ -72,3 +72,5 @@ C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\Client.View.e
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\Client.View.pdb
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\bin\Debug\Common.DataBaseAndNetwork.dll
 C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\bin\Debug\Common.DataBaseAndNetwork.pdb
+C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\UserControls\Themes\ResourceDictionaries\BlackStyle.baml
+C:\Users\belyaevee\Desktop\Intership\Grammes\Client.View\obj\Debug\App.baml

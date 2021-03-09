@@ -43,6 +43,7 @@
     private int _sending;
 
     private string _login;
+    private bool _isLogin;
 
     #endregion
 
@@ -144,18 +145,20 @@
     private void CheckConnect()
     {
       Thread.Sleep(CONNECT_WAIT_TIME);
-      if (!_socket.Connected)
+      if (_isLogin)
       {
-        var eventLog = new EventLogMessage
-        {
-          IsSuccessfully = false,
-          SenderName = _login,
-          Text = "No connection",
-          Time = DateTime.Now,
-          Type = DispatchType.Connection
-        };
-        ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, false, eventLog));
+        return;
       }
+
+      var eventLog = new EventLogMessage
+      {
+        IsSuccessfully = false,
+        SenderName = _login,
+        Text = "No connection",
+        Time = DateTime.Now,
+        Type = DispatchType.Connection
+      };
+      ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, false, eventLog));
     }
 
     private void SendImpl()
@@ -256,7 +259,11 @@
         }
       }
 
-      if (!_socket.Connected) return;
+      if (!_socket.Connected)
+      {
+        return;
+      }
+
       eventArgs.SetBuffer(available, BUFFER_SIZE - available);
       Receive();
     }
@@ -277,6 +284,7 @@
         case DispatchType.Login:
           if (((JObject)container.Payload).ToObject(typeof(LoginResponseContainer)) is LoginResponseContainer loginResponse)
           {
+            _isLogin = true;
             var eventLog = new EventLogMessage
             {
               IsSuccessfully = true,
@@ -299,7 +307,8 @@
                 eventLog,
                 loginResponse.General,
                 loginResponse.OnlineList,
-                loginResponse.OfflineList));
+                loginResponse.OfflineList,
+                loginResponse.EventLogMessageList));
           }
 
           break;

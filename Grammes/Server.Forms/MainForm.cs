@@ -34,8 +34,10 @@
 
     private void SwitchButton(bool turn)
     {
-      _ipTextBox.Enabled = !turn;
-      _portTextBox.Enabled = !turn;
+      _webIpTextBox.Enabled = !turn;
+      _webPortTextBox.Enabled = !turn;
+      _tcpIpTextBox.Enabled = !turn;
+      _tcpPortTextBox.Enabled = !turn;
       _timeoutTextBox.Enabled = !turn;
       _dbSourceTextBox.Enabled = !turn;
       _dbCatalogTextBox.Enabled = !turn;
@@ -52,14 +54,17 @@
         SetConfig();
         Config config = ServerConfig.GetConfig();
         _networkManager = new NetworkManager(
-          config.Address,
+          config.WebAddress,
+          config.TcpAddress,
           Convert.ToInt32(config.Timeout),
           new DataBaseManager(_dbSourceTextBox.Text, _dbCatalogTextBox.Text));
         _networkManager.Start();
       }
       catch (Exception exception)
       {
-        MessageBox.Show(exception.Message);
+        MessageBox.Show($"{exception.TargetSite.DeclaringType.Name}: {exception.Message}");
+        SwitchButton(false);
+        _networkManager?.Stop();
       }
     }
 
@@ -68,32 +73,11 @@
       try
       {
         SwitchButton(false);
-
         _networkManager.Stop();
       }
       catch (Exception exception)
       {
         MessageBox.Show(exception.Message);
-      }
-    }
-
-    private void _ipTextBox_TextChanged(object sender, EventArgs e)
-    {
-      string text = ((TextBox)sender).Text;
-      CheckValue(new Regex(Resources.IpAddressUnacceptableSymbols, RegexOptions.IgnoreCase).IsMatch(text ?? string.Empty), (TextBox)sender);
-    }
-
-    private void _portTextBox_TextChanged(object sender, EventArgs e)
-    {
-      try
-      {
-        int port = Convert.ToInt32(((TextBox)sender).Text);
-        CheckValue(port >= 0 && port < 65000, (TextBox)sender);
-      }
-      catch
-      {
-        ((TextBox)sender).BackColor = Color.PaleVioletRed;
-        _startButton.Enabled = false;
       }
     }
 
@@ -158,7 +142,8 @@
       try
       {
         ServerConfig.SetConfig(
-          new IPEndPoint(IPAddress.Parse(_ipTextBox.Text), Convert.ToInt32(_portTextBox.Text)),
+          new IPEndPoint(IPAddress.Parse(_webIpTextBox.Text), Convert.ToInt32(_webPortTextBox.Text)),
+          new IPEndPoint(IPAddress.Parse(_tcpIpTextBox.Text), Convert.ToInt32(_tcpPortTextBox.Text)),
           Convert.ToUInt32(_timeoutTextBox.Text),
           _dbSourceTextBox.Text,
           _dbCatalogTextBox.Text);
@@ -171,16 +156,77 @@
 
     private void MainForm_Load(object sender, EventArgs e)
     {
-      Config config = ServerConfig.GetConfig();
-      _ipTextBox.Text = config.Address.Address.ToString();
-      _portTextBox.Text = config.Address.Port.ToString();
+      try
+      {
+        Config config = ServerConfig.GetConfig();
+        StayParameters(config);
+      }
+      catch (NullReferenceException exception)
+      {
+        MessageBox.Show(exception.Message);
+        Config config = ServerConfig.GetDefaultConfig();
+        StayParameters(config);
+        throw;
+      }
+    }
+
+    private void StayParameters(Config config)
+    {
+      _webIpTextBox.Text = config.WebAddress.Address.ToString();
+      _webPortTextBox.Text = config.WebAddress.Port.ToString();
+      _tcpIpTextBox.Text = config.TcpAddress.Address.ToString();
+      _tcpPortTextBox.Text = config.TcpAddress.Port.ToString();
       _timeoutTextBox.Text = config.Timeout.ToString();
       _dbSourceTextBox.Text = config.DataSource;
       _dbCatalogTextBox.Text = config.Catalog;
     }
 
-    private void label4_Click(object sender, EventArgs e)
+    private void _webIpTextBox_TextChanged(object sender, EventArgs e)
     {
+      IpTextChanged(sender);
+    }
+
+    private void _tcpIpTextBox_TextChanged(object sender, EventArgs e)
+    {
+      IpTextChanged(sender);
+    }
+
+    private void IpTextChanged(object sender)
+    {
+      string text = ((TextBox)sender).Text;
+      CheckValue(new Regex(Resources.IpAddressUnacceptableSymbols, RegexOptions.IgnoreCase).IsMatch(text ?? string.Empty), (TextBox)sender);
+    }
+
+    private void _webPortTextBox_TextChanged(object sender, EventArgs e)
+    {
+      PortTextChanged(sender, _tcpPortTextBox.Text);
+    }
+
+    private void _tcpPortTextBox_TextChanged(object sender, EventArgs e)
+    {
+      PortTextChanged(sender, _webPortTextBox.Text);
+    }
+
+    private void PortTextChanged(object sender, string oppositePort)
+    {
+      try
+      {
+        int port = Convert.ToInt32(((TextBox)sender).Text);
+        if (string.IsNullOrEmpty(oppositePort))
+        {
+          CheckValue(port >= 0 && port < 65000, (TextBox)sender);
+        }
+        else
+        {
+          int opposite = Convert.ToInt32(oppositePort);
+          CheckValue(port >= 0 && port < 65000 && port != opposite, (TextBox)sender);
+        }
+      }
+      catch
+      {
+        ((TextBox)sender).BackColor = Color.PaleVioletRed;
+        _startButton.Enabled = false;
+      }
     }
 
     #endregion

@@ -35,7 +35,7 @@
         case InterfaceType.WebSocket:
           ConnectionController = new WsNetworkController();
           break;
-        case InterfaceType.TcpSocket:
+        case InterfaceType.Tcp:
           ConnectionController = new TcpNetworkController();
           break;
         default:

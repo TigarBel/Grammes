@@ -15,6 +15,8 @@
     public List<PrivateChannel> OnlineList { get; }
 
     public List<PrivateChannel> OfflineList { get; }
+    
+    public List<EventLogMessage> EventLogMessages { get; }
 
     #endregion
 
@@ -26,12 +28,14 @@
       EventLogMessage eventLog,
       GeneralChannel general,
       List<PrivateChannel> onlineList,
-      List<PrivateChannel> offlineList)
+      List<PrivateChannel> offlineList,
+      List<EventLogMessage> eventLogMessages)
       : base(clientName, connected, eventLog)
     {
       General = general;
       OnlineList = onlineList;
       OfflineList = offlineList;
+      EventLogMessages = eventLogMessages;
     }
 
     #endregion

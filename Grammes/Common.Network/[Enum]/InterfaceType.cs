@@ -3,6 +3,6 @@
   public enum InterfaceType
   {
     WebSocket = 0,
-    TcpSocket
+    Tcp
   }
 }

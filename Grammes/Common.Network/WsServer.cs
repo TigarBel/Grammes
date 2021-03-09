@@ -121,6 +121,11 @@
       }
     }
 
+    public bool Contains(string user)
+    {
+      return UserOnlineList.Contains(user) || UserOfflineList.Contains(user);
+    }
+
     internal void HandleMessage(Guid clientId, Container container)
     {
       if (!_connections.TryGetValue(clientId, out WsConnection connection))
@@ -144,6 +149,7 @@
                 new Response(ResponseType.Failure, $"Client with name '{loginRequest.Content}' yet connect."),
                 null,
                 null,
+                null,
                 null);
               connection.Send(loginResponse.GetContainer());
               connection.Login = $"pseudo-{loginRequest.Content}";
@@ -152,7 +158,7 @@
             else
             {
               isEnter = UserOfflineList.Contains(loginRequest.Content);
-              loginResponse = new LoginResponseContainer(new Response(ResponseType.Ok, "Connected"), null, null, null);
+              loginResponse = new LoginResponseContainer(new Response(ResponseType.Ok, "Connected"), null, null, null, null);
               connection.Login = loginRequest.Content;
               stage = DispatchType.Login;
             }
@@ -201,11 +207,6 @@
       };
 
       ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(connection.Login, false, eventLogMessage));
-    }
-
-    public bool Contains(string user)
-    {
-      return UserOnlineList.Contains(user) || UserOfflineList.Contains(user);
     }
 
     #endregion

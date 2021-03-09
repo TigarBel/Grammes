@@ -11,6 +11,8 @@
   using Prism.Events;
   using Prism.Mvvm;
 
+  using View.UserControls.Themes;
+
   public class MainViewModel : BindableBase
   {
     #region Constants
@@ -79,11 +81,7 @@
       MessagesViewModel = messagesViewModel;
       UsersListViewModel = usersListViewModel;
       _allEvents = new AsyncObservableCollection<EventLogMessage>();
-      NameFilter = new AsyncObservableCollection<string>
-      {
-        ALL
-      };
-      SelectName = ALL;
+      ClearFilter();
       _logEa = eventAggregator;
       eventAggregator.GetEvent<LogEvent>().Subscribe(SetEventLog);
     }
@@ -95,7 +93,18 @@
     public void Clear()
     {
       Events.Clear();
+      _allEvents.Clear();
+      ClearFilter();
       MessagesViewModel.MessagesUserList.Clear();
+    }
+
+    private void ClearFilter()
+    {
+      NameFilter = new AsyncObservableCollection<string>
+      {
+        ALL
+      };
+      SelectName = ALL;
     }
 
     private void SetEventLog(EventLogMessage eventLog)

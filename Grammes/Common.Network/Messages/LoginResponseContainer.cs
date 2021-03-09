@@ -16,16 +16,19 @@
 
     public List<PrivateChannel> OfflineList { get; }
 
+    public List<EventLogMessage> EventLogMessageList { get; }
+
     #endregion
 
     #region Constructors
 
-    public LoginResponseContainer(Response response, GeneralChannel general, List<PrivateChannel> onlineList, List<PrivateChannel> offlineList)
+    public LoginResponseContainer(Response response, GeneralChannel general, List<PrivateChannel> onlineList, List<PrivateChannel> offlineList, List<EventLogMessage> eventLogMessageList)
       : base(DispatchType.Login, response)
     {
       General = general;
       OnlineList = onlineList;
       OfflineList = offlineList;
+      EventLogMessageList = eventLogMessageList;
     }
 
     #endregion

@@ -18,6 +18,8 @@
   using Prism.Events;
   using Prism.Mvvm;
 
+  using View.UserControls.Themes;
+
   public class MessagesViewModel : BindableBase
   {
     #region Fields
@@ -55,6 +57,7 @@
         AutomaticAlert();
       }
     }
+
 
     public AsyncObservableCollection<MessageViewModel> MessagesUserList
     {

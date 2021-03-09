@@ -9,14 +9,6 @@
              interactivity:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="400">
-    
-    <UserControl.Resources>
-        <Style x:Key="StyleText">
-            <Setter Property="Control.FontSize" Value="14"/>
-            <Setter Property="Control.VerticalAlignment" Value="Center"/>
-        </Style>
-    </UserControl.Resources>
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -37,45 +29,52 @@
 
         <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"
                Content="Connection parameters" HorizontalAlignment="Center" 
-               Style="{StaticResource StyleText}"/>
+               Style="{StaticResource StyleThemeLabel}"/>
 
         <Label Name="WarningLabel" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" 
                VerticalAlignment="Bottom"
-               Style="{StaticResource StyleText}"
+               Style="{StaticResource StyleWarningLabel}"
                Content="{Binding Warning}" Foreground="Red"/>
 
-        <Label Content="IP-address:" Grid.Column="1" Grid.Row="1" Style="{StaticResource StyleText}"/>
-        <Label Content="Port:" Grid.Column="1" Grid.Row="2" Style="{StaticResource StyleText}"/>
-        <Label Content="Type interface:" Grid.Column="1" Grid.Row="3" Style="{StaticResource StyleText}"/>
-        <Label Content="User name:" Grid.Column="1" Grid.Row="4" Style="{StaticResource StyleText}"/>
+        <Label Content="IP-address:" Grid.Column="1" Grid.Row="1" Style="{StaticResource StyleThemeLabel}"/>
+        <Label Content="Port:" Grid.Column="1" Grid.Row="2" Style="{StaticResource StyleThemeLabel}"/>
+        <Label Content="Type interface:" Grid.Column="1" Grid.Row="3" Style="{StaticResource StyleThemeLabel}"/>
+        <Label Content="User name:" Grid.Column="1" Grid.Row="4" Style="{StaticResource StyleThemeLabel}"/>
 
-        <TextBox Grid.Column="2" Grid.Row="1" Style="{StaticResource StyleText}"
-                 Text="{Binding IpAddress, UpdateSourceTrigger=PropertyChanged}">
+        <TextBox Grid.Column="2" Grid.Row="1" Style="{StaticResource StyleThemeTextBox}"
+                 Text="{Binding IpAddress, UpdateSourceTrigger=PropertyChanged}"
+                 TabIndex="0">
             <TextBox.ToolTip>
-                <ToolTip Content="{Binding IpTollTip}">
+                <ToolTip Content="{Binding IpToolTip}">
                 </ToolTip>
             </TextBox.ToolTip>
         </TextBox>
 
-        <TextBox Grid.Column="2" Grid.Row="2" Style="{StaticResource StyleText}"
-                 Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}">
+        <TextBox Grid.Column="2" Grid.Row="2" Style="{StaticResource StyleThemeTextBox}"
+                 Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}"
+                 TabIndex="1">
             <TextBox.ToolTip>
-                <ToolTip Content="{Binding AddressTollTip}">
+                <ToolTip Content="{Binding AddressToolTip}">
                 </ToolTip>
             </TextBox.ToolTip>
         </TextBox>
 
-        <ComboBox Grid.Column="2" Grid.Row="3" Style="{StaticResource StyleText}" 
+        <ComboBox Grid.Column="2" Grid.Row="3" Style="{StaticResource StyleThemeComboBox}" 
                   ItemsSource="{Binding TypeInterfaceList}"
-                  SelectedItem="{Binding SelectTypeInterface}">
+                  SelectedItem="{Binding SelectTypeInterface}"
+                  TabIndex="2">
         </ComboBox>
 
-        <TextBox Grid.Column="2" Grid.Row="4" Style="{StaticResource StyleText}"
-                 Text="{Binding LoginName, UpdateSourceTrigger=PropertyChanged}">
+        <TextBox Grid.Column="2" Grid.Row="4" Style="{StaticResource StyleThemeTextBox}"
+                 Text="{Binding LoginName, UpdateSourceTrigger=PropertyChanged}"
+                 TabIndex="3">
             <TextBox.ToolTip>
-                <ToolTip Content="{Binding UserTollTip}">
+                <ToolTip Content="{Binding UserToolTip}">
                 </ToolTip>
             </TextBox.ToolTip>
+            <TextBox.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding SendCommand}"/>
+            </TextBox.InputBindings>
         </TextBox>
     </Grid>
 </UserControl>

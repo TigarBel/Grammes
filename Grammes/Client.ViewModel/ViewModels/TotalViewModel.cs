@@ -5,6 +5,7 @@
 
   using BusinessLogic.Model.Network;
 
+  using Common.DataBaseAndNetwork.EventLog;
   using Common.Network.ChannelsListModel;
   using Common.Network.ChannelsListModel.BaseUserChannel;
   using Common.Network.Messages;
@@ -131,6 +132,11 @@
       foreach (PrivateChannel privateChannel in eventArgs.OfflineList)
       {
         _mainViewModel.UsersListViewModel.OfflineUsers.Add(privateChannel);
+      }
+
+      foreach (EventLogMessage eventLog in eventArgs.EventLogMessages)
+      {
+        _eventAggregator.GetEvent<LogEvent>().Publish(eventLog);
       }
     }
 

@@ -4,6 +4,8 @@
 
   using Prism.Commands;
 
+  using View.UserControls.Themes;
+
   public abstract class LeafViewModel : ViewModelBase
   {
     #region Fields
@@ -18,6 +20,8 @@
 
     #region Properties
     
+    public ThemeType Theme { get; set; }
+
     public string ButtonText
     {
       get => _buttonText;
@@ -44,6 +48,7 @@
     {
       ButtonText = buttonText;
       SendCommand = null;
+      Theme = ThemeType.White;
     }
 
     #endregion

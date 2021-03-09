@@ -213,7 +213,8 @@
                 eventLog,
                 loginResponse.General,
                 loginResponse.OnlineList,
-                loginResponse.OfflineList));
+                loginResponse.OfflineList,
+                loginResponse.EventLogMessageList));
           }
 
           break;

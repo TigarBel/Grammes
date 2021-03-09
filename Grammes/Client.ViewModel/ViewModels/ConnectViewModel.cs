@@ -30,18 +30,18 @@
     private List<InterfaceType> _typeInterfaceList = new List<InterfaceType>
     {
       InterfaceType.WebSocket,
-      InterfaceType.TcpSocket
+      InterfaceType.Tcp
     };
 
     private string _loginName;
 
     private readonly IEventAggregator _userNameEa;
 
-    private string _ipTollTip;
+    private string _ipToolTip;
 
-    private string _addressTollTip;
+    private string _addressToolTip;
 
-    private string _userTollTip;
+    private string _userToolTip;
 
     #endregion
 
@@ -96,22 +96,22 @@
       }
     }
 
-    public string IpTollTip
+    public string IpToolTip
     {
-      get => _ipTollTip;
-      set => SetProperty(ref _ipTollTip, value);
+      get => _ipToolTip;
+      set => SetProperty(ref _ipToolTip, value);
     }
 
-    public string AddressTollTip
+    public string AddressToolTip
     {
-      get => _addressTollTip;
-      set => SetProperty(ref _addressTollTip, value);
+      get => _addressToolTip;
+      set => SetProperty(ref _addressToolTip, value);
     }
 
-    public string UserTollTip
+    public string UserToolTip
     {
-      get => _userTollTip;
-      set => SetProperty(ref _userTollTip, value);
+      get => _userToolTip;
+      set => SetProperty(ref _userToolTip, value);
     }
 
     #endregion
@@ -135,9 +135,9 @@
 
     public override void Check()
     {
-      IpTollTip = "Accepted";
-      AddressTollTip = "Accepted";
-      UserTollTip = "Accepted";
+      IpToolTip = "Accepted";
+      AddressToolTip = "Accepted";
+      UserToolTip = "Accepted";
 
       _errorsContainer.ClearErrors(() => IpAddress);
 
@@ -167,17 +167,17 @@
 
       if (_errorsContainer.GetErrors().Any(k => k.Key == "IpAddress"))
       {
-        IpTollTip = _errorsContainer.GetErrors().FirstOrDefault(k => k.Key == "IpAddress").Value[0];
+        IpToolTip = _errorsContainer.GetErrors().FirstOrDefault(k => k.Key == "IpAddress").Value[0];
       }
 
       if (_errorsContainer.GetErrors().Any(k => k.Key == "Port"))
       {
-        AddressTollTip = _errorsContainer.GetErrors().FirstOrDefault(k => k.Key == "Port").Value[0];
+        AddressToolTip = _errorsContainer.GetErrors().FirstOrDefault(k => k.Key == "Port").Value[0];
       }
 
       if (_errorsContainer.GetErrors().Any(k => k.Key == "LoginName"))
       {
-        UserTollTip = _errorsContainer.GetErrors().FirstOrDefault(k => k.Key == "LoginName").Value[0];
+        UserToolTip = _errorsContainer.GetErrors().FirstOrDefault(k => k.Key == "LoginName").Value[0];
       }
 
       IsAvailableButton = _errorsContainer.GetErrors().Count == 0;

@@ -1,5 +1,6 @@
 ﻿namespace Common.DataBase
 {
+  using System;
   using System.Collections.Generic;
   using System.Linq;
   using System.Threading.Tasks;
@@ -37,11 +38,6 @@
     #endregion
 
     #region Methods
-
-    private Unit GetUnit()
-    {
-      return new Unit(_dataSource, _catalog);
-    }
 
     public async void CreateUserAsync(User user)
     {
@@ -96,23 +92,6 @@
       }
     }
 
-    public async Task<User> GetUserAsync(int id)
-    {
-      User returnUser = null;
-      using (UserRepository db = GetUnit().User)
-      {
-        await Task.Run(
-          () =>
-          {
-            returnUser = db.Find(u => u.Id == id).FirstOrDefault();
-            db.GrammesDbContext.Entry(returnUser).Collection(p => p.PrivateMessages).Load();
-            db.GrammesDbContext.Entry(returnUser).Collection(b => b.Bands).Load();
-          });
-      }
-
-      return returnUser;
-    }
-
     public async Task<List<GeneralMessage>> GetGeneralMessageAsync()
     {
       var returnGeneralMessage = new List<GeneralMessage>();
@@ -152,12 +131,45 @@
       return returnPrivateMessage;
     }
 
+    public async Task<List<Event>> GetEventAsync()
+    {
+      var events = new List<Event>();
+      using (EventRepository db = GetUnit().Event) {
+        await Task.Run(
+          () =>
+          {
+            foreach (Event unit in db.GetAll()) {
+              events.Add(unit);
+            }
+          });
+      }
+
+      return events;
+    }
+
+    private Unit GetUnit()
+    {
+      return new Unit(_dataSource, _catalog);
+    }
+
     private void GetUserList()
     {
+      bool onRestart = true;
+      Task.Run(
+        async () =>
+        {
+          await Task.Delay(TimeSpan.FromSeconds(30));
+          if (onRestart)
+          {
+            throw new TimeoutException("Overtime load database!");
+          }
+        });
       using (UserRepository db = GetUnit().User)
       {
         UserList = db.GetAll().ToList();
       }
+
+      onRestart = false;
     }
 
     #endregion

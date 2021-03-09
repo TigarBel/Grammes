@@ -32,15 +32,16 @@
     /// <summary>
     /// Manager of server
     /// </summary>
-    /// <param name = "address">IP and Port</param>
+    /// <param name = "webAddress">Web IP and Port</param>
+    /// <param name = "tcpAddress">Tcp IP and Port</param>
     /// <param name = "timeout">Seconds life of client</param>
     /// <param name = "dataBaseManager">Base manager</param>
-    public NetworkManager(IPEndPoint address, int timeout, DataBaseManager dataBaseManager)
+    public NetworkManager(IPEndPoint webAddress, IPEndPoint tcpAddress, int timeout, DataBaseManager dataBaseManager)
     {
       _dataBaseManager = dataBaseManager;
 
-      _wsServer = new WsServer(address, timeout);
-      _tcpServer = new TcpServer(new IPEndPoint(address.Address, address.Port + 1), timeout);
+      _wsServer = new WsServer(webAddress, timeout);
+      _tcpServer = new TcpServer(tcpAddress, timeout);
       foreach (User user in _dataBaseManager.UserList)
       {
         _wsServer.UserOfflineList.Add(user.Name);
@@ -219,6 +220,7 @@
       await Task.Delay(1000);
       List<GeneralMessage> generalMessage = await _dataBaseManager.GetGeneralMessageAsync();
       List<PrivateMessage> privateMessages = await _dataBaseManager.GetPrivateMessageAsync();
+      List<Event> events = await _dataBaseManager.GetEventAsync();
       await Task.Run(
         () =>
         {
@@ -227,7 +229,8 @@
             new Response(ResponseType.Ok, eventArgs.EventLog.Text),
             Collector.CollectGeneralChannel(user.Id, generalMessage),
             Collector.CollectOnlineChannel(user, CheckUserList(_wsServer.UserOnlineList, _tcpServer.UserOnlineList), privateMessages),
-            Collector.CollectOfflineChannel(user, CheckUserList(_wsServer.UserOfflineList, _tcpServer.UserOfflineList), privateMessages));
+            Collector.CollectOfflineChannel(user, CheckUserList(_wsServer.UserOfflineList, _tcpServer.UserOfflineList), privateMessages),
+            Collector.CollectEventLog(user, events));
           _wsServer.Send(lrc, new PrivateAgenda(eventArgs.ClientName));
           _tcpServer.Send(lrc, new PrivateAgenda(eventArgs.ClientName));
         });
@@ -250,7 +253,7 @@
         case InterfaceType.WebSocket:
           _tcpServer.Send(message, agenda);
           break;
-        case InterfaceType.TcpSocket:
+        case InterfaceType.Tcp:
           _wsServer.Send(message, agenda);
           break;
         default:

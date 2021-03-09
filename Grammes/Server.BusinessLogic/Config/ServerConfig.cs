@@ -6,19 +6,17 @@
 
   using BusinessLogic.ServerConfig.Address;
 
-  using Common.DataBase;
-
   using Newtonsoft.Json;
 
   public static class ServerConfig
   {
     #region Methods
 
-    public static void SetConfig(IPEndPoint address, uint timeOut, string dataSource, string catalog)
+    public static void SetConfig(IPEndPoint webAddress, IPEndPoint tcpAddress, uint timeOut, string dataSource, string catalog)
     {
       try
       {
-        Config config = new Config(address, timeOut, dataSource, catalog);
+        var config = new Config(webAddress, tcpAddress, timeOut, dataSource, catalog);
         File.WriteAllText("server.conf.json", JsonConvert.SerializeObject(config, GetSettings()));
       }
       catch (Exception e)
@@ -34,11 +32,22 @@
       {
         return JsonConvert.DeserializeObject<Config>(File.ReadAllText("server.conf.json"), GetSettings());
       }
-      catch (Exception e)
+      catch
       {
-        Console.WriteLine(e);
-        throw;
+        return GetDefaultConfig();
       }
+    }
+
+    public static Config GetDefaultConfig()
+    {
+      var webAddress = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 64500);
+      var tcpAddress = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 64501);
+      uint timeOut = 100;
+      string dataSource = @"(localdb)\MSSQLLocalDB";
+      string catalog = "GrammesDb";
+      var config = new Config(webAddress, tcpAddress, timeOut, dataSource, catalog);
+      File.WriteAllText("server.conf.json", JsonConvert.SerializeObject(config, GetSettings()));
+      return JsonConvert.DeserializeObject<Config>(File.ReadAllText("server.conf.json"), GetSettings());
     }
 
     private static JsonSerializerSettings GetSettings()

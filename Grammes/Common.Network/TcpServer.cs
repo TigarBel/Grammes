@@ -84,6 +84,11 @@
 
     public void Stop()
     {
+      if (_server == null)
+      {
+        return;
+      }
+
       Socket server = _server;
       _server = null;
       server.Dispose();
@@ -116,7 +121,7 @@
         {
           if (_connections.Values.Count == 0)
           {
-            return; 
+            return;
           }
 
           _connections.Values.FirstOrDefault(item => item.Login == ((PrivateAgenda)agenda).Target)?.Send(messageBroadcast);
@@ -127,6 +132,11 @@
         default:
           throw new ArgumentOutOfRangeException();
       }
+    }
+
+    public bool Contains(string user)
+    {
+      return UserOnlineList.Contains(user) || UserOfflineList.Contains(user);
     }
 
     internal void HandlePacket(IPEndPoint remoteEndpoint, byte[] packet)
@@ -155,6 +165,7 @@
                 new Response(ResponseType.Failure, $"Client with name '{loginRequest.Content}' yet connect."),
                 null,
                 null,
+                null,
                 null);
               connection.Send(ConvertToBytes(loginResponse.GetContainer()));
               connection.Login = $"pseudo-{loginRequest.Content}";
@@ -163,7 +174,7 @@
             else
             {
               isEnter = UserOfflineList.Contains(loginRequest.Content);
-              loginResponse = new LoginResponseContainer(new Response(ResponseType.Ok, "Connected"), null, null, null);
+              loginResponse = new LoginResponseContainer(new Response(ResponseType.Ok, "Connected"), null, null, null, null);
               connection.Login = loginRequest.Content;
               stage = DispatchType.Login;
             }
@@ -185,7 +196,7 @@
         case DispatchType.Message:
           MessageReceivedEventArgs message = MessageSorter.GetSortedMessage((JObject)container.Payload);
           MessageReceived?.Invoke(this, message);
-          Send(MessageSorter.GetSortedMessage(message.Author, message.Message, InterfaceType.TcpSocket, message.Agenda), message.Agenda);
+          Send(MessageSorter.GetSortedMessage(message.Author, message.Message, InterfaceType.Tcp, message.Agenda), message.Agenda);
           break;
       }
     }
@@ -241,10 +252,6 @@
       }
 
       Accept();
-    }
-    public bool Contains(string user)
-    {
-      return UserOnlineList.Contains(user) || UserOfflineList.Contains(user);
     }
 
     #endregion

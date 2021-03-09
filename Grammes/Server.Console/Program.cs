@@ -16,9 +16,11 @@
     {
       try
       {
-        ServerConfig.SetConfig(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 64500), 10, null, null);
-        Config config = ServerConfig.GetConfig();
-        var networkManager = new NetworkManager(config.Address, Convert.ToInt32(config.Timeout),
+        Config config = ServerConfig.GetDefaultConfig();
+        var networkManager = new NetworkManager(
+          config.WebAddress,
+          config.TcpAddress,
+          Convert.ToInt32(config.Timeout),
           new DataBaseManager(config.DataSource, config.Catalog));
         networkManager.Start();
 
