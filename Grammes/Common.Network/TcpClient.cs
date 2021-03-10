@@ -25,7 +25,7 @@
     private const int BUFFER_SIZE = ushort.MaxValue * 3;
     private const int SIZE_LENGTH = 2;
 
-    private const int CONNECT_WAIT_TIME = 1100;
+    private const int CONNECT_WAIT_TIME = 1500;
 
     #endregion
 
@@ -159,6 +159,10 @@
         Type = DispatchType.Connection
       };
       ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, false, eventLog));
+      if (_socket.Connected)
+      {
+        Disconnect();
+      }
     }
 
     private void SendImpl()
@@ -284,21 +288,15 @@
         case DispatchType.Login:
           if (((JObject)container.Payload).ToObject(typeof(LoginResponseContainer)) is LoginResponseContainer loginResponse)
           {
-            _isLogin = true;
             var eventLog = new EventLogMessage
             {
-              IsSuccessfully = true,
+              IsSuccessfully = loginResponse.Content.Result==ResponseType.Ok,
               SenderName = _login,
-              Text = "Login",
+              Text = loginResponse.Content.Reason,
               Time = DateTime.Now,
               Type = DispatchType.Login
             };
-            if (loginResponse.Content.Result == ResponseType.Failure)
-            {
-              eventLog.IsSuccessfully = false;
-              eventLog.Text = loginResponse.Content.Reason;
-            }
-
+            _isLogin = eventLog.IsSuccessfully;
             LoginEvent?.Invoke(
               this,
               new LoginEventArgs(

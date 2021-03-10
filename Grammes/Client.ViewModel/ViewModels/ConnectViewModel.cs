@@ -62,21 +62,13 @@
     public string IpAddress
     {
       get => _ipAddress;
-      set
-      {
-        SetProperty(ref _ipAddress, value);
-        Check();
-      }
+      set => SetProperty(ref _ipAddress, value, Check);
     }
 
     public int Port
     {
       get => _port;
-      set
-      {
-        SetProperty(ref _port, value);
-        Check();
-      }
+      set => SetProperty(ref _port, value, Check);
     }
 
     public InterfaceType SelectTypeInterface
@@ -90,8 +82,7 @@
       get => _loginName;
       set
       {
-        SetProperty(ref _loginName, value);
-        Check();
+        SetProperty(ref _loginName, value, Check);
         _userNameEa.GetEvent<LoginNameEvent>().Publish(_loginName);
       }
     }
@@ -181,11 +172,6 @@
       }
 
       IsAvailableButton = _errorsContainer.GetErrors().Count == 0;
-    }
-
-    private void IsAvailable()
-    {
-      IsAvailableButton = true;
     }
 
     #endregion

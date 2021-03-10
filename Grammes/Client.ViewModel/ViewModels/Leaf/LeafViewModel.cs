@@ -14,12 +14,14 @@
 
     private DelegateCommand _buttonCommand;
 
-    private bool _isAvailableButton;
+    private bool _isAvailableButton; 
+
+    private bool _isFilling;
 
     #endregion
 
     #region Properties
-    
+
     public ThemeType Theme { get; set; }
 
     public string ButtonText
@@ -40,6 +42,12 @@
       set => SetProperty(ref _isAvailableButton, value);
     }
 
+    public bool IsFilling
+    {
+      get => _isFilling;
+      set => SetProperty(ref _isFilling, value);
+    }
+
     #endregion
 
     #region Constructors
@@ -49,6 +57,7 @@
       ButtonText = buttonText;
       SendCommand = null;
       Theme = ThemeType.White;
+      IsFilling = true;
     }
 
     #endregion

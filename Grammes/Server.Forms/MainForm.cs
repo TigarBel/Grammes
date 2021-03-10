@@ -4,6 +4,7 @@
   using System.Drawing;
   using System.Net;
   using System.Text.RegularExpressions;
+  using System.Threading.Tasks;
   using System.Windows.Forms;
 
   using BusinessLogic;
@@ -47,18 +48,28 @@
 
     private void _startButton_Click(object sender, EventArgs e)
     {
+      SwitchButton(true);
+      _stopButton.Enabled = false;
+      StartAsync();
+    }
+
+    private async void StartAsync()
+    {
       try
       {
-        SwitchButton(true);
-
-        SetConfig();
-        Config config = ServerConfig.GetConfig();
-        _networkManager = new NetworkManager(
-          config.WebAddress,
-          config.TcpAddress,
-          Convert.ToInt32(config.Timeout),
-          new DataBaseManager(_dbSourceTextBox.Text, _dbCatalogTextBox.Text));
-        _networkManager.Start();
+        await Task.Run(
+          () =>
+          {
+            SetConfig();
+            Config config = ServerConfig.GetConfig();
+            _networkManager = new NetworkManager(
+              config.WebAddress,
+              config.TcpAddress,
+              Convert.ToInt32(config.Timeout),
+              new DataBaseManager(_dbSourceTextBox.Text, _dbCatalogTextBox.Text));
+            _networkManager.Start();
+          });
+        _stopButton.Enabled = true;
       }
       catch (Exception exception)
       {

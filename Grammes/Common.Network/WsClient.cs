@@ -123,6 +123,7 @@
           Type = DispatchType.Connection
         };
         ConnectionStateChanged?.Invoke(this, new ConnectionStateChangedEventArgs(_login, false, eventLog));
+        _socket?.CloseAsync();
       }
     }
 

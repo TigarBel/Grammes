@@ -16,7 +16,7 @@
   using Common.Network.Messages.MessageReceived;
   using Common.Network.Messages.MessageSorter;
 
-  public class NetworkManager
+  public class NetworkManager : ILaunchable
   {
     #region Fields
 
@@ -116,7 +116,7 @@
 
     private bool Contains(string client)
     {
-      return _wsServer.Contains(client) || _tcpServer.Contains(client);
+      return _wsServer.IsContains(client) || _tcpServer.IsContains(client);
     }
 
     private void AddUserOnList(bool connection, string client)
@@ -174,7 +174,6 @@
             User_Id = user.Id
           };
           _dataBaseManager.CreateGeneralMessageAsync(generalMessage);
-          EventSaveAsync(new MessageEventLogContainer(eventLogMessage), eventArgs.Agenda);
           break;
         case ChannelType.Private:
           SendCurrentServer(eventArgs.Type, MessageSorter.GetSortedMessage(eventArgs), eventArgs.Agenda);
@@ -186,13 +185,14 @@
             TargetId = _dataBaseManager.UserList.Find(u => u.Name == ((PrivateAgenda)eventArgs.Agenda).Target).Id
           };
           _dataBaseManager.CreatePrivateMessageAsync(privateMessage);
-          EventSaveAsync(new MessageEventLogContainer(eventLogMessage), eventArgs.Agenda);
           break;
         case ChannelType.Group:
           break;
         default:
           throw new ArgumentOutOfRangeException();
       }
+
+      EventSaveAsync(new MessageEventLogContainer(eventLogMessage), eventArgs.Agenda);
     }
 
     private async void EventSaveAsync(MessageEventLogContainer messageEvent, BaseAgenda agenda)
@@ -206,11 +206,11 @@
           _dataBaseManager.CreateEventAsync(
             new Event
             {
-              IsSuccessfully = true,
+              IsSuccessfully = messageEvent.Content.IsSuccessfully,
               Message = messageEvent.Content.Text,
               Time = DateTime.Now,
               UserName = messageEvent.Content.SenderName,
-              Type = DispatchType.Connection
+              Type = messageEvent.Request
             });
         });
     }

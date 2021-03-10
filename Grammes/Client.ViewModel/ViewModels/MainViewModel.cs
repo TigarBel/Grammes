@@ -1,5 +1,6 @@
 ﻿namespace Client.ViewModel.ViewModels
 {
+  using System.Collections.ObjectModel;
   using System.Linq;
 
   using Common.DataBaseAndNetwork.EventLog;
@@ -23,7 +24,7 @@
 
     #region Fields
 
-    private AsyncObservableCollection<EventLogMessage> _events;
+    private ObservableCollection<EventLogMessage> _events;
 
     private readonly AsyncObservableCollection<EventLogMessage> _allEvents;
 
@@ -43,7 +44,7 @@
 
     public MessagesViewModel.MessagesViewModel MessagesViewModel { get; }
 
-    public AsyncObservableCollection<EventLogMessage> Events
+    public ObservableCollection<EventLogMessage> Events
     {
       get => _events;
       set => SetProperty(ref _events, value);
@@ -63,7 +64,7 @@
         SetProperty(ref _selectName, value);
         Events = value == ALL
                    ? _allEvents
-                   : new AsyncObservableCollection<EventLogMessage>(_allEvents.Where(log => log.SenderName == value).ToList());
+                   : new ObservableCollection<EventLogMessage>(_allEvents.Where(log => log.SenderName == value).ToList());
       }
     }
 
@@ -81,7 +82,8 @@
       MessagesViewModel = messagesViewModel;
       UsersListViewModel = usersListViewModel;
       _allEvents = new AsyncObservableCollection<EventLogMessage>();
-      ClearFilter();
+      NameFilter = new AsyncObservableCollection<string>();
+      InitNameFilter();
       _logEa = eventAggregator;
       eventAggregator.GetEvent<LogEvent>().Subscribe(SetEventLog);
     }
@@ -94,16 +96,15 @@
     {
       Events.Clear();
       _allEvents.Clear();
-      ClearFilter();
+      InitNameFilter();
       MessagesViewModel.MessagesUserList.Clear();
+      MessagesViewModel.TextMessage = string.Empty;
     }
 
-    private void ClearFilter()
+    private void InitNameFilter()
     {
-      NameFilter = new AsyncObservableCollection<string>
-      {
-        ALL
-      };
+      NameFilter.Clear();
+      NameFilter.Add(ALL);
       SelectName = ALL;
     }
 

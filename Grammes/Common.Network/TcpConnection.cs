@@ -65,17 +65,12 @@
 
     #region Methods
 
-    public void Start()
+    public void Open()
     {
       Receive();
     }
 
     public void Close()
-    {
-      Stop();
-    }
-
-    public void Stop()
     {
       if (Interlocked.CompareExchange(ref _disposed, 1, 0) == 1)
       {
@@ -126,7 +121,7 @@
     {
       if (eventArgs.BytesTransferred != eventArgs.Count || eventArgs.SocketError != SocketError.Success)
       {
-        Stop();
+        Close();
         return;
       }
 
@@ -150,7 +145,7 @@
     {
       if (eventArgs.BytesTransferred == 0 || eventArgs.SocketError != SocketError.Success)
       {
-        Stop();
+        Close();
         return;
       }
 

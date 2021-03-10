@@ -7,8 +7,6 @@
   using System.Net.Sockets;
   using System.Text;
 
-  using Client;
-
   using DataBaseAndNetwork.EventLog;
 
   using Messages;
@@ -20,27 +18,11 @@
 
   using Packets;
 
-  using Properties;
-
-  public class TcpServer
+  public class TcpServer : BaseServer<IPEndPoint, TcpConnection, Socket>, IServerable, ILaunchable
   {
     #region Fields
 
-    private readonly IPEndPoint _listenAddress;
-    private readonly Clients<IPEndPoint, TcpConnection> _connections;
-
     private SocketAsyncEventArgs _acceptEvent;
-    private Socket _server;
-
-    private readonly string _name;
-
-    #endregion
-
-    #region Properties
-
-    public List<string> UserOnlineList { get; set; }
-
-    public List<string> UserOfflineList { get; set; }
 
     #endregion
 
@@ -59,13 +41,8 @@
     /// <param name = "listenAddress">IP and Port</param>
     /// <param name = "timeout">Seconds</param>
     public TcpServer(IPEndPoint listenAddress, int timeout)
+      : base(listenAddress, timeout)
     {
-      _name = Resources.ServerName;
-      _listenAddress = listenAddress;
-      _connections = new Clients<IPEndPoint, TcpConnection>(timeout);
-
-      UserOfflineList = new List<string>();
-      UserOnlineList = new List<string>();
     }
 
     #endregion
@@ -96,7 +73,7 @@
       TcpConnection[] connections = _connections.Select(item => item.Value).ToArray();
       foreach (TcpConnection connection in connections)
       {
-        connection.Stop();
+        connection.Close();
       }
 
       _connections.Clear();
@@ -134,7 +111,7 @@
       }
     }
 
-    public bool Contains(string user)
+    public bool IsContains(string user)
     {
       return UserOnlineList.Contains(user) || UserOfflineList.Contains(user);
     }
@@ -248,7 +225,7 @@
       var connection = new TcpConnection(remoteEndpoint, eventArgs.AcceptSocket, this);
       if (_connections.TryAdd(remoteEndpoint, connection))
       {
-        connection.Start();
+        connection.Open();
       }
 
       Accept();

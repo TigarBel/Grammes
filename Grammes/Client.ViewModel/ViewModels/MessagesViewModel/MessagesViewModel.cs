@@ -18,8 +18,6 @@
   using Prism.Events;
   using Prism.Mvvm;
 
-  using View.UserControls.Themes;
-
   public class MessagesViewModel : BindableBase
   {
     #region Fields
@@ -51,13 +49,12 @@
         MessagesUserList.Clear();
         foreach (MessageModel message in value.MessageList)
         {
-          MessagesUserList.Add(new MessageViewModel(message)); //TODO List = List
+          MessagesUserList.Add(new MessageViewModel(message));
         }
 
         AutomaticAlert();
       }
     }
-
 
     public AsyncObservableCollection<MessageViewModel> MessagesUserList
     {
@@ -94,7 +91,7 @@
       eventAggregator.GetEvent<LoginNameEvent>().Subscribe(SetClient);
       eventAggregator.GetEvent<MessageReceivedEvent>().Subscribe(AddMessage);
       _currentConnection = currentConnection;
-      CommandSendMessage = new DelegateCommand(Send);
+      CommandSendMessage = new DelegateCommand(Send, () => IsAvailable).ObservesProperty(() => IsAvailable);
     }
 
     #endregion
@@ -122,18 +119,11 @@
     private void Validate()
     {
       AutomaticAlert();
-      if (string.IsNullOrEmpty(TextMessage))
+      IsAvailable = true;
+      if (string.IsNullOrEmpty(TextMessage) || TextMessage.All(symbol => symbol == ' '))
       {
         IsAvailable = false;
       }
-
-      if (TextMessage.Any(symbol => symbol != ' '))
-      {
-        IsAvailable = true;
-        return;
-      }
-
-      IsAvailable = false;
     }
 
     private void SetChannel(BaseChannel channel)

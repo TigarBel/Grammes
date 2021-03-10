@@ -77,35 +77,34 @@
 
     private void ExecuteConnect()
     {
-      _connectViewModel.Warning = "";
-      _mainViewModel.Clear();
-
+      EventClear();
       string address = _connectViewModel.IpAddress;
       int port = _connectViewModel.Port;
       string name = _connectViewModel.LoginName;
-
-      EventClear();
       _currentConnection.Connect(address, port, name, _connectViewModel.SelectTypeInterface);
+      _connectViewModel.IsFilling = false;
+      _connectViewModel.IsAvailableButton = false;
     }
 
     private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs eventArgs)
     {
       if (eventArgs.Connected)
       {
-        _connectViewModel.IsAvailableButton = false;
+        return;
+      }
+
+      if (ContentPresenter == (int)ViewSelect.ConnectView)
+      {
+        _connectViewModel.Warning = $"{eventArgs.EventLog.Text}";
       }
       else
       {
-        _connectViewModel.IsAvailableButton = true;
-        if (ContentPresenter == (int)ViewSelect.ConnectView)
-        {
-          _connectViewModel.Warning = $"{eventArgs.EventLog.Text}";
-        }
-        else
-        {
-          ContentPresenter = (int)ViewSelect.ConnectView;
-        }
+        ContentPresenter = (int)ViewSelect.ConnectView;
+        _mainViewModel.Clear();
       }
+
+      _connectViewModel.IsFilling = true;
+      _connectViewModel.IsAvailableButton = true;
     }
 
     private void HandleLogin(object sender, LoginEventArgs eventArgs)
@@ -148,6 +147,12 @@
     private void HandleUpdateChannel(object sender, UpdateChannelEventArgs eventArgs)
     {
       string comeLogin = eventArgs.ChannelName;
+      if (comeLogin == _connectViewModel.LoginName)
+      {
+        _connectViewModel.Warning = $"{eventArgs.EventLog.Text}";
+        return;
+      }
+
       if (eventArgs.IsNewLogin)
       {
         _mainViewModel.UsersListViewModel.OnlineUsers.Add(new OnlineChannel(comeLogin));
@@ -199,6 +204,7 @@
 
     private void EventClear()
     {
+      _connectViewModel.Warning = string.Empty;
       _currentConnection.ConnectionStateChanged -= HandleConnectionStateChanged;
       _currentConnection.Login -= HandleLogin;
       _currentConnection.MessageReceived -= HandleMessageReceived;

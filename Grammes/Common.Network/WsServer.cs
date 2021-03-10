@@ -5,8 +5,6 @@
   using System.Linq;
   using System.Net;
 
-  using Client;
-
   using DataBaseAndNetwork.EventLog;
 
   using Messages;
@@ -15,31 +13,10 @@
 
   using Newtonsoft.Json.Linq;
 
-  using Properties;
-
   using WebSocketSharp.Server;
 
-  public class WsServer
+  public class WsServer : BaseServer<Guid, WsConnection, WebSocketServer>, IServerable, ILaunchable
   {
-    #region Fields
-
-    private readonly IPEndPoint _listenAddress;
-    private readonly Clients<Guid, WsConnection> _connections;
-
-    private WebSocketServer _server;
-
-    private readonly string _name;
-
-    #endregion
-
-    #region Properties
-
-    public List<string> UserOnlineList { get; set; }
-
-    public List<string> UserOfflineList { get; set; }
-
-    #endregion
-
     #region Events
 
     public event EventHandler<ConnectionStateChangedEventArgs> ConnectionStateChanged;
@@ -55,13 +32,8 @@
     /// <param name = "listenAddress">IP and Port</param>
     /// <param name = "timeout">Seconds</param>
     public WsServer(IPEndPoint listenAddress, int timeout)
+      : base(listenAddress, timeout)
     {
-      _name = Resources.ServerName;
-      _listenAddress = listenAddress;
-      _connections = new Clients<Guid, WsConnection>(timeout);
-
-      UserOfflineList = new List<string>();
-      UserOnlineList = new List<string>();
     }
 
     #endregion
@@ -121,7 +93,7 @@
       }
     }
 
-    public bool Contains(string user)
+    public bool IsContains(string user)
     {
       return UserOnlineList.Contains(user) || UserOfflineList.Contains(user);
     }
