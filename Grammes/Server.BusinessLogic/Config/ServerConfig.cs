@@ -41,7 +41,7 @@
     public static Config GetDefaultConfig()
     {
       var webAddress = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 64500);
-      var tcpAddress = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 64501);
+      var tcpAddress = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 64505);
       uint timeOut = 100;
       string dataSource = @"(localdb)\MSSQLLocalDB";
       string catalog = "GrammesDb";

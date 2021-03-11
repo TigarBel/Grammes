@@ -20,6 +20,12 @@
 
   public class TotalViewModel : BindableBase
   {
+    #region Constants
+
+    private const string CHANGE_CHANNEL_ERROR = "Change channel error!";
+
+    #endregion
+
     #region Fields
 
     private int _contentPresenter;
@@ -79,7 +85,7 @@
     {
       EventClear();
       string address = _connectViewModel.IpAddress;
-      int port = _connectViewModel.Port;
+      int port = Convert.ToInt32(_connectViewModel.Port);
       string name = _connectViewModel.LoginName;
       _currentConnection.Connect(address, port, name, _connectViewModel.SelectTypeInterface);
       _connectViewModel.IsFilling = false;
@@ -175,6 +181,13 @@
       AsyncObservableCollection<PrivateChannel> channelsOf,
       AsyncObservableCollection<PrivateChannel> channelsIn)
     {
+      if (channelsOf.All(u => u.Name != comeLogin))
+      {
+        _connectViewModel.Warning = CHANGE_CHANNEL_ERROR;
+        ExecuteDisconnect();
+        return;
+      }
+
       PrivateChannel oldChannel = channelsOf.Single(u => u.Name == comeLogin);
       var newChannel = new PrivateChannel(comeLogin)
       {

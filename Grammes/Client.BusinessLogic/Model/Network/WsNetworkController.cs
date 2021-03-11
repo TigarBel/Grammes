@@ -5,14 +5,8 @@
   using Common.Network;
   using Common.Network.Messages;
 
-  public class WsNetworkController : Controller, IConnectionController
+  public class WsNetworkController : BaseController<WsClient>, IConnectionController
   {
-    #region Fields
-
-    private WsClient _client;
-
-    #endregion
-
     #region Events
 
     public event EventHandler<ConnectionStateChangedEventArgs> ConnectionStateChanged;

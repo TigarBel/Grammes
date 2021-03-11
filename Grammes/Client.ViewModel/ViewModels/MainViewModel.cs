@@ -3,16 +3,17 @@
   using System.Collections.ObjectModel;
   using System.Linq;
 
+  using BusinessLogic.Model.Network;
+
   using Common.DataBaseAndNetwork.EventLog;
 
   using EventAggregator;
 
   using Extension;
 
+  using Prism.Commands;
   using Prism.Events;
   using Prism.Mvvm;
-
-  using View.UserControls.Themes;
 
   public class MainViewModel : BindableBase
   {
@@ -32,7 +33,9 @@
 
     private string _selectName;
 
-    private readonly IEventAggregator _logEa;
+    private DelegateCommand _mouseClickCommand;
+
+    private string _loginName;
 
     #endregion
 
@@ -62,10 +65,14 @@
       set
       {
         SetProperty(ref _selectName, value);
-        Events = value == ALL
-                   ? _allEvents
-                   : new ObservableCollection<EventLogMessage>(_allEvents.Where(log => log.SenderName == value).ToList());
+        Events = value == ALL ? _allEvents : new ObservableCollection<EventLogMessage>(_allEvents.Where(log => log.SenderName == value).ToList());
       }
+    }
+
+    public DelegateCommand MouseClickCommand
+    {
+      get => _mouseClickCommand;
+      set => SetProperty(ref _mouseClickCommand, value);
     }
 
     #endregion
@@ -76,7 +83,8 @@
       MainMenuViewModel mainMenuViewModel,
       MessagesViewModel.MessagesViewModel messagesViewModel,
       UsersListViewModel usersListViewModel,
-      IEventAggregator eventAggregator)
+      IEventAggregator eventAggregator,
+      ICurrentConnection currentConnection)
     {
       MainMenuViewModel = mainMenuViewModel;
       MessagesViewModel = messagesViewModel;
@@ -84,8 +92,13 @@
       _allEvents = new AsyncObservableCollection<EventLogMessage>();
       NameFilter = new AsyncObservableCollection<string>();
       InitNameFilter();
-      _logEa = eventAggregator;
       eventAggregator.GetEvent<LogEvent>().Subscribe(SetEventLog);
+      eventAggregator.GetEvent<LoginNameEvent>().Subscribe(SetClient);
+      MouseClickCommand = new DelegateCommand(
+        () =>
+        {
+          Alert.AutomaticAlert(_loginName, currentConnection);
+        });
     }
 
     #endregion
@@ -99,6 +112,11 @@
       InitNameFilter();
       MessagesViewModel.MessagesUserList.Clear();
       MessagesViewModel.TextMessage = string.Empty;
+    }
+
+    private void SetClient(string client)
+    {
+      _loginName = client;
     }
 
     private void InitNameFilter()

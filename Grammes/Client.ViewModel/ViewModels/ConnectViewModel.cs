@@ -23,7 +23,7 @@
 
     private string _ipAddress;
 
-    private int _port;
+    private string _port;
 
     private InterfaceType _selectTypeInterface;
 
@@ -65,7 +65,7 @@
       set => SetProperty(ref _ipAddress, value, Check);
     }
 
-    public int Port
+    public string Port
     {
       get => _port;
       set => SetProperty(ref _port, value, Check);
@@ -115,7 +115,7 @@
       Warning = "";
       _userNameEa = eventAggregator;
       IpAddress = "127.0.0.1";
-      Port = 64500;
+      Port = "64500";
       LoginName = "";
       SelectTypeInterface = InterfaceType.WebSocket;
     }
@@ -139,9 +139,16 @@
 
       _errorsContainer.ClearErrors(() => Port);
 
-      if (Port < IPEndPoint.MinPort || Port > IPEndPoint.MaxPort)
+      if (int.TryParse(Port, out int result))
       {
-        _errorsContainer.SetErrors(() => Port, new[] { "Port not available" });
+        if (result < IPEndPoint.MinPort || result > IPEndPoint.MaxPort)
+        {
+          _errorsContainer.SetErrors(() => Port, new[] { "Port not available" });
+        }
+      }
+      else
+      {
+        _errorsContainer.SetErrors(() => Port, new[] { "Port not integer" });
       }
 
       _errorsContainer.ClearErrors(() => LoginName);

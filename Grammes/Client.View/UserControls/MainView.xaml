@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Client.View.UserControls"
              xmlns:mvvm="http://prismlibrary.com/"
              xmlns:eventLog="clr-namespace:Client.View.UserControls.EventLog"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mvvm:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
     <UserControl.Resources>
@@ -59,6 +60,13 @@
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
+
+    <b:Interaction.Triggers>
+        <b:EventTrigger EventName="MouseDown">
+            <b:InvokeCommandAction Command="{Binding MouseClickCommand}" CommandParameter="ViewImportProgress"/>
+        </b:EventTrigger>
+    </b:Interaction.Triggers>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="6*" MinHeight="200"/>

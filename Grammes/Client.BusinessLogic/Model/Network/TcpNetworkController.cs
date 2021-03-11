@@ -5,14 +5,8 @@
   using Common.Network;
   using Common.Network.Messages;
 
-  public class TcpNetworkController : Controller, IConnectionController
+  public class TcpNetworkController : BaseController<TcpClient>, IConnectionController
   {
-    #region Fields
-
-    private TcpClient _client;
-
-    #endregion
-
     #region Events
 
     public event EventHandler<ConnectionStateChangedEventArgs> ConnectionStateChanged;
@@ -26,7 +20,7 @@
     #region Constructors
 
     public TcpNetworkController()
-      : base(InterfaceType.WebSocket)
+      : base(InterfaceType.Tcp)
     {
     }
 
@@ -36,7 +30,8 @@
 
     public void Connect(string address, int port, string name)
     {
-      if (_client != null) {
+      if (_client != null)
+      {
         _client.ConnectionStateChanged -= HandleConnectionStateChanged;
         _client.LoginEvent -= HandleLogin;
         _client.MessageReceived -= HandleMessageReceived;

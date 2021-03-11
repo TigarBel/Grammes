@@ -52,7 +52,7 @@
           MessagesUserList.Add(new MessageViewModel(message));
         }
 
-        AutomaticAlert();
+        Alert.AutomaticAlert(_loginName, _currentConnection);
       }
     }
 
@@ -118,7 +118,7 @@
 
     private void Validate()
     {
-      AutomaticAlert();
+      Alert.AutomaticAlert(_loginName, _currentConnection);
       IsAvailable = true;
       if (string.IsNullOrEmpty(TextMessage) || TextMessage.All(symbol => symbol == ' '))
       {
@@ -186,21 +186,7 @@
       MessagesUserList.Add(new MessageViewModel(model));
       TextMessage = "";
     }
-
-    private void AutomaticAlert()
-    {
-      const string ALERT = "Alert";
-      var eventLogMessage = new EventLogMessage
-      {
-        IsSuccessfully = true,
-        SenderName = _loginName,
-        Text = ALERT,
-        Time = DateTime.Now,
-        Type = DispatchType.EventLog
-      };
-      _currentConnection.Send(new MessageEventLogContainer(eventLogMessage));
-    }
-
+    
     #endregion
   }
 }

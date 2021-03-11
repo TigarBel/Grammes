@@ -7,10 +7,9 @@
 
   public class NetworkController : ICurrentConnection
   {
-    #region Properties
+    #region Fields
 
-    public InterfaceType Type { get; private set; }
-    public IConnectionController ConnectionController { get; private set; }
+    private IConnectionController _connectionController;
 
     #endregion
 
@@ -28,36 +27,35 @@
 
     public void Connect(string address, int port, string login, InterfaceType interfaceType)
     {
-      ConnectionController = null;
-      Type = interfaceType;
-      switch (Type)
+      _connectionController = null;
+      switch (interfaceType)
       {
         case InterfaceType.WebSocket:
-          ConnectionController = new WsNetworkController();
+          _connectionController = new WsNetworkController();
           break;
         case InterfaceType.Tcp:
-          ConnectionController = new TcpNetworkController();
+          _connectionController = new TcpNetworkController();
           break;
         default:
-          throw new ArgumentOutOfRangeException(nameof(Type), Type, null);
+          throw new ArgumentOutOfRangeException(nameof(Type), interfaceType, null);
       }
 
-      ConnectionController.Connect(address, port, login);
-      ConnectionController.ConnectionStateChanged += HandleConnectionStateChanged;
-      ConnectionController.Login += HandleLogin;
-      ConnectionController.MessageReceived += HandleMessageReceived;
-      ConnectionController.UpdateChannel += HandleUpdateChannel;
-      ConnectionController.LogEvent += HandleLog;
+      _connectionController.Connect(address, port, login);
+      _connectionController.ConnectionStateChanged += HandleConnectionStateChanged;
+      _connectionController.Login += HandleLogin;
+      _connectionController.MessageReceived += HandleMessageReceived;
+      _connectionController.UpdateChannel += HandleUpdateChannel;
+      _connectionController.LogEvent += HandleLog;
     }
 
     public void Disconnect()
     {
-      ConnectionController.Disconnect();
+      _connectionController.Disconnect();
     }
 
     public void Send<TClass>(BaseContainer<TClass> message)
     {
-      ConnectionController.Send(message);
+      _connectionController.Send(message);
     }
 
     private void HandleConnectionStateChanged(object sender, ConnectionStateChangedEventArgs eventArgs)
