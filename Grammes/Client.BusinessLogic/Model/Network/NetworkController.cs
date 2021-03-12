@@ -13,6 +13,12 @@
 
     #endregion
 
+    #region Properties
+
+    public InterfaceType Type => _connectionController.Type;
+
+    #endregion
+
     #region Events
 
     public event EventHandler<ConnectionStateChangedEventArgs> ConnectionStateChanged;

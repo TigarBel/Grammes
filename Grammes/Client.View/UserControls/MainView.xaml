@@ -67,14 +67,14 @@
         </b:EventTrigger>
     </b:Interaction.Triggers>
 
-    <Grid>
+    <Grid Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="6*" MinHeight="200"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="30" x:Name="ExpanderRow">
                 <RowDefinition.Style>
                     <Style TargetType="{x:Type RowDefinition}">
-                        <Setter Property="MinHeight" Value="100" />
+                        <Setter Property="MinHeight" Value="100"/>
                         <Style.Triggers>
                             <DataTrigger
                                 Binding="{Binding ElementName=ExpanderEventLog, Path=IsExpanded}"

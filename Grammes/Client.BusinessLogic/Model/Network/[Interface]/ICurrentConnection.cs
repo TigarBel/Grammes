@@ -7,6 +7,12 @@
 
   public interface ICurrentConnection //Hello from C# 8.0 : IConnectionController
   {
+    #region Properties
+
+    InterfaceType Type { get; }
+
+    #endregion
+
     #region Events
 
     event EventHandler<ConnectionStateChangedEventArgs> ConnectionStateChanged; //Hello from C# 8.0

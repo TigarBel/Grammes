@@ -6,6 +6,12 @@
 
   public interface IConnectionController
   {
+    #region Properties
+
+    InterfaceType Type { get; }
+
+    #endregion
+
     #region Events
 
     event EventHandler<ConnectionStateChangedEventArgs> ConnectionStateChanged;
@@ -14,7 +20,7 @@
     event EventHandler<UpdateChannelEventArgs> UpdateChannel;
     event EventHandler<LogEventArgs> LogEvent;
 
-    #endregion Events
+    #endregion
 
     #region Methods
 
@@ -24,6 +30,6 @@
 
     void Send<TClass>(BaseContainer<TClass> message);
 
-    #endregion Methods
+    #endregion
   }
 }

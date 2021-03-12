@@ -44,6 +44,11 @@
       return (RowDefinition)obj.GetValue(TargetRowProperty);
     }
 
+    public static Grid GetGridRow(DependencyObject obj)
+    {
+      return (Grid)obj.GetValue(TargetRowProperty);
+    }
+
     public static void SetTargetRow(DependencyObject obj, RowDefinition value)
     {
       obj.SetValue(TargetRowProperty, value);
@@ -105,6 +110,7 @@
 
       GridLength targetRowPrevHeight = GetTargetRowPrevHeight(expander);
 
+      targetRow.MaxHeight = ((Grid)targetRow.Parent).ActualHeight / 2;
       targetRow.Height = targetRowPrevHeight;
     }
 
